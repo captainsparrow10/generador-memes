@@ -14,7 +14,7 @@ type memeTypes = {
 export default async function Home() {
 	const data: memeTypes[] = await fetch('https://api.imgflip.com/get_memes')
 		.then((res) => res.json())
-		.then((res) => res.data)
+		.then((res) => res.data.memes)
 	console.log(data)
 	return (
 		<main className="p-6 flex flex-col gap-y-6">
@@ -22,8 +22,13 @@ export default async function Home() {
 				<h1 className="text-4xl font-bold">Imagenes</h1>
 				<PhotoIcon className="h-6 w-6" />
 			</header>
-			<section></section>
+			<section>
+				{data.map(({ id, url, width, height, name }) => (
+					<div key={id}>
+						<Image src={url} width={width} height={height} alt={name} />
+					</div>
+				))}
+			</section>
 		</main>
 	)
 }
- 
