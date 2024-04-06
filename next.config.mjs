@@ -1,8 +1,10 @@
 /** @type {import('next').NextConfig} */
-module.exports = {
+const nextConfig = {
+
   images: {
-    remotePa
-  },
-}
+    domains: ['i.imgflip.com']
+  }
+
+};
 
 export default nextConfig;
