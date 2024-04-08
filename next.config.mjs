@@ -2,7 +2,7 @@
 const nextConfig = {
 
   images: {
-    domains: ['i.imgflip.com']
+    domains: ['i.imgflip.com', 'pics.craiyon.com']
   }
 
 };

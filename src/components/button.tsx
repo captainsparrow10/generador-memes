@@ -4,7 +4,7 @@ type Props = {
 	children: ReactNode
 	variant?: 'primary' | 'secondary'
 }
-export default function Button({ children, variant = 'primary' }: Props) {
+export default function Button({  children, variant = 'primary', }: Props) {
 	return (
 		<button
 			className={clsx(

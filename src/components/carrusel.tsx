@@ -1,9 +1,8 @@
-"use client";
+import { useEditContext } from "@/context/edit.context";
 import { memeImageType } from "@/types";
 import { PhotoIcon } from "@heroicons/react/16/solid";
 import Image from "next/image";
-import { Dispatch, SetStateAction, useRef, useState } from "react";
-import { v4 } from "uuid";
+import { Dispatch, SetStateAction } from "react";
 
 type Props = {
   images: memeImageType[];
@@ -11,34 +10,20 @@ type Props = {
 };
 
 export default function Carrusel({ images, changeImage }: Props) {
-  const fileInputRef = useRef<HTMLInputElement>(null);
-  const loadImage = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
+  const { setShowModal } = useEditContext()
 
-    const meme: memeImageType = {
-      id: v4(),
-      name: file.name,
-      url: URL.createObjectURL(file),
-    };
-    changeImage(meme);
-  };
+  const handleClick = () => {
+    setShowModal(true)
+  }
 
   return (
     <div className="h-16 w-full overflow-hidden overflow-x-scroll">
       <div className="flex  h-full w-fit overflow-hidden rounded border border-black">
         <div
           className="flex h-full w-16 shrink-0 items-center justify-center"
-          onClick={() => fileInputRef.current?.click()}
+          onClick={handleClick}
         >
           <PhotoIcon className="h-6 w-6" />
-          <input
-            type="file"
-            accept="image/jpeg, image/png"
-            hidden
-            ref={fileInputRef}
-            onChange={loadImage}
-          />
         </div>
         {images.map((img) => (
           <div
