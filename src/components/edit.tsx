@@ -5,7 +5,9 @@ import { memeImageType } from "@/types";
 import { ArrowLeftIcon, ForwardIcon } from "@heroicons/react/16/solid";
 import Image from "next/image";
 import Link from "next/link";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import Modal from "./modal";
+import { useEditContext } from "@/context/edit.context";
 
 type Props = {
   memes: memeImageType[];
@@ -13,27 +15,48 @@ type Props = {
 };
 
 export default function EditComponent({ memes, meme }: Props) {
-  const [imageSelected, setImageSelected] = useState(meme);
+
+  const { 
+    showModal, setShowModal, 
+    setText, text , 
+    prevTextRef, 
+    imageSelected, setImageSelected 
+  } = useEditContext()
+
   const canvasRef = useRef<HTMLDivElement>(null);
   const [boxes, setBoxes] = useState<JSX.Element[]>([]);
-  const [text, setText] = useState<string>("");
-  const prevTextRef = useRef<HTMLElement | null>(null);
+
+  useEffect( () => {
+    setImageSelected(meme)
+  }, [] )
+
   const addText = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
-      const newText = (
-        <div
-          key={boxes.length}
-          className="absolute z-50 cursor-pointer text-black"
-          onMouseDown={handleOnMouseDown}
-        >
-          {text}
-        </div>
-      );
-      console.log(newText);
-      setBoxes((prevText) => [...prevText, newText]);
+  
+    if ( e.key !== "Enter" ) return
+    if ( text.trim() === '' ) return
+
+    if( prevTextRef.current ) {
+      prevTextRef.current.textContent = text
       setText("");
+      prevTextRef.current.style.backgroundColor = 'transparent'
+      prevTextRef.current = null
+      return
     }
+    const newText = (
+      <div
+        key={boxes.length}
+        className="absolute z-50 cursor-pointer text-black"
+        onMouseDown={handleOnMouseDown}
+      >
+        {text}
+      </div>
+      );
+
+    setBoxes((prevText) => [...prevText, newText]);
+    setText("");
+    
   };
+  
   const handleOnMouseDown = (event: React.MouseEvent<HTMLDivElement>) => {
     event.preventDefault();
     const target = event.target as HTMLElement;
@@ -51,6 +74,7 @@ export default function EditComponent({ memes, meme }: Props) {
     }
 
     target.style.backgroundColor = "green";
+    setText(target.textContent!)
 
     const onMouseMove = (e: MouseEvent) => {
       const rect = canvasRef.current?.getBoundingClientRect();
@@ -69,11 +93,24 @@ export default function EditComponent({ memes, meme }: Props) {
       target.style.top = `${boundedY}px`;
     };
 
+    const onMouseDown = (e: MouseEvent) => {
+      
+      if (e.target === prevTextRef.current ) return
+      if (!prevTextRef.current) return
+      
+      prevTextRef.current.style.backgroundColor = 'transparent'
+      prevTextRef.current = null
+      setText('')
+      
+    }
+
     const onMouseUp = () => {
       document.removeEventListener("mousemove", onMouseMove);
       document.removeEventListener("mouseup", onMouseUp);
+      document.removeEventListener("mousedown", onMouseDown)
     };
 
+    canvasRef.current!.addEventListener("mousedown", onMouseDown)
     document.addEventListener("mousemove", onMouseMove);
     document.addEventListener("mouseup", onMouseUp);
   };
@@ -93,8 +130,9 @@ export default function EditComponent({ memes, meme }: Props) {
           <ForwardIcon className="h-6 w-6" />
         </div>
         <Carrusel images={memes} changeImage={setImageSelected} />
-        <EditText setText={setText} addText={addText} text={text} />
+        <EditText addText={addText} />
       </section>
+      <Modal />
     </main>
   );
 }

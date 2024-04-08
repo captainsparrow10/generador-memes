@@ -5,20 +5,18 @@ import FontFamilySize from "./fontFamilySize";
 import FontStyle from "./fontStyle";
 import clsx from "clsx";
 import Button from "./button";
+import { useEditContext } from "@/context/edit.context";
 type Props = {
-  setText: React.Dispatch<React.SetStateAction<string>>;
-  text: string;
+
   addText: (e: React.KeyboardEvent<HTMLInputElement>) => void;
 };
 
-export default function EditText({ setText, text, addText }: Props) {
+export default function EditText({ addText }: Props) {
   const [editView, setEditView] = useState(false);
+  const { text, setText } = useEditContext()
 
   const handleChangeText = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.value !== "") {
-      setText(e.target.value);
-      return;
-    }
+    setText(e.target.value);
   };
 
   return (
