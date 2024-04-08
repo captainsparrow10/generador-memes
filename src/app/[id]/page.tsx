@@ -1,5 +1,4 @@
 import { getMemeImageById, getMemeImages } from "@/services";
-import { memeImageType } from "@/types";
 import EditComponent from "../../components/edit";
 
 export default async function Editpage({ params }: { params: { id: string } }) {

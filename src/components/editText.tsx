@@ -1,13 +1,26 @@
 "use client";
 import { ChevronDownIcon } from "@heroicons/react/16/solid";
-import React, { useState } from "react";
+import React, {  useState } from "react";
 import FontFamilySize from "./fontFamilySize";
 import FontStyle from "./fontStyle";
 import clsx from "clsx";
 import Button from "./button";
+type Props = {
+  setText: React.Dispatch<React.SetStateAction<string>>;
+  text: string;
+  addText: (e: React.KeyboardEvent<HTMLInputElement>) => void;
+};
 
-export default function EditText() {
+export default function EditText({ setText, text, addText }: Props) {
   const [editView, setEditView] = useState(false);
+
+  const handleChangeText = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.value !== "") {
+      setText(e.target.value);
+      return;
+    }
+  };
+
   return (
     <div className="flex flex-col gap-y-3">
       <div className="flex h-12 divide-x divide-black overflow-hidden rounded border  border-black">
@@ -15,6 +28,9 @@ export default function EditText() {
           type="text"
           placeholder="Escribe aqui"
           className="w-full  px-4 text-black"
+          value={text}
+          onChange={handleChangeText}
+          onKeyDown={addText}
         />
         <div className="flex h-full w-12 shrink-0 items-center justify-center">
           <div className="h-6 w-6 rounded bg-black" />
