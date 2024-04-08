@@ -18,21 +18,33 @@ export default function EditComponent({ memes, meme }: Props) {
   const [boxes, setBoxes] = useState<JSX.Element[]>([]);
   const [text, setText] = useState<string>("");
   const prevTextRef = useRef<HTMLElement | null>(null);
+
+
   const addText = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
-      const newText = (
-        <div
-          key={boxes.length}
-          className="absolute z-50 cursor-pointer text-black"
-          onMouseDown={handleOnMouseDown}
-        >
-          {text}
-        </div>
-      );
-      console.log(newText);
-      setBoxes((prevText) => [...prevText, newText]);
+  
+    if ( e.key !== "Enter" ) return
+    if ( text.trim() === '' ) return
+
+    if( prevTextRef.current ) {
+      prevTextRef.current.textContent = text
       setText("");
+      prevTextRef.current.style.backgroundColor = 'transparent'
+      prevTextRef.current = null
+      return
     }
+    const newText = (
+      <div
+        key={boxes.length}
+        className="absolute z-50 cursor-pointer text-black"
+        onMouseDown={handleOnMouseDown}
+      >
+        {text}
+      </div>
+      );
+
+    setBoxes((prevText) => [...prevText, newText]);
+    setText("");
+    
   };
   const handleOnMouseDown = (event: React.MouseEvent<HTMLDivElement>) => {
     event.preventDefault();
@@ -51,6 +63,7 @@ export default function EditComponent({ memes, meme }: Props) {
     }
 
     target.style.backgroundColor = "green";
+    setText(target.textContent!)
 
     const onMouseMove = (e: MouseEvent) => {
       const rect = canvasRef.current?.getBoundingClientRect();
@@ -69,11 +82,24 @@ export default function EditComponent({ memes, meme }: Props) {
       target.style.top = `${boundedY}px`;
     };
 
+    const onMouseDown = (e: MouseEvent) => {
+      
+      if (e.target === prevTextRef.current ) return
+      if (!prevTextRef.current) return
+      
+      prevTextRef.current.style.backgroundColor = 'transparent'
+      prevTextRef.current = null
+      setText('')
+      
+    }
+
     const onMouseUp = () => {
       document.removeEventListener("mousemove", onMouseMove);
       document.removeEventListener("mouseup", onMouseUp);
+      document.removeEventListener("mousedown", onMouseDown)
     };
 
+    canvasRef.current!.addEventListener("mousedown", onMouseDown)
     document.addEventListener("mousemove", onMouseMove);
     document.addEventListener("mouseup", onMouseUp);
   };

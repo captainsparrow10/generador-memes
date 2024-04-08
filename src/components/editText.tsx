@@ -15,10 +15,7 @@ export default function EditText({ setText, text, addText }: Props) {
   const [editView, setEditView] = useState(false);
 
   const handleChangeText = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.value !== "") {
-      setText(e.target.value);
-      return;
-    }
+    setText(e.target.value);
   };
 
   return (
