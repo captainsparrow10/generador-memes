@@ -6,7 +6,7 @@ import { ArrowLeftIcon, ForwardIcon } from "@heroicons/react/16/solid";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import Modal from "./modal";
+import Modal from "./modal/modal";
 import { useEditContext } from "@/context/edit.context";
 
 type Props = {
