@@ -2,9 +2,10 @@ import clsx from 'clsx'
 import React, { ReactNode } from 'react'
 type Props = {
 	children: ReactNode
-	variant?: 'primary' | 'secondary'
+	variant?: 'primary' | 'secondary',
+	onClickHandler?: () => void
 }
-export default function Button({  children, variant = 'primary', }: Props) {
+export default function Button({  children, variant = 'primary', onClickHandler}: Props) {
 	return (
 		<button
 			className={clsx(
