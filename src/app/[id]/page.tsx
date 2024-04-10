@@ -1,4 +1,4 @@
-import { getMemeImageById, getMemeImages } from "@/services";
+import { getMemeImageById, getMemeImages } from "@/services/meme";
 import EditComponent from "../../components/edit";
 import { EditProvider } from "@/context/edit.context";
 

@@ -1,4 +1,4 @@
-import { getMemeImages } from "@/services";
+import { getMemeImages } from "@/services/meme";
 import { PhotoIcon } from "@heroicons/react/16/solid";
 import Image from "next/image";
 import Link from "next/link";

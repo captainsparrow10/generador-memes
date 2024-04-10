@@ -13,6 +13,7 @@ export default function Button({  children, variant = 'primary', onClickHandler}
 				variant === 'primary' && 'border-black bg-black text-white',
 				variant === 'secondary' && 'bg-white text-black'
 			)}
+			onClick={onClickHandler}
 		>
 			{children}
 		</button>
