@@ -9,8 +9,16 @@ export type memeImageType = {
 }
 
 export type styles = {
-  textStyle: "italic" | "uppercase" | "font-bold" | "none";
-  color: string;
-  fontSize: number;
-  fontFamily: string;
+	textStyle: fontStyles
+	color: string;
+	fontSize: number;
+	fontFamily: string;
 };
+
+
+export type fontStyles = {
+	transform: "normal-case" | "uppercase";
+	weight: "bold" | "normal";
+	style: "italic" | "not-italic";
+};
+

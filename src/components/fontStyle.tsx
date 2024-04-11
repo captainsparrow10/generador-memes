@@ -1,69 +1,59 @@
-import { styles } from "@/types";
-import React, { ChangeEvent, useState } from "react";
+import { useTextContext } from "@/context/text.context";
+import React, { ChangeEvent } from "react";
 
-type Props = {
-  changeStyleFont: (textStyle: styles["textStyle"]) => void;
-};
-export default function FontStyle({ changeStyleFont }: Props) {
-  const [style, setStyle] = useState<styles["textStyle"]>("none");
+export default function FontStyle() {
+  const { setTextTranform, setTextWeight, setTextStyle, inputRefs } =
+    useTextContext();
+
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    if (
-      value === "italic" ||
-      value === "uppercase" ||
-      value === "font-bold" ||
-      value === "none"
-    ) {
-      setStyle(value);
-      changeStyleFont(value);
+    const { id, checked } = e.target;
+
+    switch (id) {
+      case "allCaps":
+        const newTranform = checked ? "uppercase" : "normal-case";
+        setTextTranform(newTranform);
+        break;
+      case "bold":
+        const newWeight = checked ? "bold" : "normal";
+        setTextWeight(newWeight);
+        break;
+      case "italic":
+        const newStyle = checked ? "italic" : "not-italic";
+        setTextStyle(newStyle);
+        break;
+      default:
+        break;
     }
   };
+
   return (
     <div className="flex gap-x-6">
       <div className="flex gap-x-2">
         <input
-          type="radio"
-          id="none"
-          name="formatting"
-					value="none"
-          checked={style === "none"}
-          onChange={handleChange}
-          className=" accent-black"
-        />
-        <label htmlFor="none">None</label>
-      </div>
-      <div className="flex gap-x-2">
-        <input
-          type="radio"
+          type="checkbox"
           id="allCaps"
-					value="uppercase"
-          checked={style === "uppercase"}
+          ref={inputRefs.current.textTransformRef}
           onChange={handleChange}
-          name="formatting"
           className=" accent-black"
         />
         <label htmlFor="allCaps">All Caps</label>
       </div>
       <div className="flex gap-x-2">
         <input
-          type="radio"
+          type="checkbox"
           id="bold"
-					value="font-bold"
-          checked={style === "font-bold"}
+          ref={inputRefs.current.textWeightRef}
           onChange={handleChange}
-          name="formatting"
           className=" accent-black"
         />
         <label htmlFor="bold">Bold</label>
       </div>
       <div className="flex gap-x-2">
         <input
-          type="radio"
-					value="italic"
-          checked={style === "italic"}
+          type="checkbox"
+          ref={inputRefs.current.textStyleRef}
           onChange={handleChange}
-					id="italic"
-          name="formatting"
+          id="italic"
           className=" accent-black"
         />
         <label htmlFor="italic">Italic</label>

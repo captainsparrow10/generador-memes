@@ -10,6 +10,7 @@ import React, {
   Ref,
   MutableRefObject,
 } from "react";
+import { useTextContext } from "./text.context";
 
 interface IEditContext {
   exampleState: string;
@@ -24,9 +25,9 @@ interface IEditContext {
   fileInputRef: React.RefObject<HTMLInputElement>;
   handleOnMouseDown: (event: React.MouseEvent<HTMLDivElement>) => void;
   saveImage: () => void;
-  canvasRef: React.RefObject<HTMLDivElement>
-  boxes: JSX.Element[]
-  setBoxes: React.Dispatch<React.SetStateAction<JSX.Element[]>>
+  canvasRef: React.RefObject<HTMLDivElement>;
+  boxes: JSX.Element[];
+  setBoxes: React.Dispatch<React.SetStateAction<JSX.Element[]>>;
 }
 
 export const EditContext = createContext<IEditContext | undefined>(undefined);
@@ -46,6 +47,7 @@ export const EditProvider: React.FC<{ children: React.ReactNode }> = ({
     name: "",
     url: "",
   });
+  const { selectedStylesTextRef, resetState } = useTextContext();
   const handleOnMouseDown = (event: React.MouseEvent<HTMLDivElement>) => {
     event.preventDefault();
 
@@ -63,7 +65,7 @@ export const EditProvider: React.FC<{ children: React.ReactNode }> = ({
       prevTextRef.current = target;
     }
 
-    target.style.backgroundColor = "green";
+    selectedStylesTextRef(target);
     setText(target.textContent!);
 
     const onMouseMove = (e: MouseEvent) => {
@@ -88,8 +90,10 @@ export const EditProvider: React.FC<{ children: React.ReactNode }> = ({
       if (!prevTextRef.current) return;
 
       prevTextRef.current.style.backgroundColor = "transparent";
+      prevTextRef.current.style.padding = "0px";
       prevTextRef.current = null;
       setText("");
+      resetState()
     };
 
     const onMouseUp = () => {
@@ -112,6 +116,7 @@ export const EditProvider: React.FC<{ children: React.ReactNode }> = ({
       download(dataUrl, "custom-image.png");
     });
   };
+
   return (
     <EditContext.Provider
       value={{
@@ -129,7 +134,7 @@ export const EditProvider: React.FC<{ children: React.ReactNode }> = ({
         saveImage,
         canvasRef,
         boxes,
-        setBoxes
+        setBoxes,
       }}
     >
       {children}

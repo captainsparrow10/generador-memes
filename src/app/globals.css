@@ -1,4 +1,21 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=serif&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=sans-serif&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=monospace&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=cursive&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=fantasy&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=system-ui&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=ui-serif&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=ui-sans-serif&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=ui-monospace&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=ui-rounded&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=emoji&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=math&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=fangsong&display=swap");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
 

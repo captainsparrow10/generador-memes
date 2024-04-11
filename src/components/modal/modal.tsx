@@ -18,32 +18,60 @@ const Modal = () => {
     fileInputRef,
   } = useEditContext();
 
+  const [error, setError] = useState<boolean>(false);
+  const [errorDropImage, setErrorDropImage] = useState<boolean>(false);
+
   const [inputUrl, setInputUrl] = useState<memeImageType | null>(null);
   const [active, setActive] = useState<"upload" | "url">("upload");
 
   const handleCloseModal = () => {
     setShowModal(false);
+    setError(false)
+    setErrorDropImage(false)
+  };
+
+  const isImage = (url: string, extensions: string[]) => {
+  
+    if (extensions.some((ext) => url.endsWith(ext))) return true;
+    return false;
   };
 
   const handleInsertUrl = () => {
     if (!inputUrl) return;
+    if (!isImage(inputUrl.url, ['.jpg', '.jpeg', '.png'])) {
+      setError(true);
+      return;
+    }
+
+    setError(false);
+
     setImageSelected(inputUrl);
     setShowModal(false);
   };
 
   const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.value === "") {
+      setError(false);
+    }
+    
     const meme: memeImageType = {
-      id: "0",
+      id: v4(),
       name: "example",
       url: e.target.value,
     };
-
     setInputUrl(meme);
   };
 
   const loadImage = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
+
+    if (!isImage(file.type, ['png', 'jpeg', 'jpg'])) {
+      setErrorDropImage(true);
+      return;
+    }
+
+    setErrorDropImage(false);
 
     const meme: memeImageType = {
       id: v4(),
@@ -79,20 +107,32 @@ const Modal = () => {
           >
             <PhotoIcon width={40} className="mb-2" />
             <p>Browse or drop image</p>
+            <p
+                  className={`text-sm text-red-500 ${errorDropImage ? "flex" : "hidden"} top-14 z-50`}
+                >
+                  Type not valid
+                </p>
           </div>
         ) : (
-          <div className="mx-6 flex flex-col gap-6 pb-4 ">
-            <p className="font-semibold">Image URL</p>
-            <div className="flex h-12 flex-col gap-10 divide-x divide-black overflow-hidden rounded border border-gray-300">
-              <input
-                type="text"
-                className="h-full w-full px-4 text-black"
-                placeholder="link de imagen"
-                value={inputUrl?.url}
-                onChange={handleOnChange}
-              />
+          <div className="mx-6 flex flex-col gap-12 pb-4 ">
+            <div className="flex flex-col gap-3">
+              <p className="font-semibold">Image URL</p>
+              <div className="relative flex h-12 flex-col gap-10 rounded border border-gray-300">
+                <input
+                  type="text"
+                  className="h-full w-full px-4 text-black"
+                  placeholder="link de imagen"
+                  value={inputUrl?.url || ""}
+                  onChange={handleOnChange}
+                />
+                <p
+                  className={`absolute text-sm text-red-500 ${error ? "flex" : "hidden"} top-14 z-50`}
+                >
+                  Url not valid
+                </p>
+              </div>
             </div>
-            <Button children="Add image" />
+            <Button onClickHandler={handleInsertUrl} children="Add image" />
           </div>
         )}
         <input

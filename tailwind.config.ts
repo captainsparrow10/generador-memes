@@ -8,8 +8,22 @@ const config: Config = {
   ],
   theme: {
     extend: {
-      backgroundImage: {
-      },
+      fontFamily: {
+        roboto: ["roboto"],
+        serif: ['serif'],
+        sans: ['sans-serif'],
+        mono: ['monospace'],
+        cursive: ['cursive'],
+        fantasy: ['fantasy'],
+        'system-ui': ['system-ui'],
+        'ui-serif': ['ui-serif'],
+        'ui-sans-serif': ['ui-sans-serif'],
+        'ui-monospace': ['ui-monospace'],
+        'ui-rounded': ['ui-rounded'],
+        emoji: ['emoji'],
+        math: ['math'],
+        fangsong: ['fangsong'],
+      }
     },
   },
   plugins: [],
