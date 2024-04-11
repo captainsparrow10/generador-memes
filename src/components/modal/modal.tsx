@@ -19,6 +19,7 @@ const Modal = () => {
   } = useEditContext();
 
   const [inputUrl, setInputUrl] = useState<memeImageType | null>(null);
+  const [active, setActive] = useState<"upload" | "url">("upload");
 
   const handleCloseModal = () => {
     setShowModal(false);
@@ -68,32 +69,32 @@ const Modal = () => {
         </div>
         <Divider />
         <div className="flex justify-center gap-x-3  py-2">
-          <ModalOption label="Upload" dividerColor="black" color="black" />
-          <ModalOption label="Url" dividerColor="transparent" />
+          <ModalOption label="upload" active={active} setActive={setActive} />
+          <ModalOption label="url" active={active} setActive={setActive} />
         </div>
-        <div
-          className="mx-6 my-4 flex cursor-pointer flex-col items-center justify-center rounded border-2 border-dashed border-gray-300 p-12 text-gray-400"
-          onClick={() => fileInputRef.current?.click()}
-        >
-          <PhotoIcon width={40} className="mb-2" />
-          <p>Browse or drop image</p>
-        </div>
-
-        {/* --------> URL <---------*/}
-        <div className="mx-6 flex flex-col gap-2 pb-4 ">
-          <p className="font-semibold">Image URL</p>
-          <div className="flex h-12 flex-col gap-10 divide-x divide-black overflow-hidden rounded border border-gray-300">
-            <input
-              type="text"
-              className="h-full w-full px-4 text-black"
-              placeholder="link de imagen"
-              value={inputUrl?.url}
-              onChange={handleOnChange}
-            />
+        {active === "upload" ? (
+          <div
+            className="mx-6 my-4 flex cursor-pointer flex-col items-center justify-center rounded border-2 border-dashed border-gray-300 p-12 text-gray-400"
+            onClick={() => fileInputRef.current?.click()}
+          >
+            <PhotoIcon width={40} className="mb-2" />
+            <p>Browse or drop image</p>
           </div>
-          <Button children="Add image" />
-        </div>
-
+        ) : (
+          <div className="mx-6 flex flex-col gap-6 pb-4 ">
+            <p className="font-semibold">Image URL</p>
+            <div className="flex h-12 flex-col gap-10 divide-x divide-black overflow-hidden rounded border border-gray-300">
+              <input
+                type="text"
+                className="h-full w-full px-4 text-black"
+                placeholder="link de imagen"
+                value={inputUrl?.url}
+                onChange={handleOnChange}
+              />
+            </div>
+            <Button children="Add image" />
+          </div>
+        )}
         <input
           type="file"
           accept="image/jpeg, image/png"

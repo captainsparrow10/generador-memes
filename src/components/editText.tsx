@@ -7,44 +7,17 @@ import clsx from "clsx";
 import Button from "./button";
 import { useEditContext } from "@/context/edit.context";
 import { styles } from "@/types";
+import { useTextContext } from "@/context/text.context";
 type Props = {
   addText: (e: React.KeyboardEvent<HTMLInputElement>) => void;
 };
 
-
-
 export default function EditText({ addText }: Props) {
   const [editView, setEditView] = useState(false);
-  const [styleText, setStyleText] = useState<styles>({
-    textStyle: "none",
-    color: "#000000",
-    fontSize: 16,
-    fontFamily: "Roboto",
-  });
-  const handleChangeStyle = (textStyle: styles["textStyle"]) => {
-    setStyleText((prevStyle) => ({
-      ...prevStyle,
-      textStyle,
-    }));
-  };
-  const handleChangeColor = (color: styles["color"]) => {
-    setStyleText((prevStyle) => ({
-      ...prevStyle,
-      color,
-    }));
-  };
-  const handleChangeFontSize = (fontSize: styles["fontSize"]) => {
-    setStyleText((prevStyle) => ({
-      ...prevStyle,
-      fontSize,
-    }));
-  };
-  const handleChangeFontFamily = (fontFamily: styles["fontFamily"]) => {
-    setStyleText((prevStyle) => ({
-      ...prevStyle,
-      fontFamily,
-    }));
-  };
+  const {
+    styleText: { color, fontFamily, textStyle },
+    setTextStyle,
+  } = useTextContext();
   const { text, setText, saveImage, setBoxes } = useEditContext();
 
   const handleChangeText = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -57,7 +30,7 @@ export default function EditText({ addText }: Props) {
         <input
           type="text"
           placeholder="Escribe aqui"
-          className={`w-full  px-4 text-[${styleText.color}] text-[${styleText.fontSize}] font-[${styleText.fontFamily}] ${styleText.textStyle}`}
+          className={`w-full  px-4 text-[${color}] text-[16px] font-[${fontFamily}] ${textStyle}`}
           value={text}
           onChange={handleChangeText}
           onKeyDown={addText}
@@ -81,7 +54,7 @@ export default function EditText({ addText }: Props) {
         className={clsx("m flex-col gap-y-3", editView ? "flex " : "hidden")}
       >
         <FontFamilySize />
-        <FontStyle />
+        <FontStyle changeStyleFont={setTextStyle} />
       </div>
       <div className="flex gap-x-6">
         <Button onClickHandler={saveImage}>Descargar</Button>

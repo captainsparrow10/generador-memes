@@ -9,7 +9,7 @@ export type memeImageType = {
 }
 
 export type styles = {
-  textStyle: "italic" | "capitalize" | "font-bold" | "none";
+  textStyle: "italic" | "uppercase" | "font-bold" | "none";
   color: string;
   fontSize: number;
   fontFamily: string;

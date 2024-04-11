@@ -10,7 +10,7 @@ export default function FontStyle({ changeStyleFont }: Props) {
     const value = e.target.value;
     if (
       value === "italic" ||
-      value === "capitalize" ||
+      value === "uppercase" ||
       value === "font-bold" ||
       value === "none"
     ) {
@@ -36,8 +36,8 @@ export default function FontStyle({ changeStyleFont }: Props) {
         <input
           type="radio"
           id="allCaps"
-					value="capitalize"
-          checked={style === "capitalize"}
+					value="uppercase"
+          checked={style === "uppercase"}
           onChange={handleChange}
           name="formatting"
           className=" accent-black"

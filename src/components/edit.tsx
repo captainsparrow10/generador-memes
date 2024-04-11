@@ -2,19 +2,22 @@
 import Carrusel from "@/components/carrusel";
 import EditText from "@/components/editText";
 import { memeImageType } from "@/types";
-import { ArrowLeftIcon, ForwardIcon } from "@heroicons/react/16/solid";
+import {
+  ArrowLeftIcon,
+  ForwardIcon,
+  PhotoIcon,
+} from "@heroicons/react/16/solid";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import Modal from "./modal/modal";
 import { useEditContext } from "@/context/edit.context";
-
+import { getMemeImageById, getMemeImages } from "@/services/meme";
 type Props = {
-  memes: memeImageType[];
-  meme: memeImageType;
+  id: string;
 };
 
-export default function EditComponent({ memes, meme }: Props) {
+export default function EditComponent({ id }: Props) {
   const {
     showModal,
     setShowModal,
@@ -30,8 +33,19 @@ export default function EditComponent({ memes, meme }: Props) {
   } = useEditContext();
 
   useEffect(() => {
-    setImageSelected(meme);
+    memeImageById(id);
   }, []);
+
+  const [loading, setLoading] = useState(true);
+
+  const memeImageById = async (id: string) => {
+    setLoading(true);
+    let meme = await getMemeImageById(id);
+    if (meme !== undefined) {
+      setImageSelected(meme);
+      setLoading(false);
+    }
+  };
 
   const addText = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key !== "Enter") return;
@@ -65,7 +79,7 @@ export default function EditComponent({ memes, meme }: Props) {
       </Link>
       <section className=" flex flex-col gap-y-6">
         <div
-          className="relative h-[350px] w-full border border-black"
+          className="relative h-[350px] w-full overflow-hidden rounded border border-black"
           ref={canvasRef}
         >
           {boxes.map((box, index) => (
@@ -73,12 +87,16 @@ export default function EditComponent({ memes, meme }: Props) {
               {box}
             </div>
           ))}
-          <Image src={imageSelected.url} alt={imageSelected.name} fill />
+          {loading ? (
+            <div className="flex h-full w-full items-center justify-center bg-gray-100">
+              <PhotoIcon className="h-2/5 w-full animate-pulse" />
+            </div>
+          ) : (
+            <Image src={imageSelected.url} alt={imageSelected.name} fill />
+          )}
         </div>
-        <div className="flex justify-end">
-          <ForwardIcon className="h-6 w-6" />
-        </div>
-        <Carrusel images={memes} changeImage={setImageSelected} />
+
+        <Carrusel changeImage={setImageSelected} id={id} />
         <EditText addText={addText} />
       </section>
       <Modal />
