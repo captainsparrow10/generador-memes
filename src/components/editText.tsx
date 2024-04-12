@@ -6,7 +6,6 @@ import FontStyle from "./fontStyle";
 import clsx from "clsx";
 import Button from "./button";
 import { useEditContext } from "@/context/edit.context";
-import { styles } from "@/types";
 import { useTextContext } from "@/context/text.context";
 type Props = {
   addText: (e: React.KeyboardEvent<HTMLInputElement>) => void;
