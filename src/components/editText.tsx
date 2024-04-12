@@ -1,6 +1,6 @@
 "use client";
 import { ChevronDownIcon } from "@heroicons/react/16/solid";
-import React, { useState } from "react";
+import React, { ChangeEvent, useState } from "react";
 import FontFamilySize from "./fontFamilySize";
 import FontStyle from "./fontStyle";
 import clsx from "clsx";
@@ -15,10 +15,11 @@ export default function EditText({ addText }: Props) {
   const [editView, setEditView] = useState(false);
   const {
     styleText: { color, fontFamily, textStyle },
-    resetState
+    setColor,
+    resetState, inputRefs: { current: { textColor } }
   } = useTextContext();
   const { transform, style, weight } = textStyle;
-  const { text, setText, saveImage, setBoxes } = useEditContext();
+  const { text, setText, saveImage, setBoxes,  } = useEditContext();
 
   const handleChangeText = (e: React.ChangeEvent<HTMLInputElement>) => {
     setText(e.target.value);
@@ -27,6 +28,10 @@ export default function EditText({ addText }: Props) {
   const handlerClear = () => {
     setBoxes([])
     resetState()
+  }
+
+  const handleChangeColor = (e: ChangeEvent<HTMLInputElement>) => {
+    setColor(e.target.value)
   }
 
   return (
@@ -44,7 +49,9 @@ export default function EditText({ addText }: Props) {
           <div className="rounded" />
             <input 
               className="h-6 w-6" 
-              type="color" 
+              type="color"
+              ref={textColor}
+              onChange={handleChangeColor}
               />
           </div>
       </div>
