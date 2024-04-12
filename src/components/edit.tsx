@@ -127,13 +127,13 @@ export default function EditComponent({ id }: Props) {
 
   return (
     <main className="flex flex-col gap-y-6 p-6">
-      <Link href="/">
-        <ArrowLeftIcon className="h-6 w-6" />
+      <Link href="/" className="w-fit h-fit">
+        <ArrowLeftIcon className="h-full max-h-8   w-full  max-w-8" />
       </Link>
       <section className="flex justify-center ">
         <div className="flex w-full flex-wrap justify-center gap-6">
           <div
-            className="relative h-full w-full max-w-[600px] h-max-[800px] overflow-hidden rounded border border-black"
+            className="relative h-[600px] w-full max-w-[600px] overflow-hidden"
             ref={canvasRef}
           >
             {boxes.map((box, index) => (
@@ -146,11 +146,15 @@ export default function EditComponent({ id }: Props) {
                 <PhotoIcon className="h-2/5 w-full animate-pulse" />
               </div>
             ) : (
-              <Image src={imageSelected.url} alt={imageSelected.name} fill />
+              <Image
+                src={imageSelected.url}
+                alt={imageSelected.name}
+                fill
+                objectFit="contain"
+              />
             )}
           </div>
           <div className="flex w-full max-w-[600px] flex-col gap-y-6">
-
             <Carrusel changeImage={setImageSelected} id={id} />
             <EditText addText={addText} />
           </div>
