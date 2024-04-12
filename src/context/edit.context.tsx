@@ -28,6 +28,9 @@ interface IEditContext {
   canvasRef: React.RefObject<HTMLDivElement>;
   boxes: JSX.Element[];
   setBoxes: React.Dispatch<React.SetStateAction<JSX.Element[]>>;
+  imageRef: React.RefObject<HTMLImageElement>;
+  resetEdit: () => void
+
 }
 
 export const EditContext = createContext<IEditContext | undefined>(undefined);
@@ -36,11 +39,13 @@ export const EditProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const [exampleState, setExampleState] = useState<string>("");
-  const [showModal, setShowModal] = useState<boolean>(false);
   const [text, setText] = useState<string>("");
+  const [showModal, setShowModal] = useState<boolean>(false);
+  const [boxes, setBoxes] = useState<JSX.Element[]>([]);
+
+  const imageRef = useRef<HTMLImageElement>(null)
   const fileInputRef = useRef<HTMLInputElement>(null);
   const canvasRef = useRef<HTMLDivElement>(null);
-  const [boxes, setBoxes] = useState<JSX.Element[]>([]);
   const prevTextRef = useRef<HTMLElement | null>(null);
   const [imageSelected, setImageSelected] = useState({
     id: "",
@@ -117,6 +122,14 @@ export const EditProvider: React.FC<{ children: React.ReactNode }> = ({
     });
   };
 
+  const resetEdit = () => {
+    setText('')
+    prevTextRef.current = null
+    if (!imageRef.current) return
+    imageRef.current.style.opacity = "0";
+    imageRef.current.style.backgroundColor = "#000000"
+  }
+
   return (
     <EditContext.Provider
       value={{
@@ -135,6 +148,8 @@ export const EditProvider: React.FC<{ children: React.ReactNode }> = ({
         canvasRef,
         boxes,
         setBoxes,
+        imageRef,
+        resetEdit
       }}
     >
       {children}

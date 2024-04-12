@@ -2,6 +2,7 @@
 import { useEditContext } from "@/context/edit.context";
 import { getMemeImages, stickers } from "@/services/meme";
 import { memeImageType } from "@/types";
+import { hexToRgba } from "@/util";
 import {
   FaceSmileIcon,
   ForwardIcon,
@@ -18,24 +19,35 @@ type Props = {
 };
 
 export default function Carrusel({ changeImage, id, addSticker }: Props) {
-  const { setShowModal } = useEditContext();
+  const { setShowModal, imageRef } = useEditContext();
   const scrollRef = useRef<HTMLDivElement>(null);
   const [memes, setMemes] = useState<memeImageType[]>([]);
   const [start, setStart] = useState(0);
   const [loading, setLoading] = useState(true);
   const [end, setEnd] = useState(25);
-  const [rangeValue, setRangeValue] = useState<number>(0);
   const [colorValue, setColorValue] = useState<string>("#000000");
+  const [opacity, setOpacity] = useState<number>(0)
   const [emojiActive, setEmojiActive] = useState(false);
 
   const handleRangeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(Number(e.target.value));
-    setRangeValue(Number(e.target.value));
+    setOpacity(Number(e.target.value))
+    const opacityValue = parseFloat(e.target.value) / 100;
+    const img = imageRef.current 
+    if ( !img ) return
+    img.style.opacity = opacityValue.toString()
+
   };
 
   const handleColorChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(e.target.value);
-    setColorValue(e.target.value);
+    const hexColor = e.target.value
+    const hexValue = hexColor.substring(1)
+    const color = hexToRgba(hexValue, 1)
+
+    const img = imageRef.current 
+    if ( !img ) return
+
+    img.style.backgroundColor = color
+
   };
   const emojiContainerRef = useRef<HTMLDivElement>(null);
 
@@ -110,8 +122,8 @@ export default function Carrusel({ changeImage, id, addSticker }: Props) {
         <div className="flex w-4/5 gap-x-6">
           <input
             type="range"
+            value={opacity}
             className="w-full appearance-none  bg-transparent"
-            value={rangeValue}
             onChange={handleRangeChange}
           />
           <input type="color" value={colorValue} onChange={handleColorChange} />

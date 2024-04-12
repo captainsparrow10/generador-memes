@@ -26,6 +26,7 @@ export default function EditComponent({ id }: Props) {
     canvasRef,
     boxes,
     setBoxes,
+    imageRef,
   } = useEditContext();
 
   const {
@@ -134,7 +135,6 @@ export default function EditComponent({ id }: Props) {
     setBoxes((prevText) => [...prevText, newText]);
   };
 
-
   const addSticker = (sticker: { id: number; image: StaticImageData }) => {
     if (prevTextRef.current) {
       return;
@@ -161,29 +161,31 @@ export default function EditComponent({ id }: Props) {
       </Link>
       <section className="flex justify-center ">
         <div className="flex w-full flex-wrap justify-center gap-6">
-          <div className="h-[600px] w-[600px]  flex justify-center items-center">
-          <div
-            className="relative w-fit"
-            ref={canvasRef}
-          >
-            {boxes.map((box, index) => (
-              <div key={index}>
-                {box}
-              </div>
-            ))}
-            {loading ? (
-              <div className="flex h-full w-full items-center justify-center bg-gray-100">
-                <PhotoIcon className="h-2/5 w-full animate-pulse" />
-              </div>
-            ) : (
-              <img 
-                className="max-w-[600px] max-h-[500px]" 
-                src={imageSelected.url} 
-                alt={imageSelected.name} />
-            )}
+          <div className="flex h-[600px]  w-[600px] items-center justify-center">
+            <div className="relative w-fit" ref={canvasRef}>
+              {boxes.map((box, index) => (
+                <div key={index}>{box}</div>
+              ))}
+              <div 
+                className="absolute top-0 left-0 w-full h-full"
+                ref={imageRef}
+                style={{backgroundColor: "black", opacity: 0}}></div>
+              {loading ? (
+                <div className="flex h-full w-full items-center justify-center bg-gray-100">
+                  <PhotoIcon className="h-2/5 w-full animate-pulse" />
+                </div>
+              ) : (
+             
+                  <img
+                    className="max-h-[500px] max-w-[600px]"
+                    src={imageSelected.url}
+                    alt={imageSelected.name}
+                  />
+     
+              )}
+            </div>
           </div>
-          </div>
-          
+
           <div className="flex w-full max-w-[600px] flex-col gap-y-6">
             <Carrusel
               changeImage={setImageSelected}

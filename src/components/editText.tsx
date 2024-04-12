@@ -19,7 +19,7 @@ export default function EditText({ addText }: Props) {
     resetState, inputRefs: { current: { textColor } }
   } = useTextContext();
   const { transform, style, weight } = textStyle;
-  const { text, setText, saveImage, setBoxes,  } = useEditContext();
+  const { text, setText, saveImage, setBoxes, resetEdit } = useEditContext();
 
   const handleChangeText = (e: React.ChangeEvent<HTMLInputElement>) => {
     setText(e.target.value);
@@ -28,6 +28,7 @@ export default function EditText({ addText }: Props) {
   const handlerClear = () => {
     setBoxes([])
     resetState()
+    resetEdit()
   }
 
   const handleChangeColor = (e: ChangeEvent<HTMLInputElement>) => {
