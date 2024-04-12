@@ -148,6 +148,7 @@ export default function EditComponent({ id }: Props) {
             )}
           </div>
           <div className="flex w-full max-w-[600px] flex-col gap-y-6">
+
             <Carrusel changeImage={setImageSelected} id={id} />
             <EditText addText={addText} />
           </div>

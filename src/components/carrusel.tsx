@@ -8,7 +8,7 @@ import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 
 type Props = {
   changeImage: Dispatch<SetStateAction<memeImageType>>;
-  id: string
+  id: string;
 };
 
 export default function Carrusel({ changeImage, id }: Props) {
@@ -18,6 +18,18 @@ export default function Carrusel({ changeImage, id }: Props) {
   const [start, setStart] = useState(0);
   const [loading, setLoading] = useState(true);
   const [end, setEnd] = useState(25);
+  const [rangeValue, setRangeValue] = useState<number>(0);
+  const [colorValue, setColorValue] = useState<string>('#000000');
+
+  const handleRangeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log(Number(e.target.value))
+    setRangeValue(Number(e.target.value));
+  };
+
+  const handleColorChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log(e.target.value)
+    setColorValue(e.target.value);
+  }
 
   useEffect(() => {
     updateMemesArray();
@@ -58,12 +70,14 @@ export default function Carrusel({ changeImage, id }: Props) {
     }
   };
   const handleRandomImage = () => {
-    const memesAvailable  = memes.filter((meme) => meme.id !== null && meme.id !== undefined && meme.id !== id);
+    const memesAvailable = memes.filter(
+      (meme) => meme.id !== null && meme.id !== undefined && meme.id !== id,
+    );
 
     if (memesAvailable.length > 0) {
       const randomIndex = Math.floor(Math.random() * memesAvailable.length);
       const meme = memesAvailable[randomIndex];
-      changeImage(meme)
+      changeImage(meme);
     } else {
       console.log("No hay IDs disponibles en el array.");
     }
@@ -71,8 +85,26 @@ export default function Carrusel({ changeImage, id }: Props) {
 
   return (
     <>
-      <div className="flex justify-end" >
-        <ForwardIcon className="h-6 w-6 cursor-pointer" onClick={handleRandomImage}/>
+      <div className="flex justify-center w-full">
+        <div className="flex gap-x-6 w-4/5">
+        <input
+        type="range"
+        className="w-full appearance-none  bg-transparent"
+        value={rangeValue}
+        onChange={handleRangeChange}
+      />
+      <input
+        type="color"
+        value={colorValue}
+        onChange={handleColorChange}
+      />
+        </div>
+        <div className="flex w-1/5 justify-end">
+          <ForwardIcon
+            className="h-6 w-6 cursor-pointer"
+            onClick={handleRandomImage}
+          />
+        </div>
       </div>
       <div
         ref={scrollRef}
