@@ -10,34 +10,29 @@ import { PhotoIcon, XMarkIcon } from "@heroicons/react/16/solid";
 import Button from "../button";
 
 const Modal = () => {
-  const {
-    showModal,
-    setShowModal,
-    setImageSelected,
-    fileInputRef,
-  } = useEditContext();
+  const { showModal, setShowModal, setImageSelected, fileInputRef } =
+    useEditContext();
 
   const [error, setError] = useState<boolean>(false);
   const [errorDropImage, setErrorDropImage] = useState<boolean>(false);
   const [inputUrl, setInputUrl] = useState<memeImageType | null>(null);
   const [active, setActive] = useState<"upload" | "url">("upload");
-  const [dragText, setDragText] = useState<string>('Browse or drop image')
+  const [dragText, setDragText] = useState<string>("Browse or drop image");
 
   const handleCloseModal = () => {
     setShowModal(false);
-    setError(false)
-    setErrorDropImage(false)
+    setError(false);
+    setErrorDropImage(false);
   };
 
   const isImage = (url: string, extensions: string[]) => {
-  
     if (extensions.some((ext) => url.endsWith(ext))) return true;
     return false;
   };
 
   const handleInsertUrl = () => {
     if (!inputUrl) return;
-    if (!isImage(inputUrl.url, ['.jpg', '.jpeg', '.png'])) {
+    if (!isImage(inputUrl.url, [".jpg", ".jpeg", ".png"])) {
       setError(true);
       return;
     }
@@ -52,7 +47,7 @@ const Modal = () => {
     if (e.target.value === "") {
       setError(false);
     }
-    
+
     const meme: memeImageType = {
       id: v4(),
       name: "example",
@@ -62,53 +57,29 @@ const Modal = () => {
   };
 
   const displayFile = (file: File) => {
-
-    setDragText('Browse or drop image')
-    if (!isImage(file.type, ['png', 'jpeg', 'jpg'])) {
+    setDragText("Browse or drop image");
+    if (!isImage(file.type, ["png", "jpeg", "jpg"])) {
       setErrorDropImage(true);
       return;
     }
 
     setErrorDropImage(false);
 
-
-     const meme: memeImageType = {
+    const meme: memeImageType = {
       id: v4(),
       name: file.name,
       url: URL.createObjectURL(file),
     };
     setImageSelected(meme);
     setShowModal(false);
-
   };
 
   const loadImage = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    displayFile(file)
+    displayFile(file);
   };
-
-  const handleDragOver = (e: DragEvent) => {
-    e.preventDefault()
-    setDragText('Release to upload')
-  }
-
-  const handleDragLeave = (e: DragEvent) => {
-    e.preventDefault()
-    setDragText('Browse or drop image')
-  }
-
-  const handleDrop = (e: DragEvent) => {
-    e.preventDefault()
-    const file = e.dataTransfer?.files[0];
-    if (!file) return;
-    displayFile(file)
-
-  }
-
- 
-  
 
   return (
     <div
@@ -130,19 +101,34 @@ const Modal = () => {
         </div>
         {active === "upload" ? (
           <div
-            className="mx-6 my-4 flex cursor-pointer flex-col items-center justify-center rounded border-2 border-dashed border-gray-300 p-12 text-gray-400"
-            onDragOver={handleDragOver}
-            onDragLeave={handleDragLeave}
-            onDrop={handleDrop}
+            className="relative mx-6 my-4 flex cursor-pointer flex-col items-center justify-center rounded border-2 border-dashed border-gray-300 p-12 text-gray-400"
             onClick={() => fileInputRef.current?.click()}
           >
+            <div
+              className="absolute h-full w-full"
+              onDragOver={(e) => {
+                e.preventDefault();
+                setDragText("Release to upload");
+              }}
+              onDragLeave={(e) => {
+                e.preventDefault();
+                setDragText("Browse or drop image");
+              }}
+              onDrop={(e) => {
+                e.preventDefault();
+                const file = e.dataTransfer?.files[0];
+                if (!file) return;
+                displayFile(file)
+                
+              }}
+            ></div>
             <PhotoIcon width={40} className="mb-2" />
             <p>{dragText}</p>
             <p
-                  className={`text-sm text-red-500 ${errorDropImage ? "flex" : "hidden"} top-14 z-50`}
-                >
-                  Type not valid
-                </p>
+              className={`text-sm text-red-500 ${errorDropImage ? "flex" : "hidden"} top-14 z-50`}
+            >
+              Type not valid
+            </p>
           </div>
         ) : (
           <div className="mx-6 flex flex-col gap-12 pb-4 ">
