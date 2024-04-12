@@ -21,6 +21,7 @@ interface OptionTextRefs {
   textTransformRef: React.MutableRefObject<HTMLInputElement | null>;
   textWeightRef: React.MutableRefObject<HTMLInputElement | null>;
   textStyleRef: React.MutableRefObject<HTMLInputElement | null>;
+  textColor: React.MutableRefObject<HTMLInputElement | null>;
 }
 const initialState: styles = {
   textStyle: {
@@ -89,11 +90,11 @@ export const TextProvider: React.FC<{ children: React.ReactNode }> = ({
     textTransformRef: useRef<HTMLInputElement | null>(null),
     textWeightRef: useRef<HTMLInputElement | null>(null),
     textStyleRef: useRef<HTMLInputElement | null>(null),
+    textColor: useRef<HTMLInputElement | null>(null)
   });
 
   const selectedStylesTextRef = (target: HTMLElement) => {
     target.style.backgroundColor = "white";
-    target.style.padding = "6px";
     if (!inputRefs.current.textStyleRef.current) return;
     inputRefs.current.textStyleRef.current.checked = !(
       target.style.textTransform === "none"
@@ -106,6 +107,14 @@ export const TextProvider: React.FC<{ children: React.ReactNode }> = ({
     inputRefs.current.textWeightRef.current.checked = !(
       target.style.fontStyle === "normal"
     );
+    if (!inputRefs.current.textColor.current) return;
+    const rgbaColor = target.style.color 
+    const rgbaArray = rgbaColor.match(/\d+/g);
+    if (!rgbaArray) return
+    const hexColor = "#" + ((1 << 24) + (parseInt(rgbaArray[0]) << 16) + (parseInt(rgbaArray[1]) << 8) + parseInt(rgbaArray[2])).toString(16).slice(1, 7);
+    inputRefs.current.textColor.current.value = hexColor
+    
+    
     setStyleText({
       textStyle: {
         transform:
@@ -127,6 +136,8 @@ export const TextProvider: React.FC<{ children: React.ReactNode }> = ({
     inputRefs.current.textTransformRef.current.checked = false;
     if (!inputRefs.current.textWeightRef.current) return;
     inputRefs.current.textWeightRef.current.checked = false;
+    if (!inputRefs.current.textColor.current) return;
+    inputRefs.current.textColor.current.value = '#000000';
   };
 
   return (

@@ -9,6 +9,7 @@ import Modal from "./modal/modal";
 import { useEditContext } from "@/context/edit.context";
 import { getMemeImageById } from "@/services/meme";
 import { useTextContext } from "@/context/text.context";
+import clsx from "clsx";
 type Props = {
   id: string;
 };
@@ -84,6 +85,7 @@ export default function EditComponent({ id }: Props) {
       prevTextRef.current.style.color = color;
       prevTextRef.current = null;
       setText("");
+      resetState()
       return;
     }
   };
