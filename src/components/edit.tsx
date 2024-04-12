@@ -161,12 +161,13 @@ export default function EditComponent({ id }: Props) {
       </Link>
       <section className="flex justify-center ">
         <div className="flex w-full flex-wrap justify-center gap-6">
+          <div className="h-[600px] w-[600px]  flex justify-center items-center">
           <div
-            className="relative h-[600px] w-full max-w-[600px] overflow-hidden"
+            className="relative w-fit"
             ref={canvasRef}
           >
             {boxes.map((box, index) => (
-              <div className="p-4" key={index}>
+              <div key={index}>
                 {box}
               </div>
             ))}
@@ -175,14 +176,14 @@ export default function EditComponent({ id }: Props) {
                 <PhotoIcon className="h-2/5 w-full animate-pulse" />
               </div>
             ) : (
-              <Image
-                src={imageSelected.url}
-                alt={imageSelected.name}
-                fill
-                objectFit="contain"
-              />
+              <img 
+                className="max-w-[600px] max-h-[500px]" 
+                src={imageSelected.url} 
+                alt={imageSelected.name} />
             )}
           </div>
+          </div>
+          
           <div className="flex w-full max-w-[600px] flex-col gap-y-6">
             <Carrusel
               changeImage={setImageSelected}

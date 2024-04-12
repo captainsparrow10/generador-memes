@@ -26,7 +26,7 @@ export default function Carrusel({ changeImage, id, addSticker }: Props) {
   const [end, setEnd] = useState(25);
   const [rangeValue, setRangeValue] = useState<number>(0);
   const [colorValue, setColorValue] = useState<string>("#000000");
-  const [emojiActive, setEmojiActive] = useState(true);
+  const [emojiActive, setEmojiActive] = useState(false);
 
   const handleRangeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     console.log(Number(e.target.value));
