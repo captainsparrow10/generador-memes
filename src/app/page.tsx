@@ -4,8 +4,8 @@ import { PhotoIcon } from "@heroicons/react/16/solid";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
-import Loading from "./loading";
 import { getMemeImages } from "@/services/meme";
+import clsx from "clsx";
 
 export default function page() {
   const [memes, setMemes] = useState<memeImageType[]>([]);
@@ -57,12 +57,23 @@ export default function page() {
       <section className="flex flex-wrap justify-around gap-3">
         {memes?.map(({ id, url, width, height, name }) => (
           <Link href={`/${id}`} key={id} className="h-fit w-fit">
-            <div className="h-fit w-full max-w-[250px] overflow-hidden rounded border border-gray-300">
+            <div
+              className={clsx(
+                "h-fit w-full max-w-[250px] overflow-hidden rounded border border-gray-300",
+                loading ? "hidden" : "block",
+              )}
+            >
               <Image src={url} width={width} height={height} alt={name} />
             </div>
           </Link>
         ))}
-        {loading && <Loading />}
+        {loading &&
+          Array.from(Array(25).keys()).map((i) => (
+            <div
+              className="h-[400px] w-full max-w-[250px] animate-pulse overflow-hidden rounded-xl border border-gray-300 bg-gray-300 p-2"
+              key={i}
+            ></div>
+          ))}
       </section>
     </main>
   );
