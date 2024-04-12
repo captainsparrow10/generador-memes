@@ -177,7 +177,7 @@ export default function EditComponent({ id }: Props) {
               ) : (
              
                   <img
-                    className="max-h-[500px] max-w-[600px]"
+                    className="max-h-[500px] max-w-[600px] border border-black"
                     src={imageSelected.url}
                     alt={imageSelected.name}
                   />

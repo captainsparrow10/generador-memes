@@ -22,7 +22,7 @@ export const getMemeImages = async (
     const data = await response.json();
     const memes: memeImageType[] = data.data.memes;
     const totalMemes = memes.length;
-    await new Promise(resolve => setTimeout(resolve, 1500));
+    await new Promise(resolve => setTimeout(resolve, 500));
     if (totalMemes >= end) {
       return memes.slice(start, end);
     }
@@ -37,7 +37,7 @@ export const getMemeImageById = async (id: string): Promise<memeImageType | unde
     const response = await fetch('https://api.imgflip.com/get_memes');
     const data = await response.json();
     const meme = data.data.memes.find((item: memeImageType) => item.id === id);
-    await new Promise(resolve => setTimeout(resolve, 1500));
+    await new Promise(resolve => setTimeout(resolve, 500));
     return meme;
   } catch (error) {
     console.error('Error al obtener meme:', error);

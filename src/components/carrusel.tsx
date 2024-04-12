@@ -123,7 +123,7 @@ export default function Carrusel({ changeImage, id, addSticker }: Props) {
           <input
             type="range"
             value={opacity}
-            className="w-full appearance-none  bg-transparent"
+            className="w-full  bg-transparent"
             onChange={handleRangeChange}
           />
           <input type="color" value={colorValue} onChange={handleColorChange} />
@@ -157,10 +157,10 @@ export default function Carrusel({ changeImage, id, addSticker }: Props) {
           />
         </div>
       </div>
-      <div ref={scrollRef} className="h-full w-full overflow-x-scroll">
-        <div className="flex h-full max-h-16 w-fit overflow-hidden rounded border border-black">
+      <div ref={scrollRef} className="h-fit w-full overflow-x-scroll">
+        <div className="flex h-full max-h-12 w-fit overflow-hidden rounded border border-black divide-x divide-black">
           <div
-            className="flex h-full w-16 shrink-0 items-center justify-center p-2"
+            className="flex h-full w-16 shrink-0 items-center justify-center p-2 "
             onClick={handleClick}
           >
             <PhotoIcon className="h-full w-full" />
@@ -168,7 +168,7 @@ export default function Carrusel({ changeImage, id, addSticker }: Props) {
           {memes.map((img) => (
             <div
               className={clsx(
-                "relative h-full w-16 shrink-0",
+                "relative h-full w-16 shrink-0  cursor-pointer",
                 loading ? "hidden" : "block",
               )}
               key={img.id}
