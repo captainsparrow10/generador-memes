@@ -128,7 +128,7 @@ export default function EditComponent({ id }: Props) {
       <Link href="/">
         <ArrowLeftIcon className="h-6 w-6" />
       </Link>
-      <section className="flex  justify-center ">
+      <section className="flex justify-center ">
         <div className="flex w-full flex-wrap justify-center gap-6">
           <div
             className="relative h-[600px] w-full max-w-[600px] overflow-hidden rounded border border-black"
