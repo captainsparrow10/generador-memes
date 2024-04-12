@@ -2,7 +2,7 @@
 import Carrusel from "@/components/carrusel";
 import EditText from "@/components/editText";
 import { ArrowLeftIcon, PhotoIcon } from "@heroicons/react/16/solid";
-import Image from "next/image";
+import Image, { StaticImageData } from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import Modal from "./modal/modal";
@@ -10,6 +10,7 @@ import { useEditContext } from "@/context/edit.context";
 import { getMemeImageById } from "@/services/meme";
 import { useTextContext } from "@/context/text.context";
 import clsx from "clsx";
+import { url } from "inspector";
 type Props = {
   id: string;
 };
@@ -85,7 +86,7 @@ export default function EditComponent({ id }: Props) {
       prevTextRef.current.style.color = color;
       prevTextRef.current = null;
       setText("");
-      resetState()
+      resetState();
       return;
     }
   };
@@ -114,6 +115,34 @@ export default function EditComponent({ id }: Props) {
     resetState();
   };
 
+  const createSticker = (sticker: { id: number; image: StaticImageData }) => {
+    const newText = (
+      <div
+        key={boxes.length}
+        className={`absolute z-50 h-6 w-6 cursor-pointer bg-[url('/sticker/kaisa-sad.png')]`}
+        style={{
+          backgroundImage: `url(${sticker.image.src})`,
+          backgroundSize: "cover", // Ajusta según tus necesidades
+          backgroundPosition: "center", // Ajus
+        }}
+        onMouseDown={(e) => {
+          handleOnMouseDown(e);
+        }}
+      ></div>
+    );
+
+    setBoxes((prevText) => [...prevText, newText]);
+  };
+
+
+  const addSticker = (sticker: { id: number; image: StaticImageData }) => {
+    if (prevTextRef.current) {
+      return;
+    }
+
+    createSticker(sticker);
+  };
+
   const addText = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key !== "Enter") return;
     if (text.trim() === "") return;
@@ -127,7 +156,7 @@ export default function EditComponent({ id }: Props) {
 
   return (
     <main className="flex flex-col gap-y-6 p-6">
-      <Link href="/" className="w-fit h-fit">
+      <Link href="/" className="h-fit w-fit">
         <ArrowLeftIcon className="h-full max-h-8   w-full  max-w-8" />
       </Link>
       <section className="flex justify-center ">
@@ -155,7 +184,11 @@ export default function EditComponent({ id }: Props) {
             )}
           </div>
           <div className="flex w-full max-w-[600px] flex-col gap-y-6">
-            <Carrusel changeImage={setImageSelected} id={id} />
+            <Carrusel
+              changeImage={setImageSelected}
+              id={id}
+              addSticker={addSticker}
+            />
             <EditText addText={addText} />
           </div>
         </div>

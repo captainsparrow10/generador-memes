@@ -1,18 +1,23 @@
 "use client";
 import { useEditContext } from "@/context/edit.context";
-import { getMemeImages } from "@/services/meme";
+import { getMemeImages, stickers } from "@/services/meme";
 import { memeImageType } from "@/types";
-import { ForwardIcon, PhotoIcon } from "@heroicons/react/16/solid";
+import {
+  FaceSmileIcon,
+  ForwardIcon,
+  PhotoIcon,
+} from "@heroicons/react/16/solid";
 import clsx from "clsx";
-import Image from "next/image";
+import Image, { StaticImageData } from "next/image";
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 
 type Props = {
   changeImage: Dispatch<SetStateAction<memeImageType>>;
   id: string;
+  addSticker: (sticker: { id: number; image: StaticImageData }) => void;
 };
 
-export default function Carrusel({ changeImage, id }: Props) {
+export default function Carrusel({ changeImage, id, addSticker }: Props) {
   const { setShowModal } = useEditContext();
   const scrollRef = useRef<HTMLDivElement>(null);
   const [memes, setMemes] = useState<memeImageType[]>([]);
@@ -21,6 +26,7 @@ export default function Carrusel({ changeImage, id }: Props) {
   const [end, setEnd] = useState(25);
   const [rangeValue, setRangeValue] = useState<number>(0);
   const [colorValue, setColorValue] = useState<string>("#000000");
+  const [emojiActive, setEmojiActive] = useState(true);
 
   const handleRangeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     console.log(Number(e.target.value));
@@ -31,6 +37,7 @@ export default function Carrusel({ changeImage, id }: Props) {
     console.log(e.target.value);
     setColorValue(e.target.value);
   };
+  const emojiContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     updateMemesArray();
@@ -83,6 +90,19 @@ export default function Carrusel({ changeImage, id }: Props) {
       console.log("No hay IDs disponibles en el array.");
     }
   };
+  const handleDocumentClick = (e: MouseEvent) => {
+    if (emojiContainerRef.current && !emojiContainerRef.current.contains(e.target as Node)) {
+      setEmojiActive(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("click", handleDocumentClick);
+
+    return () => {
+      document.removeEventListener("click", handleDocumentClick);
+    };
+  }, []);
 
   return (
     <>
@@ -96,7 +116,29 @@ export default function Carrusel({ changeImage, id }: Props) {
           />
           <input type="color" value={colorValue} onChange={handleColorChange} />
         </div>
-        <div className="flex w-1/5 justify-end">
+        <div className="flex w-1/5 justify-end gap-6">
+          <div className="relative"  ref={emojiContainerRef}>
+            <FaceSmileIcon
+              className="h-full max-h-8   w-full  max-w-8 cursor-pointer"
+              onClick={() => setEmojiActive(!emojiActive)}
+            />
+            <div
+              className={clsx(
+                "absolute right-6 z-50 flex w-[200px] flex-wrap justify-evenly gap-6 overflow-hidden  rounded bg-white transition-all",
+                emojiActive ? "h-fit border border-gray-300 p-6" : "h-0",
+              )}
+            >
+              {stickers.map((sticker) => (
+                <div
+                  className="relative h-6 w-6 cursor-pointer"
+                  key={sticker.id}
+                  onClick={() =>addSticker(sticker)}
+                >
+                  <Image src={sticker.image} alt="sticker" fill />
+                </div>
+              ))}
+            </div>
+          </div>
           <ForwardIcon
             className="h-full max-h-8   w-full  max-w-8 cursor-pointer"
             onClick={handleRandomImage}
@@ -113,9 +155,11 @@ export default function Carrusel({ changeImage, id }: Props) {
           </div>
           {memes.map((img) => (
             <div
-              className={clsx("relative h-full w-16 shrink-0", loading ? "hidden" : "block")}
+              className={clsx(
+                "relative h-full w-16 shrink-0",
+                loading ? "hidden" : "block",
+              )}
               key={img.id}
-
               onClick={() => changeImage(img)}
             >
               <Image src={img.url} alt={img.name} fill />
