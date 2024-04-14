@@ -54,12 +54,12 @@ export default function page() {
         <h1 className="text-4xl font-bold">Imagenes</h1>
         <PhotoIcon className="h-6 w-6" />
       </header>
-      <section className="flex flex-wrap justify-around gap-3">
+      <section className="columns-2 sm:columns-3 lg:columns-4 xl:columns-5 gap-x-10">
         {memes?.map(({ id, url, width, height, name }) => (
           <Link href={`/${id}`} key={id} className="h-fit w-fit">
             <div
               className={clsx(
-                "h-fit w-full max-w-[250px] overflow-hidden rounded border border-gray-300",
+                "h-fit w-full overflow-hidden rounded-lg border border-gray-100 mb-4",
                 loading ? "hidden" : "block",
               )}
             >
@@ -70,7 +70,7 @@ export default function page() {
         {loading &&
           Array.from(Array(25).keys()).map((i) => (
             <div
-              className="h-[400px] w-full max-w-[250px] animate-pulse overflow-hidden rounded-xl border border-gray-300 bg-gray-300 p-2"
+              className="h-[275px] sm:h-[350px] lg:h-[400px] w-full animate-pulse overflow-hidden rounded-lg border mb-4 border-gray-300 bg-gray-300 p-2"
               key={i}
             ></div>
           ))}
