@@ -18,6 +18,7 @@ const Modal = () => {
   const [inputUrl, setInputUrl] = useState<memeImageType | null>(null);
   const [active, setActive] = useState<"upload" | "url">("upload");
   const [dragText, setDragText] = useState<string>("Browse or drop image");
+  const [isDropped, setIsDropped] = useState<boolean>(false)
 
   const handleCloseModal = () => {
     setShowModal(false);
@@ -58,6 +59,7 @@ const Modal = () => {
 
   const displayFile = (file: File) => {
     setDragText("Browse or drop image");
+    setIsDropped(false)
     if (!isImage(file.type, ["png", "jpeg", "jpg"])) {
       setErrorDropImage(true);
       return;
@@ -88,7 +90,7 @@ const Modal = () => {
       <div className="fixed left-1/2 top-1/2 z-50 w-96  -translate-x-1/2 -translate-y-1/2 transform rounded-lg bg-white shadow-lg">
         <div className="relative flex items-center justify-center py-2">
           <XMarkIcon
-            className="absolute left-0 top-0 ml-4 py-2"
+            className="absolute left-0 top-0 ml-4 py-2 cursor-pointer"
             width={24}
             onClick={handleCloseModal}
           />
@@ -101,17 +103,20 @@ const Modal = () => {
         </div>
         {active === "upload" ? (
           <div
-            className="relative mx-6 my-4 flex cursor-pointer flex-col items-center justify-center rounded border-2 border-dashed border-gray-300 p-12 text-gray-400"
+            className={`relative mx-6 my-4 flex cursor-pointer flex-col items-center justify-center rounded border-2 border-dashed border-gray-300 p-12 text-gray-400 ${isDropped ? 'border-blue-600' : 'border-gray-300'}`}
             onClick={() => fileInputRef.current?.click()}
           >
             <div
               className="absolute h-full w-full"
               onDragOver={(e) => {
                 e.preventDefault();
+                setErrorDropImage(false)
+                setIsDropped(true)
                 setDragText("Release to upload");
               }}
               onDragLeave={(e) => {
                 e.preventDefault();
+                setIsDropped(false)
                 setDragText("Browse or drop image");
               }}
               onDrop={(e) => {
@@ -122,8 +127,8 @@ const Modal = () => {
                 
               }}
             ></div>
-            <PhotoIcon width={40} className="mb-2" />
-            <p>{dragText}</p>
+            <PhotoIcon color={`${isDropped ? 'text-blue-600' : ''}`} width={40} className="mb-2" />
+            <p className={`${isDropped ? 'text-blue-600' : ''}`}>{dragText}</p>
             <p
               className={`text-sm text-red-500 ${errorDropImage ? "flex" : "hidden"} top-14 z-50`}
             >

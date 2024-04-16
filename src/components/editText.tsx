@@ -4,7 +4,6 @@ import React, { ChangeEvent, useState } from "react";
 import FontFamilySize from "./fontFamilySize";
 import FontStyle from "./fontStyle";
 import clsx from "clsx";
-import Button from "./button";
 import { useEditContext } from "@/context/edit.context";
 import { useTextContext } from "@/context/text.context";
 type Props = {
@@ -16,24 +15,20 @@ export default function EditText({ addText }: Props) {
   const {
     styleText: { color, fontFamily, textStyle },
     setColor,
-    resetState, inputRefs: { current: { textColor } }
+    inputRefs: {
+      current: { textColor },
+    },
   } = useTextContext();
   const { transform, style, weight } = textStyle;
-  const { text, setText, saveImage, setBoxes, resetEdit } = useEditContext();
+  const { text, setText } = useEditContext();
 
   const handleChangeText = (e: React.ChangeEvent<HTMLInputElement>) => {
     setText(e.target.value);
   };
 
-  const handlerClear = () => {
-    setBoxes([])
-    resetState()
-    resetEdit()
-  }
-
   const handleChangeColor = (e: ChangeEvent<HTMLInputElement>) => {
-    setColor(e.target.value)
-  }
+    setColor(e.target.value);
+  };
 
   return (
     <div className="flex flex-col gap-y-3">
@@ -48,13 +43,13 @@ export default function EditText({ addText }: Props) {
         />
         <div className="flex h-full w-12 shrink-0 items-center justify-center">
           <div className="rounded" />
-            <input 
-              className="h-6 w-6" 
-              type="color"
-              ref={textColor}
-              onChange={handleChangeColor}
-              />
-          </div>
+          <input
+            className="h-6 w-6"
+            type="color"
+            ref={textColor}
+            onChange={handleChangeColor}
+          />
+        </div>
       </div>
       <div className="flex items-center gap-x-3">
         <p>Editar texto</p>
@@ -72,12 +67,6 @@ export default function EditText({ addText }: Props) {
       >
         <FontFamilySize />
         <FontStyle />
-      </div>
-      <div className="flex gap-x-6">
-        <Button onClickHandler={saveImage}>Descargar</Button>
-        <Button variant="secondary" onClickHandler={handlerClear}>
-          Limpiar
-        </Button>
       </div>
     </div>
   );

@@ -1,4 +1,4 @@
-import { memeImageType } from "@/types";
+import { StickerType, memeImageType } from "@/types";
 
 import KaisaAngry from "@public/sticker/kaisa-angry.png"
 import KaisaSad from "@public/sticker/kaisa-sad.png"
@@ -45,16 +45,16 @@ export const getMemeImageById = async (id: string): Promise<memeImageType | unde
   }
 };
 
-export const stickers = [
-  { id: 1, image: KaisaAngry },
-  { id: 2, image: KaisaSad },
-  { id: 3, image: KaisaF },
-  { id: 4, image: KaisaLove },
-  { id: 5, image: ParcaHappy },
-  { id: 6, image: ParcaAngry },
-  { id: 7, image: ParcaSad },
-  { id: 8, image: ParcaLove },
-  { id: 9, image: ParcaFull },
-  { id: 10, image: ParcaPeace },
-  { id: 11, image: ParcaInLove }
+export const stickers: StickerType[] = [
+  { id: 1, image: KaisaAngry, size: 24 },
+  { id: 2, image: KaisaSad, size: 24 },
+  { id: 3, image: KaisaF, size: 24 },
+  { id: 4, image: KaisaLove, size: 24 },
+  { id: 5, image: ParcaHappy, size: 24 },
+  { id: 6, image: ParcaAngry, size: 24 },
+  { id: 7, image: ParcaSad, size: 24 },
+  { id: 8, image: ParcaLove, size: 24 },
+  { id: 9, image: ParcaFull, size: 24 },
+  { id: 10, image: ParcaPeace, size: 24 },
+  { id: 11, image: ParcaInLove, size: 24 }
 ];

@@ -1,3 +1,6 @@
+import { StaticImageData } from "next/image"
+import { MouseEventHandler, SVGProps } from "react"
+
 export type memeImageType = {
 	id: string
 	name: string
@@ -22,3 +25,14 @@ export type fontStyles = {
 	style: "italic" | "not-italic";
 };
 
+
+export type StickerType = {
+	id: number
+	image: StaticImageData
+	size: number
+
+}
+
+export type SvgProps = {
+	className?: string | undefined;
+} & SVGProps<SVGSVGElement>

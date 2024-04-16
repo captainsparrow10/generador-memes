@@ -90,7 +90,7 @@ export const TextProvider: React.FC<{ children: React.ReactNode }> = ({
     textTransformRef: useRef<HTMLInputElement | null>(null),
     textWeightRef: useRef<HTMLInputElement | null>(null),
     textStyleRef: useRef<HTMLInputElement | null>(null),
-    textColor: useRef<HTMLInputElement | null>(null)
+    textColor: useRef<HTMLInputElement | null>(null),
   });
 
   const selectedStylesTextRef = (target: HTMLElement) => {
@@ -108,13 +108,21 @@ export const TextProvider: React.FC<{ children: React.ReactNode }> = ({
       target.style.fontStyle === "normal"
     );
     if (!inputRefs.current.textColor.current) return;
-    const rgbaColor = target.style.color 
+    const rgbaColor = target.style.color;
     const rgbaArray = rgbaColor.match(/\d+/g);
-    if (!rgbaArray) return
-    const hexColor = "#" + ((1 << 24) + (parseInt(rgbaArray[0]) << 16) + (parseInt(rgbaArray[1]) << 8) + parseInt(rgbaArray[2])).toString(16).slice(1, 7);
-    inputRefs.current.textColor.current.value = hexColor
-    
-    
+    if (!rgbaArray) return;
+    const hexColor =
+      "#" +
+      (
+        (1 << 24) +
+        (parseInt(rgbaArray[0]) << 16) +
+        (parseInt(rgbaArray[1]) << 8) +
+        parseInt(rgbaArray[2])
+      )
+        .toString(16)
+        .slice(1, 7);
+    inputRefs.current.textColor.current.value = hexColor;
+
     setStyleText({
       textStyle: {
         transform:
@@ -137,7 +145,7 @@ export const TextProvider: React.FC<{ children: React.ReactNode }> = ({
     if (!inputRefs.current.textWeightRef.current) return;
     inputRefs.current.textWeightRef.current.checked = false;
     if (!inputRefs.current.textColor.current) return;
-    inputRefs.current.textColor.current.value = '#000000';
+    inputRefs.current.textColor.current.value = "#000000";
   };
 
   return (

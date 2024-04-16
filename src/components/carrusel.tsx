@@ -1,53 +1,55 @@
 "use client";
 import { useEditContext } from "@/context/edit.context";
 import { getMemeImages, stickers } from "@/services/meme";
-import { memeImageType } from "@/types";
+import { StickerType, memeImageType } from "@/types";
 import { hexToRgba } from "@/util";
 import {
   FaceSmileIcon,
   ForwardIcon,
   PhotoIcon,
 } from "@heroicons/react/16/solid";
+import AddStickerIcon from "@public/icons/addSticker";
+import RandomIcon from "@public/icons/random";
+import StickerIcon from "@public/icons/sticker";
 import clsx from "clsx";
-import Image, { StaticImageData } from "next/image";
+import Image from "next/image";
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 
 type Props = {
   changeImage: Dispatch<SetStateAction<memeImageType>>;
   id: string;
-  addSticker: (sticker: { id: number; image: StaticImageData }) => void;
+  addSticker: (sticker: StickerType) => void;
 };
 
 export default function Carrusel({ changeImage, id, addSticker }: Props) {
-  const { setShowModal, imageRef } = useEditContext();
+  const { setShowModal, imageRef, prevTextRef } = useEditContext();
   const scrollRef = useRef<HTMLDivElement>(null);
   const [memes, setMemes] = useState<memeImageType[]>([]);
   const [start, setStart] = useState(0);
   const [loading, setLoading] = useState(true);
   const [end, setEnd] = useState(25);
   const [colorValue, setColorValue] = useState<string>("#000000");
-  const [opacity, setOpacity] = useState<number>(0)
-  const [emojiActive, setEmojiActive] = useState(false);
+  const [opacity, setOpacity] = useState<number>(0);
+  const [emojiActive, setEmojiActive] = useState(true);
 
   const handleRangeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setOpacity(Number(e.target.value))
+    setOpacity(Number(e.target.value));
     const opacityValue = parseFloat(e.target.value) / 100;
-    const img = imageRef.current 
-    if ( !img ) return
-    img.style.opacity = opacityValue.toString()
-
+    const img = imageRef.current;
+    if (!img) return;
+    img.style.opacity = opacityValue.toString();
   };
 
   const handleColorChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const hexColor = e.target.value
-    const hexValue = hexColor.substring(1)
-    const color = hexToRgba(hexValue, 1)
+    const hexColor = e.target.value;
+    setColorValue(hexColor);
+    const hexValue = hexColor.substring(1);
+    const color = hexToRgba(hexValue, 1);
 
-    const img = imageRef.current 
-    if ( !img ) return
+    const img = imageRef.current;
+    if (!img) return;
 
-    img.style.backgroundColor = color
-
+    img.style.backgroundColor = color;
   };
   const emojiContainerRef = useRef<HTMLDivElement>(null);
 
@@ -89,6 +91,14 @@ export default function Carrusel({ changeImage, id, addSticker }: Props) {
       setLoading(false);
     }
   };
+
+  const handleStickerState = () => {
+    setEmojiActive(!emojiActive);
+    if (!prevTextRef.current) return;
+    prevTextRef.current.style.backgroundColor = "transparent";
+    prevTextRef.current = null;
+  };
+
   const handleRandomImage = () => {
     const memesAvailable = memes.filter(
       (meme) => meme.id !== null && meme.id !== undefined && meme.id !== id,
@@ -103,7 +113,10 @@ export default function Carrusel({ changeImage, id, addSticker }: Props) {
     }
   };
   const handleDocumentClick = (e: MouseEvent) => {
-    if (emojiContainerRef.current && !emojiContainerRef.current.contains(e.target as Node)) {
+    if (
+      emojiContainerRef.current &&
+      !emojiContainerRef.current.contains(e.target as Node)
+    ) {
       setEmojiActive(false);
     }
   };
@@ -118,22 +131,29 @@ export default function Carrusel({ changeImage, id, addSticker }: Props) {
 
   return (
     <>
-      <div className="flex w-full justify-center">
-        <div className="flex w-4/5 gap-x-6">
+      <div className="flex h-8 w-full gap-6">
+        <div className="flex flex-1 gap-3">
           <input
             type="range"
             value={opacity}
-            className="w-full  bg-transparent"
+            className="flex-1 bg-transparent"
             onChange={handleRangeChange}
           />
-          <input type="color" value={colorValue} onChange={handleColorChange} />
+          <input
+            type="color"
+            value={colorValue}
+            onChange={handleColorChange}
+            className="h-full w-8  flex-shrink"
+          />
         </div>
-        <div className="flex w-1/5 justify-end gap-6">
-          <div className="relative"  ref={emojiContainerRef}>
-            <FaceSmileIcon
-              className="h-full max-h-8   w-full  max-w-8 cursor-pointer"
-              onClick={() => setEmojiActive(!emojiActive)}
+        <div className="flex w-fit shrink justify-end gap-6">
+          <div className="relative" ref={emojiContainerRef}>
+            <AddStickerIcon
+              active={emojiActive}
+              className="h-full max-h-8 w-full max-w-8 cursor-pointer"
+              onClick={handleStickerState}
             />
+
             <div
               className={clsx(
                 "absolute right-6 z-50 flex w-[200px] flex-wrap justify-evenly gap-6 overflow-hidden  rounded bg-white transition-all",
@@ -142,23 +162,26 @@ export default function Carrusel({ changeImage, id, addSticker }: Props) {
             >
               {stickers.map((sticker) => (
                 <div
-                  className="relative h-6 w-6 cursor-pointer"
+                  className="relative h-6 w-6  cursor-pointer"
                   key={sticker.id}
-                  onClick={() =>addSticker(sticker)}
+                  onClick={() => {
+                    addSticker(sticker);
+                    setEmojiActive(false);
+                  }}
                 >
                   <Image src={sticker.image} alt="sticker" fill />
                 </div>
               ))}
             </div>
           </div>
-          <ForwardIcon
-            className="h-full max-h-8   w-full  max-w-8 cursor-pointer"
+          <RandomIcon
+            className="h-full max-h-8   w-full  max-w-8 cursor-pointer text-gray-300"
             onClick={handleRandomImage}
           />
         </div>
       </div>
       <div ref={scrollRef} className="h-fit w-full overflow-x-scroll">
-        <div className="flex h-full max-h-12 w-fit overflow-hidden rounded border border-black divide-x divide-black">
+        <div className="flex h-full max-h-12 w-fit divide-x divide-black overflow-hidden rounded border border-black">
           <div
             className="flex h-full w-16 shrink-0 items-center justify-center p-2 "
             onClick={handleClick}
