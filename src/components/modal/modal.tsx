@@ -16,7 +16,7 @@ const Modal = () => {
 
   const pathname = usePathname();
   const router = useRouter();
-  console.log(pathname);
+
 
   const [error, setError] = useState<boolean>(false);
   const [errorDropImage, setErrorDropImage] = useState<boolean>(false);
@@ -38,6 +38,7 @@ const Modal = () => {
 
   const handleInsertUrl = () => {
     if (!inputUrl) return;
+    console.log(inputUrl)
     if (!isImage(inputUrl.url, [".jpg", ".jpeg", ".png"])) {
       setError(true);
       return;
@@ -47,7 +48,7 @@ const Modal = () => {
 
     setImageSelected(inputUrl);
     setShowModal(false);
-    router.push("/" + imageSelected.id, { scroll: false });
+    router.push("/" + inputUrl.id, { scroll: false });
   };
 
   const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -80,7 +81,7 @@ const Modal = () => {
     };
     setImageSelected(meme);
     setShowModal(false);
-    router.push("/" + imageSelected.id, { scroll: false });
+    router.push("/" + meme.id, { scroll: false });
   };
 
   const loadImage = (e: React.ChangeEvent<HTMLInputElement>) => {

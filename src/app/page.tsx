@@ -14,7 +14,8 @@ export default function page() {
   const [start, setStart] = useState(0);
   const [loading, setLoading] = useState(true);
   const [end, setEnd] = useState(25);
-  const { setShowModal } = useEditContext();
+  const { setShowModal, setImageSelected } = useEditContext();
+
 
   useEffect(() => {
     const handleScroll = () => {
@@ -37,6 +38,7 @@ export default function page() {
 
   useEffect(() => {
     updateMemesArray();
+    setImageSelected({id: '', name: '', url: ''})
   }, []);
 
   const updateMemesArray = async () => {

@@ -10,9 +10,10 @@ import { initialStickerState, useEditContext } from "@/context/edit.context";
 import { getMemeImageById } from "@/services/meme";
 import { useTextContext } from "@/context/text.context";
 import clsx from "clsx";
-import { v4 } from "uuid";
+import { v4, validate } from "uuid";
 import Button from "./button";
 import { StickerType } from "@/types";
+import { useRouter } from "next/router";
 type Props = {
   id: string;
 };
@@ -49,6 +50,7 @@ export default function EditComponent({ id }: Props) {
     setStyleText,
     resetState,
   } = useTextContext();
+ 
 
   useEffect(() => {
     memeImageById(id);
@@ -85,12 +87,26 @@ export default function EditComponent({ id }: Props) {
   const [loading, setLoading] = useState(true);
 
   const memeImageById = async (id: string) => {
+    
+    if( validate(imageSelected.id) ) {
+      setLoading(false)
+      return;
+    }
+
+    if( validate(id) && imageSelected.url === "" ) {
+      redirectTo("/")
+    }
+
     setLoading(true);
     let meme = await getMemeImageById(id);
     if (meme !== undefined) {
       setImageSelected(meme);
       setLoading(false);
     }
+  };
+
+  const redirectTo = (path: string) => {
+    window.location.href = path;
   };
 
   const editText = () => {
