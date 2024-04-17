@@ -170,13 +170,30 @@ export default function EditComponent({ id }: Props) {
   };
 
   const deleteText = () => {
-    if(!prevTextRef.current) return
-  }
+    if (!prevTextRef.current) return;
+    if (prevTextRef.current.nodeName !== "DIV") return;
+    const elementToRemove = prevTextRef.current;
+    prevTextRef.current.parentNode?.removeChild(elementToRemove);
+    prevTextRef.current = null;
+    setText("");
+    resetState();
+  };
+
+  const deleteSticker = () => {
+    if (!prevTextRef.current) return;
+    if (prevTextRef.current.nodeName !== "IMG") return;
+
+    const elementToRemove = prevTextRef.current;
+    prevTextRef.current.parentNode?.removeChild(elementToRemove);
+    prevTextRef.current = null;
+    setStickerSelected(initialStickerState);
+  };
 
   const handlerClear = () => {
     setBoxes([]);
     resetState();
     resetEdit();
+    setStickerSelected(initialStickerState);
   };
 
   const addSticker = (sticker: StickerType) => {
@@ -276,9 +293,14 @@ export default function EditComponent({ id }: Props) {
                     "text-2xl",
                     modeEdit === "text" && "font-bold",
                   )}
-                  onClick={() =>
-                    modeEdit !== "text" ? setModeEdit("text") : null
-                  }
+                  onClick={() => {
+                    if (prevTextRef.current?.nodeName == "IMG")
+                      prevTextRef.current.style.backgroundColor = "transparent";
+                    setStickerSelected(initialStickerState);
+                    prevTextRef.current = null;
+
+                    modeEdit !== "text" ? setModeEdit("text") : null;
+                  }}
                 >
                   Texto
                 </h3>
@@ -287,16 +309,21 @@ export default function EditComponent({ id }: Props) {
                     "text-2xl",
                     modeEdit === "sticker" && "font-bold",
                   )}
-                  onClick={() =>
-                    modeEdit !== "sticker" ? setModeEdit("sticker") : null
-                  }
+                  onClick={() => {
+                    if (prevTextRef.current?.nodeName == "DIV")
+                      prevTextRef.current.style.backgroundColor = "transparent";
+                    prevTextRef.current = null;
+                    setText("");
+                    resetState();
+                    modeEdit !== "sticker" ? setModeEdit("sticker") : null;
+                  }}
                 >
                   Sticker
                 </h3>
               </div>
               {modeEdit === "sticker" ? (
-                <div className="flex gap-x-6">
-                  <div className="relative h-24 w-24 ">
+                <div className="flex items-center gap-x-6">
+                  <div className="relative h-24 w-24 shrink-0">
                     {stickerSelected.url ? (
                       <Image src={stickerSelected.url} alt="img" fill />
                     ) : (
@@ -309,15 +336,26 @@ export default function EditComponent({ id }: Props) {
                       <input
                         type="number"
                         placeholder="Escribe el tamaño"
-                        className=" boder-gray-3000 rounded border  px-3 py-2"
+                        className=" boder-gray-3000 rounded border px-3 py-2"
                         value={stickerSelected.size}
                         onChange={editSticker}
                       />
+                      <button
+                        onClick={deleteSticker}
+                        className="h-fit rounded-sm border border-transparent bg-black px-2 py-2 text-white duration-150 ease-in-out hover:border-black hover:bg-white hover:text-black"
+                      >
+                        Eliminar
+                      </button>
                     </div>
                   </div>
+                  <div className="flex h-full items-end py-2 "></div>
                 </div>
               ) : (
-                <EditText addText={addText} addTextButton={addTextButton} deleteTextButton={deleteText} />
+                <EditText
+                  addText={addText}
+                  addTextButton={addTextButton}
+                  deleteTextButton={deleteText}
+                />
               )}
               <div className="flex gap-x-6">
                 <Button onClickHandler={saveImage}>Descargar</Button>

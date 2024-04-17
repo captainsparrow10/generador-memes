@@ -78,7 +78,7 @@ export const EditProvider: React.FC<{ children: React.ReactNode }> = ({
   const [opacity, setOpacity] = useState<number>(0);
 
   const [stickerSelected, setStickerSelected] = useState(initialStickerState);
-  const { selectedStylesTextRef, resetState } = useTextContext();
+  const { selectedStylesTextRef } = useTextContext();
 
   const handleOnMouseDown = (event: React.MouseEvent<HTMLDivElement>) => {
     event.preventDefault();
@@ -150,6 +150,13 @@ export const EditProvider: React.FC<{ children: React.ReactNode }> = ({
 
     const mode = tag === "sticker" ? "sticker" : "text";
     setModeEdit(mode);
+    if (target && target.tagName === "IMG") {
+      const imgElement = target as HTMLImageElement;
+      setStickerSelected({
+        url: imgElement.src,
+        size: imgElement.width,
+      });
+    }
 
     const offsetX = touch.clientX - target.getBoundingClientRect().left;
     const offsetY = touch.clientY - target.getBoundingClientRect().top;
