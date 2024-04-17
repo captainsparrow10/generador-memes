@@ -39,6 +39,12 @@ export const TextProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const [styleText, setStyleText] = useState<styles>(initialState);
+  const inputRefs = useRef<OptionTextRefs>({
+    textTransformRef: useRef<HTMLInputElement | null>(null),
+    textWeightRef: useRef<HTMLInputElement | null>(null),
+    textStyleRef: useRef<HTMLInputElement | null>(null),
+    textColor: useRef<HTMLInputElement | null>(null),
+  });
 
   const setTextTranform = (transform: styles["textStyle"]["transform"]) => {
     setStyleText((prevState) => ({
@@ -86,12 +92,7 @@ export const TextProvider: React.FC<{ children: React.ReactNode }> = ({
     }));
   };
 
-  const inputRefs = useRef<OptionTextRefs>({
-    textTransformRef: useRef<HTMLInputElement | null>(null),
-    textWeightRef: useRef<HTMLInputElement | null>(null),
-    textStyleRef: useRef<HTMLInputElement | null>(null),
-    textColor: useRef<HTMLInputElement | null>(null),
-  });
+  
 
   const selectedStylesTextRef = (target: HTMLElement) => {
     target.style.backgroundColor = "white";
