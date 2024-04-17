@@ -4,13 +4,10 @@ import { getMemeImages, stickers } from "@/services/meme";
 import { StickerType, memeImageType } from "@/types";
 import { hexToRgba } from "@/util";
 import {
-  FaceSmileIcon,
-  ForwardIcon,
   PhotoIcon,
 } from "@heroicons/react/16/solid";
 import AddStickerIcon from "@public/icons/addSticker";
 import RandomIcon from "@public/icons/random";
-import StickerIcon from "@public/icons/sticker";
 import clsx from "clsx";
 import Image from "next/image";
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";

@@ -4,3 +4,7 @@
   const b = parseInt(hex.substring(4, 6), 16);
   return `rgba(${r}, ${g}, ${b}, ${opacity})`;
 };
+
+export const redirectTo = (path: string) => {
+  window.location.href = path;
+};

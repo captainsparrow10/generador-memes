@@ -1,8 +1,8 @@
 "use client";
 import { ChevronDownIcon } from "@heroicons/react/16/solid";
 import React, { ChangeEvent, useState } from "react";
-import FontFamilySize from "./fontFamilySize";
-import FontStyle from "./fontStyle";
+import FontFamilySize from "../font/fontFamilySize";
+import FontStyle from "../font/fontStyle";
 import clsx from "clsx";
 import { useEditContext } from "@/context/edit.context";
 import { useTextContext } from "@/context/text.context";
@@ -62,8 +62,8 @@ export default function EditText({ addText, addTextButton, deleteTextButton }: P
       </div>
       {editedText() && (
         <div className="flex gap-x-6">
-          <button onClick={addTextButton} className="bg-black text-white rounded-sm px-2 py-3 border border-transparent hover:bg-white hover:text-black hover:border-black duration-150 ease-in-out">Actualizar el texto</button>
-          <button onClick={deleteTextButton} className="bg-black text-white rounded-sm px-2 py-3 border border-transparent hover:bg-white hover:text-black hover:border-black duration-150 ease-in-out" >Eliminar texto</button>
+          <button onClick={addTextButton} className="bg-black text-white rounded-md px-3 py-3 border border-transparent hover:bg-white hover:text-black hover:border-black duration-150 ease-in-out">Actualizar</button>
+          <button onClick={deleteTextButton} className="bg-black text-white rounded-md px-3 py-3 border border-transparent hover:bg-white hover:text-black hover:border-black duration-150 ease-in-out" >Eliminar</button>
         </div>
       )}
 

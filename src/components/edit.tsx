@@ -1,6 +1,6 @@
 "use client";
 import Carrusel from "@/components/carrusel";
-import EditText from "@/components/editText";
+import EditText from "@/components/editors/editText";
 import { ArrowLeftIcon, PhotoIcon } from "@heroicons/react/16/solid";
 import Image, { StaticImageData } from "next/image";
 import Link from "next/link";
@@ -14,6 +14,9 @@ import { v4, validate } from "uuid";
 import Button from "./button";
 import { StickerType } from "@/types";
 import { useRouter } from "next/router";
+import ImageContainer from "./imageContainer";
+import StickerEditor from "./editors/stickerEditor";
+import { redirectTo } from "@/util";
 type Props = {
   id: string;
 };
@@ -29,13 +32,11 @@ export default function EditComponent({ id }: Props) {
     canvasRef,
     boxes,
     setBoxes,
-    imageRef,
     modeEdit,
     setModeEdit,
     resetEdit,
     saveImage,
     handleOnTouchStart,
-    stickerSelected,
     setStickerSelected,
   } = useEditContext();
 
@@ -54,32 +55,20 @@ export default function EditComponent({ id }: Props) {
     memeImageById(id);
 
     const onMouseDown = (e: MouseEvent) => {
-      if (e.target === prevTextRef.current) return;
-      if (!prevTextRef.current) return;
-
-      prevTextRef.current.style.backgroundColor = "transparent";
-      prevTextRef.current.style.padding = "0px";
-      prevTextRef.current = null;
-      setText("");
-      resetState();
-      setStickerSelected(initialStickerState);
+      handleSelectElement(e.target!)
     };
 
     const handleOnTouchStart = (e: TouchEvent) => {
-      if (e.target === prevTextRef.current) return;
-      if (!prevTextRef.current) return;
-
-      prevTextRef.current.style.backgroundColor = "transparent";
-      prevTextRef.current.style.padding = "0px";
-      prevTextRef.current = null;
-
-      setText("");
-      resetState();
-      setStickerSelected(initialStickerState);
+      handleSelectElement(e.target!)
     };
 
     canvasRef.current!.addEventListener("touchstart", handleOnTouchStart);
     canvasRef.current!.addEventListener("mousedown", onMouseDown);
+
+    return () => {
+      canvasRef.current!.removeEventListener("touchstart", handleOnTouchStart);
+      canvasRef.current!.removeEventListener("mousedown", onMouseDown);
+    };
   }, []);
 
   const [loading, setLoading] = useState(true);
@@ -102,8 +91,16 @@ export default function EditComponent({ id }: Props) {
     }
   };
 
-  const redirectTo = (path: string) => {
-    window.location.href = path;
+  const handleSelectElement = (target: EventTarget) => {
+    if (target === prevTextRef.current) return;
+    if (!prevTextRef.current) return;
+
+    prevTextRef.current.style.backgroundColor = "transparent";
+    prevTextRef.current.style.padding = "0px";
+    prevTextRef.current = null;
+    setText("");
+    resetState();
+    setStickerSelected(initialStickerState);
   };
 
   const editText = () => {
@@ -201,7 +198,7 @@ export default function EditComponent({ id }: Props) {
       <img
         id={v4()}
         key={boxes.length}
-        className={`absolute z-50 cursor-pointer`}
+        className={`absolute z-50 cursor-move`}
         src={sticker.image.src}
         width={sticker.size}
         height={sticker.size}
@@ -254,30 +251,7 @@ export default function EditComponent({ id }: Props) {
       <section className="flex justify-center ">
         <div className="flex w-full flex-wrap justify-center gap-6">
           <div className="flex max-h-[600px]  w-full max-w-[600px]  items-center justify-center">
-            <div
-              className="relative w-fit overflow-hidden border border-black"
-              ref={canvasRef}
-            >
-              {boxes.map((box, index) => (
-                <div key={index}>{box}</div>
-              ))}
-              <div
-                className="absolute left-0 top-0 h-full w-full"
-                ref={imageRef}
-                style={{ backgroundColor: "black", opacity: 0 }}
-              ></div>
-              {loading ? (
-                <div className="flex h-full w-full items-center justify-center bg-gray-100">
-                  <PhotoIcon className="h-2/5 w-full animate-pulse" />
-                </div>
-              ) : (
-                <img
-                  className=" sm:max-h-[500px] sm:max-w-[600px]"
-                  src={imageSelected.url}
-                  alt={imageSelected.name}
-                />
-              )}
-            </div>
+            <ImageContainer loading={loading} />
           </div>
 
           <div className="flex w-full max-w-[600px] flex-col gap-y-6">
@@ -322,34 +296,10 @@ export default function EditComponent({ id }: Props) {
                 </h3>
               </div>
               {modeEdit === "sticker" ? (
-                <div className="flex items-center gap-x-6">
-                  <div className="relative h-24 w-24 shrink-0">
-                    {stickerSelected.url ? (
-                      <Image src={stickerSelected.url} alt="img" fill />
-                    ) : (
-                      <PhotoIcon className="h-full w-full text-gray-300" />
-                    )}
-                  </div>
-                  <div className="flex flex-col gap-6">
-                    <div className="flex flex-col gap-3">
-                      <label htmlFor="width">Tamaño</label>
-                      <input
-                        type="number"
-                        placeholder="Escribe el tamaño"
-                        className=" boder-gray-3000 rounded border px-3 py-2"
-                        value={stickerSelected.size}
-                        onChange={editSticker}
-                      />
-                      <button
-                        onClick={deleteSticker}
-                        className="h-fit rounded-sm border border-transparent bg-black px-2 py-2 text-white duration-150 ease-in-out hover:border-black hover:bg-white hover:text-black"
-                      >
-                        Eliminar
-                      </button>
-                    </div>
-                  </div>
-                  <div className="flex h-full items-end py-2 "></div>
-                </div>
+                <StickerEditor
+                  deleteSticker={deleteSticker}
+                  editSticker={editSticker}
+                />
               ) : (
                 <EditText
                   addText={addText}
