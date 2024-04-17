@@ -44,6 +44,10 @@ interface IEditContext {
       size: number;
     }>
   >;
+  colorValue: string
+  setColorValue: React.Dispatch<React.SetStateAction<string>>
+  opacity: number
+  setOpacity: React.Dispatch<React.SetStateAction<number>>
 }
 
 export const EditContext = createContext<IEditContext | undefined>(undefined);
@@ -70,6 +74,8 @@ export const EditProvider: React.FC<{ children: React.ReactNode }> = ({
     name: "",
     url: "",
   });
+  const [colorValue, setColorValue] = useState<string>("#000000");
+  const [opacity, setOpacity] = useState<number>(0);
 
   const [stickerSelected, setStickerSelected] = useState(initialStickerState);
   const { selectedStylesTextRef, resetState } = useTextContext();
@@ -205,6 +211,8 @@ export const EditProvider: React.FC<{ children: React.ReactNode }> = ({
     if (!imageRef.current) return;
     imageRef.current.style.opacity = "0";
     imageRef.current.style.backgroundColor = "#000000";
+    setOpacity(0)
+    setColorValue('#000000')
   };
 
   return (
@@ -232,6 +240,10 @@ export const EditProvider: React.FC<{ children: React.ReactNode }> = ({
         setModeEdit,
         setStickerSelected,
         stickerSelected,
+        colorValue,
+        opacity,
+        setColorValue,
+        setOpacity
       }}
     >
       {children}

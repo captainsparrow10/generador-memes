@@ -22,15 +22,21 @@ type Props = {
 };
 
 export default function Carrusel({ changeImage, id, addSticker }: Props) {
-  const { setShowModal, imageRef, prevTextRef } = useEditContext();
+  const {
+    setShowModal,
+    imageRef,
+    prevTextRef,
+    opacity,
+    setOpacity,
+    colorValue,
+    setColorValue,
+  } = useEditContext();
   const scrollRef = useRef<HTMLDivElement>(null);
   const [memes, setMemes] = useState<memeImageType[]>([]);
   const [start, setStart] = useState(0);
   const [loading, setLoading] = useState(true);
   const [end, setEnd] = useState(25);
-  const [colorValue, setColorValue] = useState<string>("#000000");
-  const [opacity, setOpacity] = useState<number>(0);
-  const [emojiActive, setEmojiActive] = useState(true);
+  const [emojiActive, setEmojiActive] = useState(false);
 
   const handleRangeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setOpacity(Number(e.target.value));

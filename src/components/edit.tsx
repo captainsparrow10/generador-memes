@@ -37,7 +37,6 @@ export default function EditComponent({ id }: Props) {
     handleOnTouchStart,
     stickerSelected,
     setStickerSelected,
-    
   } = useEditContext();
 
   const {
@@ -50,7 +49,6 @@ export default function EditComponent({ id }: Props) {
     setStyleText,
     resetState,
   } = useTextContext();
- 
 
   useEffect(() => {
     memeImageById(id);
@@ -74,7 +72,7 @@ export default function EditComponent({ id }: Props) {
       prevTextRef.current.style.backgroundColor = "transparent";
       prevTextRef.current.style.padding = "0px";
       prevTextRef.current = null;
-      
+
       setText("");
       resetState();
       setStickerSelected(initialStickerState);
@@ -87,14 +85,13 @@ export default function EditComponent({ id }: Props) {
   const [loading, setLoading] = useState(true);
 
   const memeImageById = async (id: string) => {
-    
-    if( validate(imageSelected.id) ) {
-      setLoading(false)
+    if (validate(imageSelected.id)) {
+      setLoading(false);
       return;
     }
 
-    if( validate(id) && imageSelected.url === "" ) {
-      redirectTo("/")
+    if (validate(id) && imageSelected.url === "") {
+      redirectTo("/");
     }
 
     setLoading(true);
@@ -111,7 +108,6 @@ export default function EditComponent({ id }: Props) {
 
   const editText = () => {
     if (prevTextRef.current) {
-
       setStyleText({
         textStyle: {
           transform:
@@ -173,6 +169,10 @@ export default function EditComponent({ id }: Props) {
     resetState();
   };
 
+  const deleteText = () => {
+    if(!prevTextRef.current) return
+  }
+
   const handlerClear = () => {
     setBoxes([]);
     resetState();
@@ -219,6 +219,16 @@ export default function EditComponent({ id }: Props) {
     createText();
   };
 
+  const addTextButton = (e: React.MouseEvent<HTMLButtonElement>) => {
+    if (text.trim() === "") return;
+
+    if (prevTextRef.current) {
+      editText();
+      return;
+    }
+    createText();
+  };
+
   return (
     <main className="flex flex-col gap-y-6 p-6">
       <Link href="/" className="h-fit w-fit">
@@ -226,7 +236,7 @@ export default function EditComponent({ id }: Props) {
       </Link>
       <section className="flex justify-center ">
         <div className="flex w-full flex-wrap justify-center gap-6">
-          <div className="flex max-h-[600px]  max-w-[600px] w-full  items-center justify-center">
+          <div className="flex max-h-[600px]  w-full max-w-[600px]  items-center justify-center">
             <div
               className="relative w-fit overflow-hidden border border-black"
               ref={canvasRef}
@@ -307,7 +317,7 @@ export default function EditComponent({ id }: Props) {
                   </div>
                 </div>
               ) : (
-                <EditText addText={addText} />
+                <EditText addText={addText} addTextButton={addTextButton} deleteTextButton={deleteText} />
               )}
               <div className="flex gap-x-6">
                 <Button onClickHandler={saveImage}>Descargar</Button>
