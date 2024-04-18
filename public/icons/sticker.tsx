@@ -1,5 +1,5 @@
-import { SvgProps } from "@/Types";
-import Svg from "./svg";
+import { SvgProps } from "@Types";
+import Svg from "@Public/Icons/svg";
 
 type Props = {
   active: boolean;

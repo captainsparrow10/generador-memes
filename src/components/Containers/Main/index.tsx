@@ -1,54 +1,16 @@
 "use client";
-import { memeImageType } from "@/Types";
-import React, { useEffect, useState } from "react";
-import { getMemeImages } from "@/Services/meme";
-import { useEditContext } from "@/Contexts/Edit";
+import React, { useEffect } from "react";
+import { useEditContext } from "@Contexts/Edit";
 import Modal from "@Components/Modal";
-import Carrusel from "@Components/Container/Carrusel";
+import Carrusel from "@Components/Containers/Main/Carrusel";
 import { AddImageIcon } from "@Public/Icons";
 
 export default function Main() {
-  const [memes, setMemes] = useState<memeImageType[]>([]);
-  const [start, setStart] = useState(0);
-  const [loading, setLoading] = useState(true);
-  const [end, setEnd] = useState(25);
   const { setShowModal, setImageSelected } = useEditContext();
-
   useEffect(() => {
-    const handleScroll = () => {
-      if (
-        window.innerHeight + document.documentElement.scrollTop !==
-        document.documentElement.offsetHeight
-      ) {
-        return;
-      }
-
-      updateMemesArray();
-    };
-
-    window.addEventListener("scroll", handleScroll);
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, [memes]);
-
-  useEffect(() => {
-    updateMemesArray();
     setImageSelected({ id: "", name: "", url: "" });
   }, []);
 
-  const updateMemesArray = async () => {
-    memes.length < 100 && setLoading(true);
-    let newMemes = await getMemeImages(start, end);
-
-    if (newMemes !== undefined && memes !== undefined) {
-      setMemes([...memes, ...newMemes]);
-      setStart(end);
-      setEnd(end + 25);
-      setLoading(false);
-    }
-  };
   const handleClick = () => {
     setShowModal(true);
   };

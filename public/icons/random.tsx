@@ -1,5 +1,5 @@
-import { SvgProps } from "@/Types";
-import Svg from "@public/icons/svg";
+import { SvgProps } from "@Types";
+import Svg from "@Public/Icons/svg";
 
 const RandomIcon = ({ ...props }: SvgProps) => {
   return (

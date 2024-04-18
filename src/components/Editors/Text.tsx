@@ -1,11 +1,11 @@
 "use client";
 import { ChevronDownIcon } from "@heroicons/react/16/solid";
 import React, { ChangeEvent, useState } from "react";
-import FontFamilySize from "../Fonts/fontFamilySize";
-import FontStyle from "../Fonts/fontStyle";
+import FontFamilySize from "../Fonts/FamilySize";
+import FontStyle from "../Fonts/Style";
 import clsx from "clsx";
-import { useEditContext } from "@/Contexts/Edit";
-import { useTextContext } from "@/Contexts/Text";
+import { useEditContext } from "@Contexts/Edit";
+import { useTextContext } from "@Contexts/Text";
 
 type Props = {
   addText: (e: React.KeyboardEvent<HTMLInputElement>) => void;

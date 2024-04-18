@@ -1,4 +1,4 @@
-import { useEditContext } from "@/Contexts/Edit";
+import { useEditContext } from "@Contexts/Edit";
 import { PhotoIcon } from "@heroicons/react/16/solid";
 import Image from "next/image";
 

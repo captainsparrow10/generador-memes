@@ -1,17 +1,16 @@
-import { getMemeImages } from "@Services/Meme";
-import { memeImageType } from "@Types";
+"use client";
 import Image from "next/image";
 import Link from "next/link";
-import clsx from 'clsx';
-import React, { useEffect, useMemo, useState } from "react";
-
-const PAGE_SIZE = 25;
+import clsx from "clsx";
+import React, { useEffect, useState } from "react";
+import { memeImageType } from "@Types";
+import { getMemeImages } from "@Services/Meme";
 
 export default function Carrusel() {
   const [memes, setMemes] = useState<memeImageType[]>([]);
   const [start, setStart] = useState(0);
   const [loading, setLoading] = useState(true);
-  const [end, setEnd] = useState(PAGE_SIZE);
+  const [end, setEnd] = useState(25);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -37,23 +36,16 @@ export default function Carrusel() {
   }, []);
 
   const updateMemesArray = async () => {
-    if (memes.length >= 100 || loading) return;
+    memes.length < 100 && setLoading(true);
+    let newMemes = await getMemeImages(start, end);
 
-    setLoading(true);
-    const newMemes = await getMemeImages(start, end);
-    if (newMemes !== undefined) {
-      setMemes((prevMemes) => [...prevMemes, ...newMemes]);
-      setStart((prevStart) => prevStart + PAGE_SIZE);
-      setEnd((prevEnd) => prevEnd + PAGE_SIZE);
+    if (newMemes !== undefined && memes !== undefined) {
+      setMemes([...memes, ...newMemes]);
+      setStart(end);
+      setEnd(end + 25);
       setLoading(false);
     }
   };
-
-  const memoizedUpdateMemesArray = useMemo(
-    () => updateMemesArray,
-    [updateMemesArray],
-  );
-  console.log(memoizedUpdateMemesArray);
 
   return (
     <section className="columns-2 gap-x-10 sm:columns-3 lg:columns-4 xl:columns-5">
@@ -70,7 +62,7 @@ export default function Carrusel() {
         </Link>
       ))}
       {loading &&
-        Array.from(Array(PAGE_SIZE).keys()).map((i) => (
+        Array.from(Array(25).keys()).map((i) => (
           <div
             className="mb-4 h-[275px] w-full animate-pulse overflow-hidden rounded-lg border border-gray-300 bg-gray-300 p-2 sm:h-[350px] lg:h-[400px]"
             key={i}

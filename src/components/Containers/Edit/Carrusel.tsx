@@ -1,8 +1,8 @@
 "use client";
-import { useEditContext } from "@/Contexts/Edit";
-import { getMemeImages, stickers } from "@/Services/meme";
-import { StickerType, memeImageType } from "@/Types";
-import { hexToRgba } from "@/Utils";
+import { useEditContext } from "@Contexts/Edit";
+import { getMemeImages, Stickers } from "@Services/Meme";
+import { StickerType, memeImageType } from "@Types";
+import { hexToRgba } from "@Utils";
 import { PhotoIcon } from "@heroicons/react/16/solid";
 import AddStickerIcon from "@Public/Icons/Sticker";
 import RandomIcon from "@Public/Icons/Random";
@@ -130,6 +130,8 @@ export default function Carrusel({ changeImage, id, addSticker }: Props) {
     };
   }, []);
 
+  
+
   return (
     <>
       <div className="flex h-8 w-full gap-6">
@@ -161,7 +163,7 @@ export default function Carrusel({ changeImage, id, addSticker }: Props) {
                 emojiActive ? "h-fit border border-gray-300 p-6" : "h-0",
               )}
             >
-              {stickers.map((sticker) => (
+              {Stickers.map((sticker) => (
                 <div
                   className="relative h-6 w-6  cursor-pointer"
                   key={sticker.id}

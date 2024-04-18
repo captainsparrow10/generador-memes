@@ -1,16 +1,16 @@
-import { StickerType, memeImageType } from "@/Types";
+import { StickerType, memeImageType } from "@Types";
 
-import KaisaAngry from "@public/sticker/kaisa-angry.png"
-import KaisaSad from "@public/sticker/kaisa-sad.png"
-import KaisaF from "@public/sticker/kaisa-f.png"
-import KaisaLove from "@public/sticker/kaisa-love.png"
-import ParcaHappy from "@public/sticker/parca-happy.png"
-import ParcaAngry from "@public/sticker/parca-angry.png"
-import ParcaSad from "@public/sticker/parca-angry.png"
-import ParcaLove from "@public/sticker/parca-love.png"
-import ParcaFull from "@public/sticker/parca-full.png"
-import ParcaPeace from "@public/sticker/parca-peace.png"
-import ParcaInLove from "@public/sticker/parca-in-love.png"
+import KaisaAngry from "@Public/Stickers/kaisa-angry.png"
+import KaisaSad from "@Public/Stickers/kaisa-sad.png"
+import KaisaF from "@Public/Stickers/kaisa-f.png"
+import KaisaLove from "@Public/Stickers/kaisa-love.png"
+import ParcaHappy from "@Public/Stickers/parca-happy.png"
+import ParcaAngry from "@Public/Stickers/parca-angry.png"
+import ParcaSad from "@Public/Stickers/parca-angry.png"
+import ParcaLove from "@Public/Stickers/parca-love.png"
+import ParcaFull from "@Public/Stickers/parca-full.png"
+import ParcaPeace from "@Public/Stickers/parca-peace.png"
+import ParcaInLove from "@Public/Stickers/parca-in-love.png"
 
 
 export const getMemeImages = async (
@@ -45,7 +45,7 @@ export const getMemeImageById = async (id: string): Promise<memeImageType | unde
   }
 };
 
-export const stickers: StickerType[] = [
+export const Stickers: StickerType[] = [
   { id: 1, image: KaisaAngry, size: 24 },
   { id: 2, image: KaisaSad, size: 24 },
   { id: 3, image: KaisaF, size: 24 },

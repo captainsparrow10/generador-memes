@@ -1,5 +1,5 @@
 "use client";
-import { useTextContext } from "@/Contexts/Text";
+import { useTextContext } from "@Contexts/Text";
 import { ChevronDownIcon } from "@heroicons/react/16/solid";
 import clsx from "clsx";
 import React, { useState } from "react";

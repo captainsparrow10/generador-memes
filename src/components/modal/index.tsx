@@ -1,12 +1,11 @@
 "use client";
-
-import { useEditContext } from "@Components/Contexts/Edit";
+import { useEditContext } from "@Contexts/Edit";
 import { memeImageType } from "@Types";
 import { useState } from "react";
 import { v4 } from "uuid";
 import {  useRouter } from "next/navigation";
 import { PhotoIcon, XMarkIcon } from "@heroicons/react/16/solid";
-import ModalOption from "./modalOptions";
+import ModalOption from "@Components/Modal/Options";
 import { Button, Divider } from "@Components/UI";
 
 const Modal = () => {

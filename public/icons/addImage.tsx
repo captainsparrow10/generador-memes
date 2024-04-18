@@ -1,4 +1,4 @@
-import { SvgProps } from "@/Types";
+import { SvgProps } from "@Types";
 import Svg from "@Public/Icons/svg";
 
 const AddImage = ({ ...props }: SvgProps) => {
