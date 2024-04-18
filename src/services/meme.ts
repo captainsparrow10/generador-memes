@@ -1,4 +1,4 @@
-import { StickerType, memeImageType } from "@/types";
+import { StickerType, memeImageType } from "@/Types";
 
 import KaisaAngry from "@public/sticker/kaisa-angry.png"
 import KaisaSad from "@public/sticker/kaisa-sad.png"

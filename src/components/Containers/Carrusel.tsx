@@ -1,13 +1,11 @@
 "use client";
-import { useEditContext } from "@/context/edit.context";
-import { getMemeImages, stickers } from "@/services/meme";
-import { StickerType, memeImageType } from "@/types";
-import { hexToRgba } from "@/util";
-import {
-  PhotoIcon,
-} from "@heroicons/react/16/solid";
-import AddStickerIcon from "@public/icons/addSticker";
-import RandomIcon from "@public/icons/random";
+import { useEditContext } from "@/Contexts/Edit";
+import { getMemeImages, stickers } from "@/Services/meme";
+import { StickerType, memeImageType } from "@/Types";
+import { hexToRgba } from "@/Utils";
+import { PhotoIcon } from "@heroicons/react/16/solid";
+import AddStickerIcon from "@Public/Icons/Sticker";
+import RandomIcon from "@Public/Icons/Random";
 import clsx from "clsx";
 import Image from "next/image";
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";

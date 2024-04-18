@@ -1,5 +1,5 @@
 "use client";
-import { StickerType, memeImageType } from "@/types";
+import { StickerType, memeImageType } from "@/Types";
 import { StaticImageData } from "next/image";
 import download from "downloadjs";
 import { toPng } from "html-to-image";
@@ -11,7 +11,7 @@ import React, {
   Ref,
   MutableRefObject,
 } from "react";
-import { useTextContext } from "./text.context";
+import { useTextContext } from "./Text";
 
 interface IEditContext {
   exampleState: string;

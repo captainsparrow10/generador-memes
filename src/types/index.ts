@@ -1,5 +1,5 @@
 import { StaticImageData } from "next/image"
-import { MouseEventHandler, SVGProps } from "react"
+import { SVGProps } from "react"
 
 export type memeImageType = {
 	id: string

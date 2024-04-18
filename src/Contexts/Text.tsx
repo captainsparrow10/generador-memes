@@ -1,5 +1,5 @@
 "use client";
-import { styles } from "@/types";
+import { styles } from "@/Types";
 
 import React, { useContext, useState, createContext, useRef } from "react";
 

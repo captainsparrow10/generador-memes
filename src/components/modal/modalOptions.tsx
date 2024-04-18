@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import Divider from "../divider";
+import Divider from "../UI/Divider";
 import { Dispatch, SetStateAction } from "react";
 
 interface ModalOptionProps {

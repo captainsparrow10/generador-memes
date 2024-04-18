@@ -1,21 +1,18 @@
 "use client";
 import { memeImageType } from "@/Types";
-import Image from "next/image";
-import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { getMemeImages } from "@/Services/meme";
-import clsx from "clsx";
-import AddImageIcon from "@public/icons/addImage";
 import { useEditContext } from "@/Contexts/Edit";
-import Modal from "@/components/Modal";
+import Modal from "@Components/Modal";
+import Carrusel from "@Components/Container/Carrusel";
+import { AddImageIcon } from "@Public/Icons";
 
-export default function page() {
+export default function Main() {
   const [memes, setMemes] = useState<memeImageType[]>([]);
   const [start, setStart] = useState(0);
   const [loading, setLoading] = useState(true);
   const [end, setEnd] = useState(25);
   const { setShowModal, setImageSelected } = useEditContext();
-
 
   useEffect(() => {
     const handleScroll = () => {
@@ -38,7 +35,7 @@ export default function page() {
 
   useEffect(() => {
     updateMemesArray();
-    setImageSelected({id: '', name: '', url: ''})
+    setImageSelected({ id: "", name: "", url: "" });
   }, []);
 
   const updateMemesArray = async () => {
@@ -55,7 +52,6 @@ export default function page() {
   const handleClick = () => {
     setShowModal(true);
   };
-
   return (
     <main className="flex flex-col gap-y-6 p-6">
       <header className="flex items-center justify-between">
@@ -65,27 +61,7 @@ export default function page() {
           onClick={handleClick}
         />
       </header>
-      <section className="columns-2 gap-x-10 sm:columns-3 lg:columns-4 xl:columns-5">
-        {memes?.map(({ id, url, width, height, name }) => (
-          <Link href={`/${id}`} key={id} className="h-fit w-fit">
-            <div
-              className={clsx(
-                "mb-4 h-fit w-full overflow-hidden rounded-lg border border-gray-100",
-                loading ? "hidden" : "block",
-              )}
-            >
-              <Image src={url} width={width} height={height} alt={name} />
-            </div>
-          </Link>
-        ))}
-        {loading &&
-          Array.from(Array(25).keys()).map((i) => (
-            <div
-              className="mb-4 h-[275px] w-full animate-pulse overflow-hidden rounded-lg border border-gray-300 bg-gray-300 p-2 sm:h-[350px] lg:h-[400px]"
-              key={i}
-            ></div>
-          ))}
-      </section>
+      <Carrusel />
       <Modal />
     </main>
   );

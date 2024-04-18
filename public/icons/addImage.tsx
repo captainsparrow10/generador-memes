@@ -1,7 +1,7 @@
-import { SvgProps } from "@/types";
-import Svg from "./svg";
+import { SvgProps } from "@/Types";
+import Svg from "@Public/Icons/svg";
 
-const AddImageIcon = ({ ...props }: SvgProps) => {
+const AddImage = ({ ...props }: SvgProps) => {
   return (
     <Svg {...props}>
       <path
@@ -15,4 +15,4 @@ const AddImageIcon = ({ ...props }: SvgProps) => {
   );
 };
 
-export default AddImageIcon;
+export default AddImage;

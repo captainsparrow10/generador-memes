@@ -1,4 +1,4 @@
-import { useTextContext } from "@/context/text.context";
+import { useTextContext } from "@/Contexts/Text";
 import React, { ChangeEvent } from "react";
 
 export default function FontStyle() {

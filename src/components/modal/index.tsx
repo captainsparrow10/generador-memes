@@ -1,22 +1,22 @@
 "use client";
 
-import { useEditContext } from "@/context/edit.context";
-import { memeImageType } from "@/types";
+import { useEditContext } from "@Components/Contexts/Edit";
+import { memeImageType } from "@Types";
 import { useState } from "react";
 import { v4 } from "uuid";
-import Divider from "../divider";
-import ModalOption from "./modalOptions";
-import { usePathname, useRouter } from "next/navigation";
+import {  useRouter } from "next/navigation";
 import { PhotoIcon, XMarkIcon } from "@heroicons/react/16/solid";
-import Button from "../button";
+import ModalOption from "./modalOptions";
+import { Button, Divider } from "@Components/UI";
 
 const Modal = () => {
-  const { showModal, setShowModal, setImageSelected, fileInputRef, imageSelected } =
-    useEditContext();
-
-  const pathname = usePathname();
+  const {
+    showModal,
+    setShowModal,
+    setImageSelected,
+    fileInputRef,
+  } = useEditContext();
   const router = useRouter();
-
 
   const [error, setError] = useState<boolean>(false);
   const [errorDropImage, setErrorDropImage] = useState<boolean>(false);
@@ -38,7 +38,7 @@ const Modal = () => {
 
   const handleInsertUrl = () => {
     if (!inputUrl) return;
-    console.log(inputUrl)
+    console.log(inputUrl);
     if (!isImage(inputUrl.url, [".jpg", ".jpeg", ".png"])) {
       setError(true);
       return;

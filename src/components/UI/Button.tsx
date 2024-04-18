@@ -7,7 +7,7 @@ type Props = {
 	onClickHandler?: (e: React.MouseEvent<HTMLButtonElement>,
 	) => void
 }
-export default function Button({  children, variant = 'primary', onClickHandler, props}: Props) {
+export default function ButtonUI({  children, variant = 'primary', onClickHandler, props}: Props) {
 	return (
 		<button
 			className={clsx(
