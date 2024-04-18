@@ -1,8 +1,8 @@
-import { getMemeImages } from "@Services/meme";
+import { getMemeImages } from "@Services/Meme";
 import { memeImageType } from "@Types";
-import clsx from "clsx";
 import Image from "next/image";
 import Link from "next/link";
+import clsx from 'clsx';
 import React, { useEffect, useMemo, useState } from "react";
 
 const PAGE_SIZE = 25;
