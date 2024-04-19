@@ -12,14 +12,22 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
+    "target": "es5",
+    "downlevelIteration": true,
     "plugins": [
       {
         "name": "next"
       }
     ],
+    "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"],
-      "@public/*": ["./public/*"]
+      "@Public/*": ["./public/*"],
+      "@Components/*": ["./src/Components/*"],
+      "@Services/*": ["./src/Services/*"],
+      "@Types": ["./src/Types"],
+      "@Utils/*": ["./src/Utils/*"],
+      "@Hooks/*": ["./src/Hooks/*"],
+      "@Contexts/*": ["./src/Contexts/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],

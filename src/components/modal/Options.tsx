@@ -1,22 +1,13 @@
 import clsx from "clsx";
-import Divider from "../divider";
 import { Dispatch, SetStateAction } from "react";
 
 interface ModalOptionProps {
   active: "upload" | "url";
   label: "upload" | "url";
-  dividerColor?: string;
-  color?: string;
   setActive: Dispatch<SetStateAction<"upload" | "url">>;
 }
 
-const ModalOption = ({
-  dividerColor,
-  label,
-  color,
-  active,
-  setActive,
-}: ModalOptionProps) => {
+const ModalOption = ({ label, active, setActive }: ModalOptionProps) => {
   return (
     <div
       className={clsx(

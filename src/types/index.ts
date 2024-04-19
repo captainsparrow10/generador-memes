@@ -1,7 +1,7 @@
 import { StaticImageData } from "next/image"
-import { MouseEventHandler, SVGProps } from "react"
+import { SVGProps } from "react"
 
-export type memeImageType = {
+export type MemeImageType = {
 	id: string
 	name: string
 	url: string
@@ -11,15 +11,11 @@ export type memeImageType = {
 	captions?: number
 }
 
-export type styles = {
-	textStyle: fontStyles
+export type StylesType = {
+	text: string
 	color: string;
 	fontSize: number;
 	fontFamily: string;
-};
-
-
-export type fontStyles = {
 	transform: "normal-case" | "uppercase";
 	weight: "bold" | "normal";
 	style: "italic" | "not-italic";
@@ -30,7 +26,11 @@ export type StickerType = {
 	id: number
 	image: StaticImageData
 	size: number
+}
 
+export type FilterImageType = {
+	color: string;
+	opacity: number;
 }
 
 export type SvgProps = {

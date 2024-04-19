@@ -1,37 +1,17 @@
 "use client";
-import { useTextContext } from "@/context/text.context";
+import { useTextContext } from "@Contexts/Text";
 import { ChevronDownIcon } from "@heroicons/react/16/solid";
 import clsx from "clsx";
 import React, { useState } from "react";
+import { fontFamilies } from "@Utils/Const";
 
 export default function FontFamilySize() {
-  const fontFamilies = [
-    { id: 1, name: "serif" },
-    { id: 2, name: "sans-serif" },
-    { id: 3, name: "monospace" },
-    { id: 4, name: "cursive" },
-    { id: 5, name: "fantasy" },
-    { id: 6, name: "system-ui" },
-    { id: 7, name: "ui-serif" },
-    { id: 8, name: "ui-sans-serif" },
-    { id: 9, name: "ui-monospace" },
-    { id: 10, name: "ui-rounded" },
-    { id: 11, name: "emoji" },
-    { id: 12, name: "math" },
-    { id: 13, name: "fangsong" },
-    { id: 14, name: "roboto" },
-  ];
-
   const [active, setActive] = useState(false);
   const {
-    setFontFamily,
-    styleText: { fontFamily },
+    updateStyleText,
+    styleText: { fontFamily, fontSize },
   } = useTextContext();
   const [filteredFamilies, setFilteredFamilies] = useState(fontFamilies);
-  const {
-    styleText: { fontSize },
-    setFontSize,
-  } = useTextContext();
   const handleFilderBar = (text: string) => {
     let value = fontFamilies.filter((family) => {
       return family.name.toLowerCase().includes(text.toLowerCase());
@@ -81,7 +61,7 @@ export default function FontFamilySize() {
                 family.name === fontFamily && "font-bold",
               )}
               onClick={() => {
-                setFontFamily(family.name);
+                updateStyleText("fontFamily", family.name);
                 setActive(false);
               }}
             >
@@ -96,7 +76,9 @@ export default function FontFamilySize() {
           placeholder="24"
           className="w-12"
           value={fontSize}
-          onChange={(e) => setFontSize(parseInt(e.target.value))}
+          onChange={(e) =>
+            updateStyleText("fontSize", parseInt(e.target.value))
+          }
         />
       </div>
     </div>

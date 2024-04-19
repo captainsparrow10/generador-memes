@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { TextProvider } from "@/context/text.context";
-import { EditProvider } from "@/context/edit.context";
+import { TextProvider } from "@Contexts/Text";
+import { CanvaProvider } from "@Contexts/Canva";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,7 +20,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <TextProvider>
-          <EditProvider>{children}</EditProvider>
+          <CanvaProvider>{children}</CanvaProvider>
         </TextProvider>
       </body>
     </html>

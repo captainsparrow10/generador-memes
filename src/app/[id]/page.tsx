@@ -1,7 +1,8 @@
-import EditComponent from "../../components/edit";
+import EditContainer from "@Components/Containers/Edit";
 
 export default async function Editpage({ params }: { params: { id: string } }) {
   return (
-        <EditComponent id={params.id} />
+    
+        <EditContainer id={params.id} />
   );
 }

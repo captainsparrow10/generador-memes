@@ -1,18 +1,15 @@
-import { useEditContext } from "@/context/edit.context";
+'use client'
+import { useTextContext } from "@Contexts/Text";
 import { PhotoIcon } from "@heroicons/react/16/solid";
 import Image from "next/image";
 
-interface StickerEditorProps {
-  editSticker: (e: React.ChangeEvent<HTMLInputElement>) => void 
-  deleteSticker: () => void
-}
-
+type StickerEditorProps = {
+  editSticker: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  deleteSticker: () => void;
+};
 
 const StickerEditor = ({ deleteSticker, editSticker }: StickerEditorProps) => {
-
-  const {
-    stickerSelected,
-  } = useEditContext();
+  const { stickerSelected } = useTextContext();
 
   return (
     <div className="flex items-center gap-x-6">

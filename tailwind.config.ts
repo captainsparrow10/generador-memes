@@ -8,9 +8,6 @@ const config: Config = {
   ],
   theme: {
     extend: {
-      backgroundImage: {
-        'kaisa-sad': "url('/public/sticker/kaisa-sad.png')"
-      },
       fontFamily: {
         roboto: ["roboto"],
         serif: ['serif'],
