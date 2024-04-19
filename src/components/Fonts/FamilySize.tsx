@@ -6,18 +6,12 @@ import React, { useState } from "react";
 import { fontFamilies } from "@Utils/Const";
 
 export default function FontFamilySize() {
-
-
   const [active, setActive] = useState(false);
   const {
-    setFontFamily,
-    styleText: { fontFamily },
+    updateStyleText,
+    styleText: { fontFamily, fontSize },
   } = useTextContext();
   const [filteredFamilies, setFilteredFamilies] = useState(fontFamilies);
-  const {
-    styleText: { fontSize },
-    setFontSize,
-  } = useTextContext();
   const handleFilderBar = (text: string) => {
     let value = fontFamilies.filter((family) => {
       return family.name.toLowerCase().includes(text.toLowerCase());
@@ -67,7 +61,7 @@ export default function FontFamilySize() {
                 family.name === fontFamily && "font-bold",
               )}
               onClick={() => {
-                setFontFamily(family.name);
+                updateStyleText("fontFamily", family.name);
                 setActive(false);
               }}
             >
@@ -82,7 +76,9 @@ export default function FontFamilySize() {
           placeholder="24"
           className="w-12"
           value={fontSize}
-          onChange={(e) => setFontSize(parseInt(e.target.value))}
+          onChange={(e) =>
+            updateStyleText("fontSize", parseInt(e.target.value))
+          }
         />
       </div>
     </div>

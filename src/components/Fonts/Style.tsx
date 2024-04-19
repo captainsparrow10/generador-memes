@@ -3,12 +3,8 @@ import React, { ChangeEvent } from "react";
 
 export default function FontStyle() {
   const {
-    setTextTranform,
-    setTextWeight,
-    setTextStyle,
-    styleText: {
-      textStyle: { weight, transform, style },
-    },
+    updateStyleText,
+    styleText: { weight, transform, style },
   } = useTextContext();
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -19,24 +15,22 @@ export default function FontStyle() {
         let newTranform: "uppercase" | "normal-case" = checked
           ? "uppercase"
           : "normal-case";
-
-        setTextTranform(newTranform);
+        updateStyleText("transform", newTranform);
         break;
       case "bold":
         let newWeight: "bold" | "normal" = checked ? "bold" : "normal";
-        setTextWeight(newWeight);
+        updateStyleText("weight", newWeight);
         break;
       case "italic":
         let newStyle: "italic" | "not-italic" = checked
           ? "italic"
           : "not-italic";
-        setTextStyle(newStyle);
+        updateStyleText("style", newStyle);
         break;
       default:
         break;
     }
   };
-
 
   return (
     <div className="flex gap-x-6">

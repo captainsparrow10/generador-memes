@@ -10,8 +10,9 @@ import { useTextContext } from "@Contexts/Text";
 import { validate } from "uuid";
 import ImageContainer from "@Components/Containers/Edit/Image";
 import { redirectTo } from "@Utils/Functions";
-import Selection from "@Components/Containers/Edit/Selection";
+import Selection from "@Components/Containers/Edit/Editor";
 import { initialStickerState } from "@Utils/Const";
+import Editor from "@Components/Containers/Edit/Editor";
 type Props = {
   id: string;
 };
@@ -31,43 +32,42 @@ export default function EditContainer({ id }: Props) {
     setStickerSelected(initialStickerState);
   };
 
-  // useEffect(() => {
-  //    memeImageById(id);
+  useEffect(() => {
+    memeImageById(id);
 
-  //   const onMouseDown = (e: MouseEvent) => {
-  //     handleSelectElement(e.target!);
-  //   };
+    const onMouseDown = (e: MouseEvent) => {
+      handleSelectElement(e.target!);
+    };
 
-  //   const handleOnTouchStart = (e: TouchEvent) => {
-  //     handleSelectElement(e.target!);
-  //   };
+    const handleOnTouchStart = (e: TouchEvent) => {
+      handleSelectElement(e.target!);
+    };
 
-  //   canvasRef.current!.addEventListener("touchstart", handleOnTouchStart);
-  //   canvasRef.current!.addEventListener("mousedown", onMouseDown);
+    canvasRef.current!.addEventListener("touchstart", handleOnTouchStart);
+    canvasRef.current!.addEventListener("mousedown", onMouseDown);
 
-  //   return () => {
-  //     canvasRef.current!.removeEventListener("touchstart", handleOnTouchStart);
-  //     canvasRef.current!.removeEventListener("mousedown", onMouseDown);
-  //   };
-  // }, []);
+    return () => {
+      canvasRef.current!.removeEventListener("touchstart", handleOnTouchStart);
+      canvasRef.current!.removeEventListener("mousedown", onMouseDown);
+    };
+  }, []);
 
-  // const memeImageById = async (id: string) => {
-  //   if (validate(imageSelected.id)) {
-  //     setLoading(false);
-  //     return;
-  //   }
+  const memeImageById = async (id: string) => {
+    if (validate(imageSelected.id)) {
+      setLoading(false);
+      return;
+    }
+    if (validate(id) && imageSelected.url === "") {
+      redirectTo("/");
+    }
 
-  //   if (validate(id) && imageSelected.url === "") {
-  //     redirectTo("/");
-  //   }
-
-  //   setLoading(true);
-  //   let meme = await getMemeImageById(id);
-  //   if (meme !== undefined) {
-  //     setImageSelected(meme);
-  //     setLoading(false);
-  //   }
-  // };
+    setLoading(true);
+    let meme = await getMemeImageById(id);
+    if (meme !== undefined) {
+      setImageSelected(meme);
+      setLoading(false);
+    }
+  };
 
   return (
     <main className="flex flex-col gap-y-6 p-6">
@@ -78,8 +78,8 @@ export default function EditContainer({ id }: Props) {
         <div className="flex w-full flex-wrap justify-center gap-6">
           <ImageContainer loading={loading} />
           <div className="flex w-full max-w-[600px] flex-col gap-y-6">
-            {/* <Carrusel id={id} /> */}
-            {/* <Selection /> */}
+            <Carrusel id={id} />
+            <Editor />
           </div>
         </div>
       </section>

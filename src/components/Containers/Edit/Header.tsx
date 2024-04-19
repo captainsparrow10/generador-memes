@@ -1,13 +1,13 @@
 import React from "react";
 import { useCanvaContext } from "@Contexts/Canva";
-import { Stickers } from "@Services/Meme";
+import { Stickers } from "@Utils/Const";
 import { StickerType, MemeImageType } from "@Types";
 import { hexToRgba } from "@Utils/Functions";
 import AddStickerIcon from "@Public/Icons/Sticker";
 import RandomIcon from "@Public/Icons/Random";
 import clsx from "clsx";
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { useTextContext } from "@Contexts/Text";
 import { v4 } from "uuid";
 
@@ -46,7 +46,6 @@ export default function Header({ id, memes }: Props) {
     if (!img) return;
     img.style.backgroundColor = color;
   };
-  const emojiContainerRef = useRef<HTMLDivElement>(null);
 
   const handleStickerState = () => {
     setEmojiActive(!emojiActive);
@@ -69,23 +68,6 @@ export default function Header({ id, memes }: Props) {
     }
   };
 
-  const handleDocumentClick = (e: MouseEvent) => {
-    if (
-      emojiContainerRef.current &&
-      !emojiContainerRef.current.contains(e.target as Node)
-    ) {
-      setEmojiActive(false);
-    }
-  };
-
-  useEffect(() => {
-    document.addEventListener("click", handleDocumentClick);
-
-    return () => {
-      document.removeEventListener("click", handleDocumentClick);
-    };
-  }, []);
-
   const addSticker = (sticker: StickerType) => {
     const newText = (
       <img
@@ -102,8 +84,6 @@ export default function Header({ id, memes }: Props) {
     );
     setBoxes((prevText) => [...prevText, newText]);
   };
-
-  console.log(memes.length);
 
   return (
     <div className="flex h-8 w-full gap-6">
@@ -122,7 +102,7 @@ export default function Header({ id, memes }: Props) {
         />
       </div>
       <div className="flex w-fit shrink justify-end gap-6">
-        <div className="relative" ref={emojiContainerRef}>
+        <div className="relative">
           <AddStickerIcon
             active={emojiActive}
             className="h-full max-h-8 w-full max-w-8 cursor-pointer"

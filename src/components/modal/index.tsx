@@ -159,7 +159,9 @@ const Modal = () => {
                 </p>
               </div>
             </div>
-            <Button onClickHandler={handleInsertUrl} children="Add image" />
+            <Button onClickHandler={handleInsertUrl} >
+          Add image
+            </Button>
           </div>
         )}
         <input

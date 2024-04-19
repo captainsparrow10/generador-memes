@@ -8,12 +8,13 @@ import clsx from "clsx";
 import React from "react";
 import useText from "@Hooks/useText";
 import useSticker from "@Hooks/useSticker";
-import { handlerClear, saveImage } from "@Utils/Functions";
+import { toPng } from "html-to-image";
+import download from "downloadjs";
 
-export default function Selection() {
-  const { editText, createText, deleteText } = useText();
+export default function Editor() {
+  const { editText, createText, deleteText, } = useText();
   const { editSticker, deleteSticker } = useSticker();
-  const { handleOnMouseDown, boxes, handleOnTouchStart } = useCanvaContext();
+  const { handleOnMouseDown, boxes, setBoxes, handleOnTouchStart, canvasRef, resetEdit } = useCanvaContext();
 
   const {
     styleText: { transform, style, weight, fontFamily, fontSize, color, text },
@@ -65,6 +66,24 @@ export default function Selection() {
 
     createText(newText);
   };
+
+  const saveImage = () => {
+    if (!canvasRef.current) return;
+    if (prevTextRef.current) {
+      prevTextRef.current.style.backgroundColor = "transparent";
+    }
+    toPng(canvasRef.current).then((dataUrl) => {
+      download(dataUrl, "custom-image.png");
+    });
+  };
+  
+  const handlerClear = () => {
+    setBoxes([]);
+    resetTextState();
+    resetEdit();
+    resetSticker()
+  };
+  
 
   return (
     <div className="flex flex-col gap-y-6">
