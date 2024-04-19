@@ -5,7 +5,7 @@ import { useState } from "react";
 import { v4 } from "uuid";
 import { useRouter } from "next/navigation";
 import { PhotoIcon, XMarkIcon } from "@heroicons/react/16/solid";
-import ModalOption from "@Components/Modal/Options";
+import ModalOption from "src/components/Modal/Options";
 import { Button, Divider } from "@Components/UI";
 
 const Modal = () => {

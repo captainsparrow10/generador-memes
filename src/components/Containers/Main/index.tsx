@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect } from "react";
 import { useCanvaContext } from "@Contexts/Canva";
-import Modal from "@Components/Modal";
+import Modal from "src/components/Modal";
 import Carrusel from "@Components/Containers/Main/Carrusel";
 import { AddImageIcon } from "@Public/Icons";
 

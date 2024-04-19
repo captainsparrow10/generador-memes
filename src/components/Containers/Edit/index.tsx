@@ -3,7 +3,7 @@ import Carrusel from "@Components/Containers/Edit/Carrusel";
 import { ArrowLeftIcon } from "@heroicons/react/16/solid";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import Modal from "@Components/Modal";
+import Modal from "src/components/Modal";
 import { useCanvaContext } from "@Contexts/Canva";
 import { getMemeImageById } from "@Services/Meme";
 import { useTextContext } from "@Contexts/Text";
