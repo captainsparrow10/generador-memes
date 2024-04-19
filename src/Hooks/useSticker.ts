@@ -1,11 +1,12 @@
-import { initialStickerState, useEditContext } from '@Contexts/Edit';
+import { useTextContext } from '@Contexts/Text';
+import { initialStickerState } from '@Utils/Const';
 import React from 'react'
 
 const useSticker = () => {
   const {
     prevTextRef,
     setStickerSelected,
-  } = useEditContext();
+  } = useTextContext();
 
 
 

@@ -3,15 +3,14 @@ import Image from "next/image";
 import Link from "next/link";
 import clsx from "clsx";
 import React, { useEffect, useState } from "react";
-import { memeImageType } from "@Types";
+import { MemeImageType } from "@Types";
 import { getMemeImages } from "@Services/Meme";
-
+import Loading from "@Components/Containers/Main/Loading";
 export default function Carrusel() {
-  const [memes, setMemes] = useState<memeImageType[]>([]);
+  const [memes, setMemes] = useState<MemeImageType[]>([]);
   const [start, setStart] = useState(0);
   const [loading, setLoading] = useState(true);
   const [end, setEnd] = useState(25);
-
   useEffect(() => {
     const handleScroll = () => {
       if (
@@ -61,13 +60,7 @@ export default function Carrusel() {
           </div>
         </Link>
       ))}
-      {loading &&
-        Array.from(Array(25).keys()).map((i) => (
-          <div
-            className="mb-4 h-[275px] w-full animate-pulse overflow-hidden rounded-lg border border-gray-300 bg-gray-300 p-2 sm:h-[350px] lg:h-[400px]"
-            key={i}
-          ></div>
-        ))}
+      <Loading loading={loading} />
     </section>
   );
 }

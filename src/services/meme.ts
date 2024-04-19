@@ -1,4 +1,4 @@
-import { StickerType, memeImageType } from "@Types";
+import { StickerType, MemeImageType } from "@Types";
 
 import KaisaAngry from "@Public/Stickers/kaisa-angry.png"
 import KaisaSad from "@Public/Stickers/kaisa-sad.png"
@@ -16,11 +16,11 @@ import ParcaInLove from "@Public/Stickers/parca-in-love.png"
 export const getMemeImages = async (
   start: number,
   end: number,
-): Promise<memeImageType[] | undefined> => {
+): Promise<MemeImageType[] | undefined> => {
   try {
     const response = await fetch("https://api.imgflip.com/get_memes");
     const data = await response.json();
-    const memes: memeImageType[] = data.data.memes;
+    const memes: MemeImageType[] = data.data.memes;
     const totalMemes = memes.length;
     await new Promise(resolve => setTimeout(resolve, 500));
     if (totalMemes >= end) {
@@ -32,11 +32,11 @@ export const getMemeImages = async (
   }
 };
 
-export const getMemeImageById = async (id: string): Promise<memeImageType | undefined> => {
+export const getMemeImageById = async (id: string): Promise<MemeImageType | undefined> => {
   try {
     const response = await fetch('https://api.imgflip.com/get_memes');
     const data = await response.json();
-    const meme = data.data.memes.find((item: memeImageType) => item.id === id);
+    const meme = data.data.memes.find((item: MemeImageType) => item.id === id);
     await new Promise(resolve => setTimeout(resolve, 500));
     return meme;
   } catch (error) {

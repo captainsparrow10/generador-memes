@@ -1,39 +1,27 @@
+'use client'
 import StickerEditor from "@Components/Editors/Sticker";
 import EditText from "@Components/Editors/Text";
 import { Button } from "@Components/UI";
-import { initialStickerState, useEditContext } from "@Contexts/Edit";
+import { useCanvaContext } from "@Contexts/Canva";
 import { useTextContext } from "@Contexts/Text";
 import clsx from "clsx";
 import React from "react";
 import useText from "@Hooks/useText";
 import useSticker from "@Hooks/useSticker";
+import { handlerClear, saveImage } from "@Utils/Functions";
 
 export default function Selection() {
   const { editText, createText, deleteText } = useText();
   const { editSticker, deleteSticker } = useSticker();
-  const {
-    setText,
-    text,
-    prevTextRef,
-    handleOnMouseDown,
-    boxes,
-    setBoxes,
-    modeEdit,
-    setModeEdit,
-    resetEdit,
-    saveImage,
-    handleOnTouchStart,
-    setStickerSelected,
-  } = useEditContext();
+  const { handleOnMouseDown, boxes, handleOnTouchStart } = useCanvaContext();
 
   const {
-    styleText: {
-      textStyle: { transform, style, weight },
-      fontFamily,
-      fontSize,
-      color,
-    },
-    resetState,
+    styleText: { transform, style, weight, fontFamily, fontSize, color, text },
+    resetTextState,
+    prevTextRef,
+    modeEdit,
+    setModeEdit,
+    resetSticker,
   } = useTextContext();
 
   const newText = (
@@ -55,12 +43,6 @@ export default function Selection() {
       {text}
     </div>
   );
-  const handlerClear = () => {
-    setBoxes([]);
-    resetState();
-    resetEdit();
-    setStickerSelected(initialStickerState);
-  };
 
   const addText = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key !== "Enter") return;
@@ -83,6 +65,7 @@ export default function Selection() {
 
     createText(newText);
   };
+
   return (
     <div className="flex flex-col gap-y-6">
       <div className="flex gap-x-6">
@@ -91,7 +74,7 @@ export default function Selection() {
           onClick={() => {
             if (prevTextRef.current?.nodeName == "IMG")
               prevTextRef.current.style.backgroundColor = "transparent";
-            setStickerSelected(initialStickerState);
+            resetSticker();
             prevTextRef.current = null;
 
             modeEdit !== "text" ? setModeEdit("text") : null;
@@ -105,8 +88,7 @@ export default function Selection() {
             if (prevTextRef.current?.nodeName == "DIV")
               prevTextRef.current.style.backgroundColor = "transparent";
             prevTextRef.current = null;
-            setText("");
-            resetState();
+            resetTextState();
             modeEdit !== "sticker" ? setModeEdit("sticker") : null;
           }}
         >

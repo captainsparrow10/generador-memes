@@ -4,7 +4,6 @@ import React, { ChangeEvent, useState } from "react";
 import FontFamilySize from "../Fonts/FamilySize";
 import FontStyle from "../Fonts/Style";
 import clsx from "clsx";
-import { useEditContext } from "@Contexts/Edit";
 import { useTextContext } from "@Contexts/Text";
 
 type Props = {
@@ -13,24 +12,27 @@ type Props = {
   deleteTextButton: () => void;
 };
 
-export default function EditText({ addText, addTextButton, deleteTextButton }: Props) {
+export default function EditText({
+  addText,
+  addTextButton,
+  deleteTextButton,
+}: Props) {
   const [editView, setEditView] = useState(false);
   const {
-    styleText: { color, fontFamily, textStyle },
-    setColor,
+    styleText: { color, fontFamily, transform, style, weight, text },
+    updateStyleText,
     inputRefs: {
       current: { textColor },
     },
+    prevTextRef,
   } = useTextContext();
-  const { transform, style, weight } = textStyle;
-  const { text, setText, prevTextRef } = useEditContext();
 
   const handleChangeText = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setText(e.target.value);
+    updateStyleText("text", e.target.value);
   };
 
   const handleChangeColor = (e: ChangeEvent<HTMLInputElement>) => {
-    setColor(e.target.value);
+    updateStyleText("color", e.target.value);
   };
 
   const editedText = () => {
@@ -62,8 +64,18 @@ export default function EditText({ addText, addTextButton, deleteTextButton }: P
       </div>
       {editedText() && (
         <div className="flex gap-x-6">
-          <button onClick={addTextButton} className="bg-black text-white rounded-md px-3 py-3 border border-transparent hover:bg-white hover:text-black hover:border-black duration-150 ease-in-out">Actualizar</button>
-          <button onClick={deleteTextButton} className="bg-black text-white rounded-md px-3 py-3 border border-transparent hover:bg-white hover:text-black hover:border-black duration-150 ease-in-out" >Eliminar</button>
+          <button
+            onClick={addTextButton}
+            className="rounded-md border border-transparent bg-black px-3 py-3 text-white duration-150 ease-in-out hover:border-black hover:bg-white hover:text-black"
+          >
+            Actualizar
+          </button>
+          <button
+            onClick={deleteTextButton}
+            className="rounded-md border border-transparent bg-black px-3 py-3 text-white duration-150 ease-in-out hover:border-black hover:bg-white hover:text-black"
+          >
+            Eliminar
+          </button>
         </div>
       )}
 

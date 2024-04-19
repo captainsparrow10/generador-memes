@@ -6,7 +6,6 @@ export default function FontStyle() {
     setTextTranform,
     setTextWeight,
     setTextStyle,
-    inputRefs,
     styleText: {
       textStyle: { weight, transform, style },
     },
@@ -46,7 +45,6 @@ export default function FontStyle() {
           type="checkbox"
           id="allCaps"
           checked={transform === "uppercase"}
-          ref={inputRefs.current.textTransformRef}
           onChange={handleChange}
           className=" accent-black"
         />
@@ -56,7 +54,6 @@ export default function FontStyle() {
         <input
           type="checkbox"
           id="bold"
-          ref={inputRefs.current.textWeightRef}
           onChange={handleChange}
           checked={weight === "bold"}
           className=" accent-black"
@@ -66,7 +63,6 @@ export default function FontStyle() {
       <div className="flex gap-x-2">
         <input
           type="checkbox"
-          ref={inputRefs.current.textStyleRef}
           checked={style === "italic"}
           onChange={handleChange}
           id="italic"

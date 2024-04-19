@@ -1,84 +1,57 @@
 "use client";
-import { StickerType, memeImageType } from "@/Types";
-import { StaticImageData } from "next/image";
-import download from "downloadjs";
-import { toPng } from "html-to-image";
-import React, {
-  useContext,
-  useState,
-  createContext,
-  useRef,
-  Ref,
-  MutableRefObject,
-} from "react";
-import { useTextContext } from "./Text";
+import { FilterImageType, MemeImageType } from "@Types";
+import React, { useContext, useState, createContext, useRef } from "react";
+import { useTextContext } from "@Contexts/Text";
+import { initialFilterImageState, initialImageState } from "@Utils/Const";
 
-interface IEditContext {
-  exampleState: string;
-  setExampleState: React.Dispatch<React.SetStateAction<string>>;
+interface ICanvaContext {
   showModal: boolean;
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
-  text: string;
-  setText: React.Dispatch<React.SetStateAction<string>>;
-  prevTextRef: MutableRefObject<HTMLElement | null>;
-  imageSelected: memeImageType;
-  setImageSelected: React.Dispatch<React.SetStateAction<memeImageType>>;
+  imageSelected: MemeImageType;
+  setImageSelected: React.Dispatch<React.SetStateAction<MemeImageType>>;
   fileInputRef: React.RefObject<HTMLInputElement>;
   handleOnMouseDown: (event: React.MouseEvent<HTMLDivElement>) => void;
   handleOnTouchStart: (event: React.TouchEvent<HTMLDivElement>) => void;
-  saveImage: () => void;
   canvasRef: React.RefObject<HTMLDivElement>;
   boxes: JSX.Element[];
   setBoxes: React.Dispatch<React.SetStateAction<JSX.Element[]>>;
   imageRef: React.RefObject<HTMLImageElement>;
   resetEdit: () => void;
-  modeEdit: "text" | "sticker";
-  setModeEdit: React.Dispatch<React.SetStateAction<"text" | "sticker">>;
-  stickerSelected: {
-    url: string;
-    size: number;
+  filterImage: {
+    color: string;
+    opacity: number;
   };
-  setStickerSelected: React.Dispatch<
+  setFilterImage: React.Dispatch<
     React.SetStateAction<{
-      url: string;
-      size: number;
+      color: string;
+      opacity: number;
     }>
   >;
-  colorValue: string
-  setColorValue: React.Dispatch<React.SetStateAction<string>>
-  opacity: number
-  setOpacity: React.Dispatch<React.SetStateAction<number>>
+  updateFilterImage: (
+    property: keyof FilterImageType,
+    value: FilterImageType[typeof property],
+  ) => void;
 }
 
-export const EditContext = createContext<IEditContext | undefined>(undefined);
+export const CanvaContext = createContext<ICanvaContext | undefined>(undefined);
 
-export const initialStickerState = {
-  url: "",
-  size: 0,
-};
-
-export const EditProvider: React.FC<{ children: React.ReactNode }> = ({
+export const CanvaProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const [exampleState, setExampleState] = useState<string>("");
-  const [text, setText] = useState<string>("");
   const [showModal, setShowModal] = useState<boolean>(false);
   const [boxes, setBoxes] = useState<JSX.Element[]>([]);
-  const [modeEdit, setModeEdit] = useState<"text" | "sticker">("text");
   const imageRef = useRef<HTMLImageElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const canvasRef = useRef<HTMLDivElement>(null);
-  const prevTextRef = useRef<HTMLElement | null>(null);
-  const [imageSelected, setImageSelected] = useState({
-    id: "",
-    name: "",
-    url: "",
-  });
-  const [colorValue, setColorValue] = useState<string>("#000000");
-  const [opacity, setOpacity] = useState<number>(0);
-
-  const [stickerSelected, setStickerSelected] = useState(initialStickerState);
-  const { selectedStylesTextRef } = useTextContext();
+  const [imageSelected, setImageSelected] =
+    useState<MemeImageType>(initialImageState);
+  const [filterImage, setFilterImage] = useState(initialFilterImageState);
+  const {
+    selectedStylesTextRef,
+    setModeEdit,
+    prevTextRef,
+    setStickerSelected,
+  } = useTextContext();
 
   const handleOnMouseDown = (event: React.MouseEvent<HTMLDivElement>) => {
     event.preventDefault();
@@ -108,7 +81,6 @@ export const EditProvider: React.FC<{ children: React.ReactNode }> = ({
       }
 
       selectedStylesTextRef(target);
-      setText(target.textContent!);
 
       const onMouseMove = (e: MouseEvent) => {
         const rect = canvasRef.current?.getBoundingClientRect();
@@ -127,11 +99,9 @@ export const EditProvider: React.FC<{ children: React.ReactNode }> = ({
         target.style.top = `${boundedY}px`;
       };
 
-
       const onMouseUp = () => {
         document.removeEventListener("mousemove", onMouseMove);
         document.removeEventListener("mouseup", onMouseUp);
-
       };
 
       document.addEventListener("mousemove", onMouseMove);
@@ -141,12 +111,11 @@ export const EditProvider: React.FC<{ children: React.ReactNode }> = ({
   };
 
   const handleOnTouchStart = (event: React.TouchEvent<HTMLDivElement>) => {
-    document.documentElement.style.overflow ="hidden"
+    document.documentElement.style.overflow = "hidden";
 
     const touch = event.touches[0];
     const target = event.target as HTMLElement;
     const tag = target.getAttribute("data-tag");
-    
 
     const mode = tag === "sticker" ? "sticker" : "text";
     setModeEdit(mode);
@@ -171,7 +140,6 @@ export const EditProvider: React.FC<{ children: React.ReactNode }> = ({
     }
 
     selectedStylesTextRef(target);
-    setText(target.textContent!);
 
     const onTouchMove = (e: TouchEvent) => {
       const rect = canvasRef.current?.getBoundingClientRect();
@@ -193,73 +161,58 @@ export const EditProvider: React.FC<{ children: React.ReactNode }> = ({
     const onTouchEnd = () => {
       document.removeEventListener("touchmove", onTouchMove);
       document.removeEventListener("touchend", onTouchEnd);
-      document.documentElement.style.overflow =""
+      document.documentElement.style.overflow = "";
     };
 
-    
     document.addEventListener("touchmove", onTouchMove);
     document.addEventListener("touchend", onTouchEnd);
-
   };
 
-  const saveImage = () => {
-    if (!canvasRef.current) return;
-    if (prevTextRef.current) {
-      prevTextRef.current.style.backgroundColor = "transparent";
-    }
-    toPng(canvasRef.current).then((dataUrl) => {
-      download(dataUrl, "custom-image.png");
-    });
+  const updateFilterImage = (
+    property: keyof FilterImageType,
+    value: FilterImageType[typeof property],
+  ) => {
+    setFilterImage((prevState) => ({
+      ...prevState,
+      [property]: value,
+    }));
   };
 
   const resetEdit = () => {
-    setText("");
     prevTextRef.current = null;
     if (!imageRef.current) return;
-    imageRef.current.style.opacity = "0";
-    imageRef.current.style.backgroundColor = "#000000";
-    setOpacity(0)
-    setColorValue('#000000')
+    setFilterImage(initialFilterImageState);
+    imageRef.current.style.opacity = filterImage.opacity.toString();
+    imageRef.current.style.backgroundColor = filterImage.color;
   };
 
   return (
-    <EditContext.Provider
+    <CanvaContext.Provider
       value={{
-        exampleState,
-        setExampleState,
+        updateFilterImage,
         showModal,
         setShowModal,
-        text,
-        setText,
-        prevTextRef,
         imageSelected,
         setImageSelected,
         fileInputRef,
         handleOnMouseDown,
         handleOnTouchStart,
-        saveImage,
         canvasRef,
         boxes,
         setBoxes,
         imageRef,
         resetEdit,
-        modeEdit,
-        setModeEdit,
-        setStickerSelected,
-        stickerSelected,
-        colorValue,
-        opacity,
-        setColorValue,
-        setOpacity
+        filterImage,
+        setFilterImage,
       }}
     >
       {children}
-    </EditContext.Provider>
+    </CanvaContext.Provider>
   );
 };
 
-export const useEditContext = (): IEditContext => {
-  const context = useContext(EditContext);
+export const useCanvaContext = (): ICanvaContext => {
+  const context = useContext(CanvaContext);
 
   if (context === undefined) {
     throw new Error("EditProvider must be used within a EditProvider");

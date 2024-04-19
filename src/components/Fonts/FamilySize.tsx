@@ -3,24 +3,10 @@ import { useTextContext } from "@Contexts/Text";
 import { ChevronDownIcon } from "@heroicons/react/16/solid";
 import clsx from "clsx";
 import React, { useState } from "react";
+import { fontFamilies } from "@Utils/Const";
 
 export default function FontFamilySize() {
-  const fontFamilies = [
-    { id: 1, name: "serif" },
-    { id: 2, name: "sans-serif" },
-    { id: 3, name: "monospace" },
-    { id: 4, name: "cursive" },
-    { id: 5, name: "fantasy" },
-    { id: 6, name: "system-ui" },
-    { id: 7, name: "ui-serif" },
-    { id: 8, name: "ui-sans-serif" },
-    { id: 9, name: "ui-monospace" },
-    { id: 10, name: "ui-rounded" },
-    { id: 11, name: "emoji" },
-    { id: 12, name: "math" },
-    { id: 13, name: "fangsong" },
-    { id: 14, name: "roboto" },
-  ];
+
 
   const [active, setActive] = useState(false);
   const {

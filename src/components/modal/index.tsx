@@ -1,25 +1,20 @@
 "use client";
-import { useEditContext } from "@Contexts/Edit";
-import { memeImageType } from "@Types";
+import { useCanvaContext } from "@Contexts/Canva";
+import { MemeImageType } from "@Types";
 import { useState } from "react";
 import { v4 } from "uuid";
-import {  useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { PhotoIcon, XMarkIcon } from "@heroicons/react/16/solid";
 import ModalOption from "@Components/Modal/Options";
 import { Button, Divider } from "@Components/UI";
 
 const Modal = () => {
-  const {
-    showModal,
-    setShowModal,
-    setImageSelected,
-    fileInputRef,
-  } = useEditContext();
+  const { showModal, setShowModal, setImageSelected, fileInputRef } =
+    useCanvaContext();
   const router = useRouter();
-
   const [error, setError] = useState<boolean>(false);
   const [errorDropImage, setErrorDropImage] = useState<boolean>(false);
-  const [inputUrl, setInputUrl] = useState<memeImageType | null>(null);
+  const [inputUrl, setInputUrl] = useState<MemeImageType | null>(null);
   const [active, setActive] = useState<"upload" | "url">("upload");
   const [dragText, setDragText] = useState<string>("Browse or drop image");
   const [isDropped, setIsDropped] = useState<boolean>(false);
@@ -55,7 +50,7 @@ const Modal = () => {
       setError(false);
     }
 
-    const meme: memeImageType = {
+    const meme: MemeImageType = {
       id: v4(),
       name: "example",
       url: e.target.value,
@@ -73,7 +68,7 @@ const Modal = () => {
 
     setErrorDropImage(false);
 
-    const meme: memeImageType = {
+    const meme: MemeImageType = {
       id: v4(),
       name: file.name,
       url: URL.createObjectURL(file),

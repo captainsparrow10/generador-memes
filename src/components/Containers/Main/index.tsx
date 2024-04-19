@@ -1,17 +1,17 @@
 "use client";
 import React, { useEffect } from "react";
-import { useEditContext } from "@Contexts/Edit";
+import { useCanvaContext } from "@Contexts/Canva";
 import Modal from "@Components/Modal";
 import Carrusel from "@Components/Containers/Main/Carrusel";
 import { AddImageIcon } from "@Public/Icons";
 
 export default function Main() {
-  const { setShowModal, setImageSelected } = useEditContext();
+  const { setShowModal, setImageSelected } = useCanvaContext();
   useEffect(() => {
     setImageSelected({ id: "", name: "", url: "" });
   }, []);
 
-  const handleClick = () => {
+  const handleModal = () => {
     setShowModal(true);
   };
   return (
@@ -20,7 +20,7 @@ export default function Main() {
         <h1 className="text-4xl font-bold">Imagenes</h1>
         <AddImageIcon
           className="h-full max-h-8   w-full  max-w-8 cursor-pointer"
-          onClick={handleClick}
+          onClick={handleModal}
         />
       </header>
       <Carrusel />

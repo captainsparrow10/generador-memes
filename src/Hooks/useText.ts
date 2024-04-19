@@ -1,25 +1,22 @@
-import { useEditContext } from "@Contexts/Edit";
+import { useCanvaContext } from "@Contexts/Canva";
 import { useTextContext } from "@Contexts/Text";
-import React from 'react';
-
 
 const useText = () => {
   const {
-    setText,
-    text,
-    prevTextRef,
     setBoxes,
-  } = useEditContext();
+  } = useCanvaContext();
 
   const {
     styleText: {
-      textStyle: { transform, style, weight },
+      transform, style, weight,
       fontFamily,
       fontSize,
       color,
+      text
     },
     setStyleText,
-    resetState,
+    resetTextState,
+    prevTextRef,
   } = useTextContext();
 
 
@@ -27,18 +24,18 @@ const useText = () => {
   const editText = () => {
     if (prevTextRef.current) {
       setStyleText({
-        textStyle: {
-          transform:
-            prevTextRef.current.style.textTransform === "none"
-              ? "normal-case"
-              : "uppercase",
-          weight:
-            prevTextRef.current.style.fontWeight === "400" ? "normal" : "bold",
-          style:
-            prevTextRef.current.style.fontStyle === "normal"
-              ? "not-italic"
-              : "italic",
-        },
+        text: prevTextRef.current.textContent!,
+        transform:
+          prevTextRef.current.style.textTransform === "none"
+            ? "normal-case"
+            : "uppercase",
+        weight:
+          prevTextRef.current.style.fontWeight === "400" ? "normal" : "bold",
+        style:
+          prevTextRef.current.style.fontStyle === "normal"
+            ? "not-italic"
+            : "italic",
+
         color: prevTextRef.current.style.color,
         fontSize: parseInt(prevTextRef.current.style.fontSize.split("px")[0]),
         fontFamily: prevTextRef.current.style.fontFamily,
@@ -55,15 +52,13 @@ const useText = () => {
       prevTextRef.current.style.fontFamily = fontFamily;
       prevTextRef.current.style.color = color;
       prevTextRef.current = null;
-      setText("");
-      resetState();
+      resetTextState();
       return;
     }
   };
   const createText = (newText: JSX.Element) => {
     setBoxes((prevText) => [...prevText, newText]);
-    setText("");
-    resetState();
+    resetTextState();
   }
 
   const deleteText = () => {
@@ -72,8 +67,7 @@ const useText = () => {
     const elementToRemove = prevTextRef.current;
     prevTextRef.current.parentNode?.removeChild(elementToRemove);
     prevTextRef.current = null;
-    setText("");
-    resetState();
+    resetTextState();
   };
 
 

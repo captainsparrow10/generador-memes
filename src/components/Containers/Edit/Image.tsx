@@ -1,12 +1,12 @@
-import { useEditContext } from "@Contexts/Edit";
+'use client'
+import { useCanvaContext } from "@Contexts/Canva";
 import { PhotoIcon } from "@heroicons/react/16/solid";
-
 interface ImageContainerProps {
   loading: boolean;
 }
 
 const ImageContainer = ({ loading }: ImageContainerProps) => {
-  const { canvasRef, imageSelected, imageRef, boxes } = useEditContext();
+  const { canvasRef, imageSelected, imageRef, boxes } = useCanvaContext();
 
   return (
     <div className="flex max-h-[600px]  w-full max-w-[600px]  items-center justify-center">
