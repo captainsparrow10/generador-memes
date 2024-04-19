@@ -29,22 +29,16 @@ export default function Header({ id, memes }: Props) {
   } = useCanvaContext();
   const { prevTextRef } = useTextContext();
   const [emojiActive, setEmojiActive] = useState(false);
+  const [opacity, setOpacity] = useState(0)
 
   const handleRangeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    updateFilterImage("opacity", Number(e.target.value));
     const opacityValue = parseFloat(e.target.value) / 100;
-    const img = imageRef.current;
-    if (!img) return;
-    img.style.opacity = opacityValue.toString();
+    updateFilterImage("opacity", opacityValue);
+    setOpacity(Number(e.target.value))
   };
 
   const handleColorChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     updateFilterImage("color", e.target.value);
-    const hexValue = filterImage.color.substring(1);
-    const color = hexToRgba(hexValue, 1);
-    const img = imageRef.current;
-    if (!img) return;
-    img.style.backgroundColor = color;
   };
 
   const handleStickerState = () => {
@@ -90,7 +84,7 @@ export default function Header({ id, memes }: Props) {
       <div className="flex flex-1 gap-3">
         <input
           type="range"
-          value={filterImage.opacity}
+          value={opacity}
           className="flex-1 bg-transparent"
           onChange={handleRangeChange}
         />

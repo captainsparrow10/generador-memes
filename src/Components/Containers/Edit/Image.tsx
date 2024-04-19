@@ -6,7 +6,8 @@ interface ImageContainerProps {
 }
 
 const ImageContainer = ({ loading }: ImageContainerProps) => {
-  const { canvasRef, imageSelected, imageRef, boxes } = useCanvaContext();
+  const { canvasRef, imageSelected, imageRef, boxes, filterImage } = useCanvaContext();
+
 
   return (
     <div className="flex max-h-[600px]  w-full max-w-[600px]  items-center justify-center">
@@ -19,9 +20,13 @@ const ImageContainer = ({ loading }: ImageContainerProps) => {
         ))}
         <div
           className="absolute left-0 top-0 h-full w-full"
-          ref={imageRef}
-          style={{ backgroundColor: "black", opacity: 0 }}
-        ></div>
+          style={{
+            "backgroundColor": filterImage.color,
+            "opacity": filterImage.opacity
+          }}
+        >
+          
+        </div>
         {loading ? (
           <div className="flex h-full w-full items-center justify-center bg-gray-100">
             <PhotoIcon className="h-2/5 w-full animate-pulse" />

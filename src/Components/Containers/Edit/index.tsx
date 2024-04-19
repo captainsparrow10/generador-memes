@@ -10,7 +10,6 @@ import { useTextContext } from "@Contexts/Text";
 import { validate } from "uuid";
 import ImageContainer from "@Components/Containers/Edit/Image";
 import { redirectTo } from "@Utils/Functions";
-import Selection from "@Components/Containers/Edit/Editor";
 import { initialStickerState } from "@Utils/Const";
 import Editor from "@Components/Containers/Edit/Editor";
 type Props = {
@@ -46,10 +45,6 @@ export default function EditContainer({ id }: Props) {
     canvasRef.current!.addEventListener("touchstart", handleOnTouchStart);
     canvasRef.current!.addEventListener("mousedown", onMouseDown);
 
-    return () => {
-      canvasRef.current!.removeEventListener("touchstart", handleOnTouchStart);
-      canvasRef.current!.removeEventListener("mousedown", onMouseDown);
-    };
   }, []);
 
   const memeImageById = async (id: string) => {
