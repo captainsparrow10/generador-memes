@@ -16,7 +16,7 @@ export default function Main() {
   };
   return (
     <main className="flex flex-col gap-y-6 p-6">
-      <header className="flex items-center justify-between">
+      <header className="flex items-center justify-between  ">
         <h1 className="text-4xl font-bold">Imagenes</h1>
         <AddImageIcon
           className="h-full max-h-8   w-full  max-w-8 cursor-pointer"

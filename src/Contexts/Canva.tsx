@@ -27,10 +27,13 @@ interface ICanvaContext {
       opacity: number;
     }>
   >;
+  opacity: number;
+  setOpacity: React.Dispatch<React.SetStateAction<number>>;
   updateFilterImage: (
     property: keyof FilterImageType,
     value: FilterImageType[typeof property],
   ) => void;
+  resetFilter : () => void
 }
 
 export const CanvaContext = createContext<ICanvaContext | undefined>(undefined);
@@ -46,6 +49,7 @@ export const CanvaProvider: React.FC<{ children: React.ReactNode }> = ({
   const [imageSelected, setImageSelected] =
     useState<MemeImageType>(initialImageState);
   const [filterImage, setFilterImage] = useState(initialFilterImageState);
+  const [opacity, setOpacity] = useState(0);
   const {
     selectedStylesTextRef,
     setModeEdit,
@@ -186,6 +190,11 @@ export const CanvaProvider: React.FC<{ children: React.ReactNode }> = ({
     imageRef.current.style.backgroundColor = filterImage.color;
   };
 
+  const resetFilter = () => {
+    setFilterImage(initialFilterImageState)
+    setOpacity(0)
+  }
+
   return (
     <CanvaContext.Provider
       value={{
@@ -204,6 +213,9 @@ export const CanvaProvider: React.FC<{ children: React.ReactNode }> = ({
         resetEdit,
         filterImage,
         setFilterImage,
+        opacity,
+        setOpacity,
+        resetFilter
       }}
     >
       {children}

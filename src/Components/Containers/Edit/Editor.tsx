@@ -14,7 +14,7 @@ import download from "downloadjs";
 export default function Editor() {
   const { editText, createText, deleteText, } = useText();
   const { editSticker, deleteSticker } = useSticker();
-  const { handleOnMouseDown, boxes, setBoxes, handleOnTouchStart, canvasRef, resetEdit } = useCanvaContext();
+  const { handleOnMouseDown, boxes, setBoxes, handleOnTouchStart, canvasRef, resetEdit, resetFilter } = useCanvaContext();
 
   const {
     styleText: { transform, style, weight, fontFamily, fontSize, color, text },
@@ -82,6 +82,7 @@ export default function Editor() {
     resetTextState();
     resetEdit();
     resetSticker()
+    resetFilter()
   };
   
 

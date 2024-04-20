@@ -18,7 +18,6 @@ type Props = {
 
 export default function Header({ id, memes }: Props) {
   const {
-    imageRef,
     filterImage,
     updateFilterImage,
     setImageSelected,
@@ -26,10 +25,12 @@ export default function Header({ id, memes }: Props) {
     setBoxes,
     handleOnMouseDown,
     handleOnTouchStart,
+    opacity,
+    setOpacity
   } = useCanvaContext();
   const { prevTextRef } = useTextContext();
   const [emojiActive, setEmojiActive] = useState(false);
-  const [opacity, setOpacity] = useState(0)
+ 
 
   const handleRangeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const opacityValue = parseFloat(e.target.value) / 100;
