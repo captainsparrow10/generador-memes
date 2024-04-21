@@ -1,5 +1,4 @@
 import React from 'react';
-import { useCanvaContext } from '@Contexts/Canva';
 import { Button } from '@Components/UI';
 import useImageHandler from '@Hooks/useImageHandler';
 

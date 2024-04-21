@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import { useCanvaContext } from "@Contexts/Canva";
 import { getMemeImages } from "@Services/Meme";
 import { MemeImageType } from "@Types";
@@ -12,7 +12,12 @@ type Props = {
   id: string;
 };
 
-export default function Carrusel({ id }: Props) {
+/**
+ * Componente de carrusel para mostrar imágenes de memes.
+ * @param {Props} props - Propiedades del componente.
+ * @returns {JSX.Element} El componente del carrusel de memes.
+ */
+export default function Carrusel({ id }: Props): JSX.Element {
   const { setShowModal, setImageSelected } = useCanvaContext();
   const scrollRef = useRef<HTMLDivElement>(null);
   const [memes, setMemes] = useState<MemeImageType[]>([]);
@@ -21,13 +26,18 @@ export default function Carrusel({ id }: Props) {
   const [end, setEnd] = useState(25);
 
   useEffect(() => {
+    // Actualiza la lista de memes al montar el componente
     updateMemesArray();
   }, []);
 
+  /**
+   * Maneja el evento de clic en el icono de foto.
+   */
   const handleClick = () => {
     setShowModal(true);
   };
 
+  // Acutaliza las imagenes al ahcer el scroll.
   useEffect(() => {
     const handleScroll = () => {
       const { scrollLeft, offsetWidth, scrollWidth } = scrollRef.current!;
@@ -47,6 +57,9 @@ export default function Carrusel({ id }: Props) {
     };
   }, [memes]);
 
+  /**
+   * Actualiza la lista de memes cargando más imágenes.
+   */
   const updateMemesArray = async () => {
     memes.length < 100 && setLoading(true);
     let newMemes = await getMemeImages(start, end);

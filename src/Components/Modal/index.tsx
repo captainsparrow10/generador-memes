@@ -1,13 +1,11 @@
 import React from 'react';
-import ModalContent from './ModalContent';
+import ModalContent from './ModalContent'; // Componente que muestra el contenido del modal
 import { XMarkIcon } from '@heroicons/react/16/solid';
 import { Divider } from '@Components/UI';
 import { useCanvaContext } from '@Contexts/Canva';
 
 const Modal = () => {
-
-  const { setShowModal, showModal } =
-    useCanvaContext();
+  const { setShowModal, showModal } = useCanvaContext(); // Estado y función del modal
 
   return (
     <div className={`fixed left-0 top-0 z-50 flex h-full w-full items-center justify-center bg-black bg-opacity-50 ${showModal ? "" : "hidden"}`}>
@@ -16,12 +14,12 @@ const Modal = () => {
           <XMarkIcon
             className="absolute left-0 top-0 ml-4 cursor-pointer py-2"
             width={24}
-            onClick={() => setShowModal(false)}
+            onClick={() => setShowModal(false)} // Cerrar el modal al hacer clic en la marca X
           />
-          <p className="font-bold">Select Image</p>
+          <p className="font-bold">Select Image</p> {/* Título del modal */}
         </div>
-        <Divider />
-        <ModalContent />
+        <Divider /> {/* Separador horizontal */}
+        <ModalContent /> {/* Contenido del modal */}
       </div>
     </div>
   );

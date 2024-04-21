@@ -8,11 +8,14 @@ import { getMemeImages } from "@Services/Meme";
 import Loading from "@Components/Containers/Main/Loading";
 import Masonry from "@mui/lab/Masonry";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { get } from "http";
 import { CircularProgress } from "@mui/material";
-export default function Carrusel() {
+
+/**
+ * Componente que muestra un carrusel de memes con carga infinita.
+ * @returns {JSX.Element} El componente del carrusel de memes.
+ */
+export default function Carrusel(): JSX.Element {
   const [memes, setMemes] = useState<MemeImageType[]>([]);
-  const [loading, setLoading] = useState(true);
   const [hasMore, setHasMore] = useState(true);
   let start = useRef(0);
   let end = useRef(25);
@@ -21,12 +24,17 @@ export default function Carrusel() {
     getMemes();
   }, []);
 
+  /**
+   * Obtiene los memes iniciales.
+   */
   const getMemes = async () => {
     const memes = await getMemeImages(start.current, end.current);
     setMemes(memes);
-    setLoading(false);
   };
 
+  /**
+   * Carga más memes al desplazarse.
+   */
   const moreData = async () => {
     start.current += 25;
     end.current += 25;
@@ -39,8 +47,6 @@ export default function Carrusel() {
       setMemes(memes.concat(response));
     } catch (error) {
       console.log(error);
-    } finally {
-      setLoading(false);
     }
   };
 

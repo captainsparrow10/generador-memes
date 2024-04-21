@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import StickerEditor from "@Components/Editors/Sticker";
 import EditText from "@Components/Editors/Text";
 import { Button } from "@Components/UI";
@@ -11,10 +11,22 @@ import useSticker from "@Hooks/useSticker";
 import { toPng } from "html-to-image";
 import download from "downloadjs";
 
-export default function Editor() {
-  const { editText, createText, deleteText, } = useText();
+/**
+ * Componente principal del editor de imágenes.
+ * @returns {JSX.Element} El componente del editor.
+ */
+export default function Editor(): JSX.Element {
+  const { editText, createText, deleteText } = useText();
   const { editSticker, deleteSticker } = useSticker();
-  const { handleOnMouseDown, boxes, setBoxes, handleOnTouchStart, canvasRef, resetEdit, resetFilter } = useCanvaContext();
+  const {
+    handleOnMouseDown,
+    boxes,
+    setBoxes,
+    handleOnTouchStart,
+    canvasRef,
+    resetEdit,
+    resetFilter,
+  } = useCanvaContext();
 
   const {
     styleText: { transform, style, weight, fontFamily, fontSize, color, text },
@@ -25,6 +37,10 @@ export default function Editor() {
     resetSticker,
   } = useTextContext();
 
+  /**
+   * Crea un nuevo elemento de texto para ser agregado al lienzo de edición.
+   * @returns {JSX.Element} El elemento de texto creado.
+   */
   const newText = (
     <div
       key={boxes.length}
@@ -45,6 +61,10 @@ export default function Editor() {
     </div>
   );
 
+  /**
+   * Agrega un texto al canvas al presionar Enter en el input.
+   * @param {React.KeyboardEvent<HTMLInputElement>} e - Evento del teclado.
+   */
   const addText = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key !== "Enter") return;
     if (text.trim() === "") return;
@@ -56,6 +76,10 @@ export default function Editor() {
     createText(newText);
   };
 
+  /**
+   * Agrega un texto al canvas al hacer clic en el botón.
+   * @param {React.MouseEvent<HTMLButtonElement>} e - Evento del clic.
+   */
   const addTextButton = (e: React.MouseEvent<HTMLButtonElement>) => {
     if (text.trim() === "") return;
 
@@ -67,6 +91,9 @@ export default function Editor() {
     createText(newText);
   };
 
+  /**
+   * Guarda la imagen actual como PNG y la descarga.
+   */
   const saveImage = () => {
     if (!canvasRef.current) return;
     if (prevTextRef.current) {
@@ -76,15 +103,17 @@ export default function Editor() {
       download(dataUrl, "custom-image.png");
     });
   };
-  
+
+  /**
+   * Limpia el canvas y restablece los estados de texto y sticker.
+   */
   const handlerClear = () => {
     setBoxes([]);
     resetTextState();
     resetEdit();
-    resetSticker()
-    resetFilter()
+    resetSticker();
+    resetFilter();
   };
-  
 
   return (
     <div className="flex flex-col gap-y-6">

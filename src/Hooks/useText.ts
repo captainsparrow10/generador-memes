@@ -19,8 +19,10 @@ const useText = () => {
     prevTextRef,
   } = useTextContext();
 
-
-
+  // Función para editar el texto existente
+  /**
+   * Edita el texto existente en el canvas con los estilos actuales.
+   */
   const editText = () => {
     if (prevTextRef.current) {
       setStyleText({
@@ -56,11 +58,21 @@ const useText = () => {
       return;
     }
   };
+
+  // Función para crear un nuevo texto en el canvas
+  /**
+   * Crea un nuevo texto en el canvas con los estilos actuales.
+   * @param newText - Nuevo texto a agregar al canvas como un elemento JSX.
+   */
   const createText = (newText: JSX.Element) => {
     setBoxes((prevText) => [...prevText, newText]);
     resetTextState();
-  }
+  };
 
+  // Función para eliminar el texto seleccionado
+  /**
+   * Elimina el texto seleccionado si es un DIV y reinicia su estado.
+   */
   const deleteText = () => {
     if (!prevTextRef.current) return;
     if (prevTextRef.current.nodeName !== "DIV") return;
@@ -70,16 +82,11 @@ const useText = () => {
     resetTextState();
   };
 
-
-
-
-
   return {
     editText,
     createText,
     deleteText,
   };
-}
-
+};
 
 export default useText;

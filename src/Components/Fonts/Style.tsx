@@ -1,30 +1,34 @@
 import { useTextContext } from "@Contexts/Text";
 import React, { ChangeEvent } from "react";
 
-export default function FontStyle() {
+/**
+ * Componente para seleccionar el estilo del texto (mayúsculas, negrita, cursiva).
+ * @returns {JSX.Element} El componente FontStyle.
+ */
+export default function FontStyle(): JSX.Element {
   const {
     updateStyleText,
     styleText: { weight, transform, style },
   } = useTextContext();
 
+  /**
+   * Maneja el cambio en los estilos del texto según la acción del usuario.
+   * @param {ChangeEvent<HTMLInputElement>} e - Evento de cambio.
+   */
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { id, checked } = e.target;
 
     switch (id) {
       case "allCaps":
-        let newTranform: "uppercase" | "normal-case" = checked
-          ? "uppercase"
-          : "normal-case";
-        updateStyleText("transform", newTranform);
+        let newTransform: "uppercase" | "normal-case" = checked ? "uppercase" : "normal-case";
+        updateStyleText("transform", newTransform);
         break;
       case "bold":
         let newWeight: "bold" | "normal" = checked ? "bold" : "normal";
         updateStyleText("weight", newWeight);
         break;
       case "italic":
-        let newStyle: "italic" | "not-italic" = checked
-          ? "italic"
-          : "not-italic";
+        let newStyle: "italic" | "not-italic" = checked ? "italic" : "not-italic";
         updateStyleText("style", newStyle);
         break;
       default:
@@ -34,13 +38,14 @@ export default function FontStyle() {
 
   return (
     <div className="flex gap-x-6">
+      {/* Checkbox para estilos de texto */}
       <div className="flex gap-x-2">
         <input
           type="checkbox"
           id="allCaps"
           checked={transform === "uppercase"}
           onChange={handleChange}
-          className=" accent-black"
+          className="accent-black"
         />
         <label htmlFor="allCaps">All Caps</label>
       </div>
@@ -50,7 +55,7 @@ export default function FontStyle() {
           id="bold"
           onChange={handleChange}
           checked={weight === "bold"}
-          className=" accent-black"
+          className="accent-black"
         />
         <label htmlFor="bold">Bold</label>
       </div>
@@ -60,7 +65,7 @@ export default function FontStyle() {
           checked={style === "italic"}
           onChange={handleChange}
           id="italic"
-          className=" accent-black"
+          className="accent-black"
         />
         <label htmlFor="italic">Italic</label>
       </div>

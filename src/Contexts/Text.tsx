@@ -40,19 +40,27 @@ interface OptionTextRefs {
   textColor: React.MutableRefObject<HTMLInputElement | null>;
 }
 
+// Crear el contexto de Texto
 export const TextContext = createContext<ITextContext | undefined>(undefined);
 
+
+// Proveedor del contexto de Texto
 export const TextProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const [styleText, setStyleText] = useState<StylesType>(initialTextState);
-  const prevTextRef = useRef<HTMLElement | null>(null);
-  const [modeEdit, setModeEdit] = useState<"text" | "sticker">("text");
+  const [styleText, setStyleText] = useState<StylesType>(initialTextState); // Estado del estilo del texto
+  const prevTextRef = useRef<HTMLElement | null>(null); // Referencia al elemento de texto anterior
+  const [modeEdit, setModeEdit] = useState<"text" | "sticker">("text"); // Modo de edición actual
   const [stickerSelected, setStickerSelected] = useState(initialStickerState);
   const inputRefs = useRef<OptionTextRefs>({
-    textColor: useRef<HTMLInputElement | null>(null),
-  });
+    textColor: useRef<HTMLInputElement | null>(null), 
+  });  // Referencia al input de color de texto
 
+  /**
+  *  Función para actualizar un estilo específico del texto
+  * @param {property} keyof StylesType - nombre de la propiedad a cambiar
+  * @param {value} StylesType - valor que vas a cambiar
+ */
   const updateStyleText = (
     property: keyof StylesType,
     value: StylesType[typeof property],
@@ -63,6 +71,10 @@ export const TextProvider: React.FC<{ children: React.ReactNode }> = ({
     }));
   };
 
+ /**
+  * Función para establecer los estilos del texto seleccionado.
+  * @param {HTMLElement} target - El elemento HTML cuyos estilos se establecerán.
+ */
   const selectedStylesTextRef = (target: HTMLElement) => {
     target.style.backgroundColor = "white";
     if (!inputRefs.current.textColor.current) return;
@@ -93,10 +105,16 @@ export const TextProvider: React.FC<{ children: React.ReactNode }> = ({
     });
   };
 
+  /**
+  * Resetea el estilo del texto al inicial
+ */
   const resetTextState = () => {
     setStyleText(initialTextState);
   };
 
+  /**
+  * Resetea el estilo del sticker al inicial
+ */
   const resetSticker = () => {
     setStickerSelected(initialStickerState);
   };
@@ -123,6 +141,9 @@ export const TextProvider: React.FC<{ children: React.ReactNode }> = ({
   );
 };
 
+/**
+  * Hook del contexto para usar
+ */
 export const useTextContext = (): ITextContext => {
   const context = useContext(TextContext);
 

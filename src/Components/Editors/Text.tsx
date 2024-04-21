@@ -6,17 +6,25 @@ import FontStyle from "../Fonts/Style";
 import clsx from "clsx";
 import { useTextContext } from "@Contexts/Text";
 
+/**
+ * Propiedades del componente EditText.
+ */
 type Props = {
-  addText: (e: React.KeyboardEvent<HTMLInputElement>) => void;
-  addTextButton: (e: React.MouseEvent<HTMLButtonElement>) => void;
-  deleteTextButton: () => void;
+  addText: (e: React.KeyboardEvent<HTMLInputElement>) => void; // Función para añadir texto al presionar Enter
+  addTextButton: (e: React.MouseEvent<HTMLButtonElement>) => void; // Función para añadir texto mediante botón
+  deleteTextButton: () => void; // Función para eliminar texto
 };
 
+/**
+ * Componente para editar texto, incluyendo estilo, color y acciones.
+ * @param {Props} props - Propiedades del componente EditText.
+ * @returns {JSX.Element} El componente EditText.
+ */
 export default function EditText({
   addText,
   addTextButton,
   deleteTextButton,
-}: Props) {
+}: Props): JSX.Element {
   const [editView, setEditView] = useState(false);
   const {
     styleText: { color, fontFamily, transform, style, weight, text },
@@ -27,21 +35,34 @@ export default function EditText({
     prevTextRef,
   } = useTextContext();
 
+  /**
+   * Maneja el cambio de texto en el input.
+   * @param {React.ChangeEvent<HTMLInputElement>} e - Evento de cambio.
+   */
   const handleChangeText = (e: React.ChangeEvent<HTMLInputElement>) => {
     updateStyleText("text", e.target.value);
   };
 
+  /**
+   * Maneja el cambio de color del texto.
+   * @param {ChangeEvent<HTMLInputElement>} e - Evento de cambio.
+   */
   const handleChangeColor = (e: ChangeEvent<HTMLInputElement>) => {
     updateStyleText("color", e.target.value);
   };
 
-  const editedText = () => {
+  /**
+   * Verifica si hay texto editado previamente.
+   * @returns {boolean} True si hay texto editado, false de lo contrario.
+   */
+  const editedText = (): boolean => {
     if (prevTextRef.current?.nodeName === "DIV") return true;
     return false;
   };
 
   return (
     <div className="flex flex-col gap-y-3">
+      {/* Input para editar texto */}
       <div className="flex h-12 divide-x divide-black overflow-hidden rounded border border-black">
         <input
           type="text"
@@ -52,6 +73,7 @@ export default function EditText({
           onKeyDown={addText}
         />
 
+        {/* Selector de color del texto */}
         <div className="flex h-full w-12 shrink-0 items-center justify-center">
           <div className="rounded" />
           <input
@@ -62,6 +84,8 @@ export default function EditText({
           />
         </div>
       </div>
+
+      {/* Botones de acciones si hay texto editado */}
       {editedText() && (
         <div className="flex gap-x-6">
           <button
@@ -79,19 +103,21 @@ export default function EditText({
         </div>
       )}
 
+      {/* Vista para expandir opciones de edición */}
       <div className="flex items-center gap-x-3">
         <p>Editar texto</p>
         <ChevronDownIcon
           className={clsx(
             "h-6 w-6 transition-all",
-            editView && " rotate-180 transform",
+            editView && "rotate-180 transform",
           )}
           onClick={() => setEditView(!editView)}
         />
       </div>
 
+      {/* Contenido expandido para editar estilo del texto */}
       <div
-        className={clsx("m flex-col gap-y-3", editView ? "flex " : "hidden")}
+        className={clsx("flex flex-col gap-y-3", editView ? "flex" : "hidden")}
       >
         <FontFamilySize />
         <FontStyle />

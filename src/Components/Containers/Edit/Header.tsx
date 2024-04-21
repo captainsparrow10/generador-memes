@@ -16,7 +16,12 @@ type Props = {
   memes: MemeImageType[];
 };
 
-export default function Header({ id, memes }: Props) {
+/**
+ * Componente de encabezado para la edición de imágenes.
+ * @param {Props} props - Propiedades del componente.
+ * @returns {JSX.Element} El componente de encabezado.
+ */
+export default function Header({ id, memes }: Props): JSX.Element {
   const {
     filterImage,
     updateFilterImage,
@@ -26,22 +31,32 @@ export default function Header({ id, memes }: Props) {
     handleOnMouseDown,
     handleOnTouchStart,
     opacity,
-    setOpacity
+    setOpacity,
   } = useCanvaContext();
   const { prevTextRef } = useTextContext();
   const [emojiActive, setEmojiActive] = useState(false);
- 
 
+  /**
+   * Maneja el cambio en el rango de opacidad.
+   * @param {React.ChangeEvent<HTMLInputElement>} e - Evento de cambio.
+   */
   const handleRangeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const opacityValue = parseFloat(e.target.value) / 100;
     updateFilterImage("opacity", opacityValue);
-    setOpacity(Number(e.target.value))
+    setOpacity(Number(e.target.value));
   };
 
+  /**
+   * Maneja el cambio en el color del filtro.
+   * @param {React.ChangeEvent<HTMLInputElement>} e - Evento de cambio.
+   */
   const handleColorChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     updateFilterImage("color", e.target.value);
   };
 
+  /**
+   * Cambia el estado de los stickers.
+   */
   const handleStickerState = () => {
     setEmojiActive(!emojiActive);
     if (!prevTextRef.current) return;
@@ -49,20 +64,10 @@ export default function Header({ id, memes }: Props) {
     prevTextRef.current = null;
   };
 
-  const handleRandomImage = () => {
-    const memesAvailable = memes.filter(
-      (meme) => meme.id !== null && meme.id !== undefined && meme.id !== id,
-    );
-
-    if (memesAvailable.length > 0) {
-      const randomIndex = Math.floor(Math.random() * memesAvailable.length);
-      const meme = memesAvailable[randomIndex];
-      setImageSelected(meme);
-    } else {
-      console.log("No hay IDs disponibles en el array.");
-    }
-  };
-
+  /**
+   * Agrega un sticker al canvas.
+   * @param {StickerType} sticker - Sticker a agregar.
+   */
   const addSticker = (sticker: StickerType) => {
     const newText = (
       <img
@@ -78,6 +83,23 @@ export default function Header({ id, memes }: Props) {
       />
     );
     setBoxes((prevText) => [...prevText, newText]);
+  };
+
+  /**
+   * Maneja el clic en el ícono para seleccionar una imagen aleatoria.
+   */
+  const handleRandomImage = () => {
+    const memesAvailable = memes.filter(
+      (meme) => meme.id !== null && meme.id !== undefined && meme.id !== id
+    );
+
+    if (memesAvailable.length > 0) {
+      const randomIndex = Math.floor(Math.random() * memesAvailable.length);
+      const meme = memesAvailable[randomIndex];
+      setImageSelected(meme);
+    } else {
+      console.log("No hay IDs disponibles en el array.");
+    }
   };
 
   return (
@@ -106,13 +128,13 @@ export default function Header({ id, memes }: Props) {
 
           <div
             className={clsx(
-              "absolute right-6 z-50 flex w-[200px] flex-wrap justify-evenly gap-6 overflow-hidden  rounded bg-white transition-all",
-              emojiActive ? "h-fit border border-gray-300 p-6" : "h-0",
+              "absolute right-6 z-50 flex w-[200px] flex-wrap justify-evenly gap-6 overflow-hidden rounded bg-white transition-all",
+              emojiActive ? "h-fit border border-gray-300 p-6" : "h-0"
             )}
           >
             {Stickers.map((sticker) => (
               <div
-                className="relative h-6 w-6  cursor-pointer"
+                className="relative h-6 w-6 cursor-pointer"
                 key={sticker.id}
                 onClick={() => {
                   addSticker(sticker);
@@ -125,7 +147,7 @@ export default function Header({ id, memes }: Props) {
           </div>
         </div>
         <RandomIcon
-          className="h-full max-h-8   w-full  max-w-8 cursor-pointer text-gray-300"
+          className="h-full max-h-8 w-full max-w-8 cursor-pointer text-gray-300"
           onClick={handleRandomImage}
         />
       </div>

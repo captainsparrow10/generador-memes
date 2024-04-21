@@ -36,27 +36,36 @@ interface ICanvaContext {
   resetFilter : () => void
 }
 
+// Crear el contexto de Canva
 export const CanvaContext = createContext<ICanvaContext | undefined>(undefined);
 
+// Proveedor del contexto de Canva
 export const CanvaProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const [showModal, setShowModal] = useState<boolean>(false);
-  const [boxes, setBoxes] = useState<JSX.Element[]>([]);
-  const imageRef = useRef<HTMLImageElement>(null);
-  const fileInputRef = useRef<HTMLInputElement>(null);
-  const canvasRef = useRef<HTMLDivElement>(null);
+  const [showModal, setShowModal] = useState<boolean>(false); // Estado del modal
+  const [boxes, setBoxes] = useState<JSX.Element[]>([]); // Elementos en el canvas
+  const imageRef = useRef<HTMLImageElement>(null); // Referencia a la imagen
+  const fileInputRef = useRef<HTMLInputElement>(null); // Referencia al input de archivos
+  const canvasRef = useRef<HTMLDivElement>(null);  // Referencia al canvas
+
+  // Estado y funciones de edición y filtros de imagen
   const [imageSelected, setImageSelected] =
-    useState<MemeImageType>(initialImageState);
-  const [filterImage, setFilterImage] = useState(initialFilterImageState);
-  const [opacity, setOpacity] = useState(0);
+    useState<MemeImageType>(initialImageState); 
+  const [filterImage, setFilterImage] = useState(initialFilterImageState); // Filtros de imagen
+  const [opacity, setOpacity] = useState(0); // Opacidad de la imagen
   const {
     selectedStylesTextRef,
     setModeEdit,
     prevTextRef,
     setStickerSelected,
-  } = useTextContext();
+  } = useTextContext(); // Hooks del contexto de texto
 
+
+ /**
+   * Maneja el evento de clic del mouse en el canvas.
+   * @param {React.MouseEvent<HTMLDivElement>} event - Evento del clic.
+   */
   const handleOnMouseDown = (event: React.MouseEvent<HTMLDivElement>) => {
     event.preventDefault();
     const target = event.target as HTMLElement;
@@ -114,6 +123,10 @@ export const CanvaProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   };
 
+  /**
+   * Maneja el evento de inicio de toque en el canvas.
+   * @param {React.TouchEvent<HTMLDivElement>} event - Evento de toque.
+   */
   const handleOnTouchStart = (event: React.TouchEvent<HTMLDivElement>) => {
     document.documentElement.style.overflow = "hidden";
 
@@ -172,6 +185,11 @@ export const CanvaProvider: React.FC<{ children: React.ReactNode }> = ({
     document.addEventListener("touchend", onTouchEnd);
   };
 
+   /**
+   * Actualiza una propiedad del filtro de imagen.
+   * @param {keyof FilterImageType} property - Propiedad a actualizar.
+   * @param {FilterImageType[typeof property]} value - Nuevo valor de la propiedad.
+   */
   const updateFilterImage = (
     property: keyof FilterImageType,
     value: FilterImageType[typeof property],
@@ -182,6 +200,9 @@ export const CanvaProvider: React.FC<{ children: React.ReactNode }> = ({
     }));
   };
 
+    /**
+   * Restablece la configuración de edición en el canvas.
+   */
   const resetEdit = () => {
     prevTextRef.current = null;
     if (!imageRef.current) return;
@@ -190,6 +211,9 @@ export const CanvaProvider: React.FC<{ children: React.ReactNode }> = ({
     imageRef.current.style.backgroundColor = filterImage.color;
   };
 
+   /**
+   * Restablece la configuración del filtro de imagen.
+   */
   const resetFilter = () => {
     setFilterImage(initialFilterImageState)
     setOpacity(0)
@@ -223,6 +247,7 @@ export const CanvaProvider: React.FC<{ children: React.ReactNode }> = ({
   );
 };
 
+// Hook personalizado para acceder al contexto de Canva
 export const useCanvaContext = (): ICanvaContext => {
   const context = useContext(CanvaContext);
 
