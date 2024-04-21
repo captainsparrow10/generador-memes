@@ -3,7 +3,7 @@ import {  MemeImageType } from "@Types";
 export const getMemeImages = async (
   start: number,
   end: number,
-): Promise<MemeImageType[] | undefined> => {
+): Promise<MemeImageType[] > => {
   try {
     const response = await fetch("https://api.imgflip.com/get_memes");
     const data = await response.json();
@@ -13,9 +13,10 @@ export const getMemeImages = async (
     if (totalMemes >= end) {
       return memes.slice(start, end);
     }
+    return []
   } catch (error) {
     console.error("Error al obtener memes:", error);
-    return undefined;
+    return [];
   }
 };
 
