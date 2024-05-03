@@ -23,9 +23,9 @@ type Props = {
  * @returns {JSX.Element} El elemento principal de la interfaz de edición.
  */
 export default function EditContainer({ id }: Props): JSX.Element {
-  const { imageSelected, setImageSelected, canvasRef } = useCanvaContext();
+  const { imageSelected, setImageSelected, canvasRef, setBoxes, resetEdit, resetFilter } = useCanvaContext();
   const [loading, setLoading] = useState(true);
-  const { resetTextState, prevTextRef, setStickerSelected } = useTextContext();
+  const { resetTextState, prevTextRef, setStickerSelected, resetSticker} = useTextContext();
 
   /**
    * Maneja la selección de un elemento en el canvas.
@@ -59,8 +59,8 @@ export default function EditContainer({ id }: Props): JSX.Element {
 
      // Limpia los event listeners al desmontar el componente
     return () => {
-      canvasRef.current!.removeEventListener("touchstart", handleOnTouchStart);
-      canvasRef.current!.removeEventListener("mousedown", onMouseDown);
+      // canvasRef.current!.removeEventListener("touchstart", handleOnTouchStart);
+      // canvasRef.current!.removeEventListener("mousedown", onMouseDown);
     };
   }, []);
 
@@ -87,9 +87,17 @@ export default function EditContainer({ id }: Props): JSX.Element {
     }
   };
 
+  const handlerClear = () => {
+    setBoxes([]);
+    resetTextState();
+    resetEdit();
+    resetSticker();
+    resetFilter();
+  };
+
   return (
     <main className="flex flex-col gap-y-6 p-6">
-      <Link href="/" className="h-fit w-fit">
+      <Link href="/" className="h-fit w-fit" onClick={handlerClear}>
         <ArrowLeftIcon className="h-full max-h-8 w-full max-w-8" />
       </Link>
       <section className="flex justify-center ">
