@@ -15,7 +15,7 @@ interface ITextContext {
   setStyleText: React.Dispatch<React.SetStateAction<StylesType>>;
   inputRefs: React.MutableRefObject<OptionTextRefs>;
   resetTextState: () => void;
-  selectedStylesTextRef: (target: HTMLElement) => void;
+  selectedStylesTextRef: (target: HTMLElement, name: string) => void;
   updateStyleText: (
     property: keyof StylesType,
     value: StylesType[typeof property],
@@ -75,23 +75,27 @@ export const TextProvider: React.FC<{ children: React.ReactNode }> = ({
   * Función para establecer los estilos del texto seleccionado.
   * @param {HTMLElement} target - El elemento HTML cuyos estilos se establecerán.
  */
-  const selectedStylesTextRef = (target: HTMLElement) => {
+  const selectedStylesTextRef = (target: HTMLElement, name: string) => {
+
+
     target.style.backgroundColor = "white";
-    if (!inputRefs.current.textColor.current) return;
-    const rgbaColor = target.style.color;
-    const rgbaArray = rgbaColor.match(/\d+/g);
-    if (!rgbaArray) return;
-    const hexColor =
-      "#" +
-      (
-        (1 << 24) +
-        (parseInt(rgbaArray[0]) << 16) +
-        (parseInt(rgbaArray[1]) << 8) +
-        parseInt(rgbaArray[2])
-      )
-        .toString(16)
-        .slice(1, 7);
-    inputRefs.current.textColor.current.value = hexColor;
+
+    if(name === 'IMG') return
+    // if(!inputRefs.current.textColor.current) return
+    // const rgbaColor = target.style.color;
+    // const rgbaArray = rgbaColor.match(/\d+/g);
+    // if (!rgbaArray) return;
+    // const hexColor =
+    //   "#" +
+    //   (
+    //     (1 << 24) +
+    //     (parseInt(rgbaArray[0]) << 16) +
+    //     (parseInt(rgbaArray[1]) << 8) +
+    //     parseInt(rgbaArray[2])
+    //   )
+    //     .toString(16)
+    //     .slice(1, 7);
+    // inputRefs.current.textColor.current.value = hexColor;
 
     setStyleText({
       text: target.textContent!,

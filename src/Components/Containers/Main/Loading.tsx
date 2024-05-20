@@ -14,7 +14,7 @@ export default function Loading({ length }: Props): JSX.Element {
   return (
     <>
       {/* Grid para mostrar la animación de carga cuando no hay elementos cargados */}
-      <div className="grid grid-cols-2 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+      <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
         {length <= 0 &&
           Array.from(Array(25).keys()).map((i) => (
             <div
@@ -26,7 +26,7 @@ export default function Loading({ length }: Props): JSX.Element {
       {/* Mostrar el CircularProgress cuando hay elementos cargados */}
       {length > 0 && (
         <div className="flex items-center justify-center">
-          <CircularProgress />
+        
         </div>
       )}
     </>

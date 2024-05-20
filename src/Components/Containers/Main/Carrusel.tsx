@@ -17,12 +17,22 @@ import { CircularProgress } from "@mui/material";
 export default function Carrusel(): JSX.Element {
   const [memes, setMemes] = useState<MemeImageType[]>([]);
   const [hasMore, setHasMore] = useState(true);
+  const [searchValue, setSearchValue] = useState("")
   let start = useRef(0);
   let end = useRef(25);
 
   useEffect(() => {
     getMemes();
   }, []);
+
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchValue(e.target.value);
+  }
+
+  const filteredMemes = memes.filter((meme) =>
+    meme.name.toLowerCase().includes(searchValue.toLowerCase())
+  );
+
 
   /**
    * Obtiene los memes iniciales.
@@ -52,6 +62,9 @@ export default function Carrusel(): JSX.Element {
 
   return (
     <section className="w-full">
+      <input type="text" className="border p-4 w-full mb-2 rounded" placeholder="search..."
+      onChange={onChange}
+      value={searchValue}/>
       <InfiniteScroll
         next={moreData}
         dataLength={memes.length}
@@ -64,7 +77,7 @@ export default function Carrusel(): JSX.Element {
           columns={{ xs: 2, sm: 3, md: 5 }}
           spacing={{ xs: 1, sm: 2, md: 3 }}
         >
-          {memes.map(({ id, url, width, height, name }) => (
+          {filteredMemes.map(({ id, url, width, height, name }) => (
             <div key={id}>
               <Link href={`/${id}`} className="h-fit w-fit">
                 <div className={"border border-gray-100"}>

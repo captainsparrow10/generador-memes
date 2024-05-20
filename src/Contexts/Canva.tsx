@@ -93,7 +93,7 @@ export const CanvaProvider: React.FC<{ children: React.ReactNode }> = ({
         prevTextRef.current = target;
       }
 
-      selectedStylesTextRef(target);
+      selectedStylesTextRef(target, target.tagName);
 
       const onMouseMove = (e: MouseEvent) => {
         const rect = canvasRef.current?.getBoundingClientRect();
@@ -156,7 +156,7 @@ export const CanvaProvider: React.FC<{ children: React.ReactNode }> = ({
       prevTextRef.current = target;
     }
 
-    selectedStylesTextRef(target);
+    selectedStylesTextRef(target, target.tagName);
 
     const onTouchMove = (e: TouchEvent) => {
       const rect = canvasRef.current?.getBoundingClientRect();

@@ -5,6 +5,7 @@ import FontFamilySize from "../Fonts/FamilySize";
 import FontStyle from "../Fonts/Style";
 import clsx from "clsx";
 import { useTextContext } from "@Contexts/Text";
+import { initialStickerState } from "@Utils/Const";
 
 /**
  * Propiedades del componente EditText.
@@ -33,6 +34,8 @@ export default function EditText({
       current: { textColor },
     },
     prevTextRef,
+    resetTextState,
+    setStickerSelected
   } = useTextContext();
 
   /**
@@ -50,6 +53,15 @@ export default function EditText({
   const handleChangeColor = (e: ChangeEvent<HTMLInputElement>) => {
     updateStyleText("color", e.target.value);
   };
+
+  const deselectText = () => {
+    if (!prevTextRef.current) return;
+    prevTextRef.current.style.backgroundColor = "transparent";
+    prevTextRef.current.style.padding = "0px";
+    prevTextRef.current = null;
+    resetTextState();
+    setStickerSelected(initialStickerState);
+  }
 
   /**
    * Verifica si hay texto editado previamente.
@@ -99,6 +111,12 @@ export default function EditText({
             className="rounded-md border border-transparent bg-black px-3 py-3 text-white duration-150 ease-in-out hover:border-black hover:bg-white hover:text-black"
           >
             Eliminar
+          </button>
+          <button
+            onClick={deselectText}
+            className="rounded-md border border-transparent bg-black px-3 py-3 text-white duration-150 ease-in-out hover:border-black hover:bg-white hover:text-black"
+          >
+            Desleccionar texto
           </button>
         </div>
       )}

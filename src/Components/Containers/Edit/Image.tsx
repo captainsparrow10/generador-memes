@@ -15,6 +15,7 @@ interface ImageContainerProps {
 const ImageContainer = ({ loading }: ImageContainerProps): JSX.Element => {
   const { canvasRef, imageSelected, boxes, filterImage } = useCanvaContext();
 
+
   return (
     <div className="flex max-h-[600px] w-full max-w-[600px] items-center justify-center">
       <div

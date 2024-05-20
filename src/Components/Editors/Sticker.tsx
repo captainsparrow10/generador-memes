@@ -1,5 +1,6 @@
-'use client'
+"use client";
 import { useTextContext } from "@Contexts/Text";
+import { initialStickerState } from "@Utils/Const";
 import { PhotoIcon } from "@heroicons/react/16/solid";
 import Image from "next/image";
 import React from "react";
@@ -17,8 +18,26 @@ type StickerEditorProps = {
  * @param {StickerEditorProps} props - Propiedades del componente StickerEditor.
  * @returns {JSX.Element} El componente StickerEditor.
  */
-const StickerEditor = ({ deleteSticker, editSticker }: StickerEditorProps): JSX.Element => {
-  const { stickerSelected } = useTextContext();
+const StickerEditor = ({
+  deleteSticker,
+  editSticker,
+}: StickerEditorProps): JSX.Element => {
+  const { stickerSelected, prevTextRef, resetTextState, setStickerSelected } =
+    useTextContext();
+
+  const deselectSticker = () => {
+    if (!prevTextRef.current) return;
+    prevTextRef.current.style.backgroundColor = "transparent";
+    prevTextRef.current.style.padding = "0px";
+    prevTextRef.current = null;
+    resetTextState();
+    setStickerSelected(initialStickerState);
+  };
+
+  const editedSticker = (): boolean => {
+    if (prevTextRef.current?.nodeName === "IMG") return true;
+    return false;
+  };
 
   return (
     <div className="flex items-center gap-x-6">
@@ -38,18 +57,28 @@ const StickerEditor = ({ deleteSticker, editSticker }: StickerEditorProps): JSX.
           <input
             type="number"
             placeholder="Escribe el tamaño"
-            className="border-gray-300 rounded border px-3 py-2"
+            className="rounded border border-gray-300 px-3 py-2"
             value={stickerSelected.size}
             onChange={editSticker}
             min={1}
           />
           {/* Botón para eliminar el sticker */}
-          <button
-            onClick={deleteSticker}
-            className="h-fit rounded-sm border border-transparent bg-black px-2 py-2 text-white duration-150 ease-in-out hover:border-black hover:bg-white hover:text-black"
-          >
-            Eliminar
-          </button>
+          {editedSticker() && (
+            <div className="flex gap-3">
+              <button
+                onClick={deleteSticker}
+                className="h-fit rounded-sm border border-transparent bg-black px-2 py-2 text-white duration-150 ease-in-out hover:border-black hover:bg-white hover:text-black"
+              >
+                Eliminar
+              </button>
+              <button
+                onClick={deselectSticker}
+                className="h-fit rounded-sm border border-transparent bg-black px-2 py-2 text-white duration-150 ease-in-out hover:border-black hover:bg-white hover:text-black"
+              >
+                Deseleccionar sticker
+              </button>
+            </div>
+          )}
         </div>
       </div>
       <div className="flex h-full items-end py-2"></div>
