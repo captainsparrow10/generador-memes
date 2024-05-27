@@ -16,6 +16,7 @@ const useText = () => {
     },
     setStyleText,
     resetTextState,
+    resetTextInput,
     prevTextRef,
   } = useTextContext();
 
@@ -66,7 +67,7 @@ const useText = () => {
    */
   const createText = (newText: JSX.Element) => {
     setBoxes((prevText) => [...prevText, newText]);
-    resetTextState();
+    resetTextInput()
   };
 
   // Función para eliminar el texto seleccionado

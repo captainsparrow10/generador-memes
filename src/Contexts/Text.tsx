@@ -34,6 +34,8 @@ interface ITextContext {
   >;
   prevTextRef: MutableRefObject<HTMLElement | null>;
   resetSticker: () => void;
+  resetTextInput: () => void;
+
 }
 
 interface OptionTextRefs {
@@ -116,6 +118,18 @@ export const TextProvider: React.FC<{ children: React.ReactNode }> = ({
     setStyleText(initialTextState);
   };
 
+  const resetTextInput = () => {
+    setStyleText({
+      text: "",
+      transform: styleText.transform,
+      weight: styleText.weight,
+      style: styleText.style,
+      color: styleText.color,
+      fontSize: styleText.fontSize,
+      fontFamily: styleText.fontFamily,
+    });
+  };
+
   /**
   * Resetea el estilo del sticker al inicial
  */
@@ -138,6 +152,7 @@ export const TextProvider: React.FC<{ children: React.ReactNode }> = ({
         prevTextRef,
         resetTextState,
         resetSticker,
+        resetTextInput
       }}
     >
       {children}

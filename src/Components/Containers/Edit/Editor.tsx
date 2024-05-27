@@ -76,6 +76,19 @@ export default function Editor(): JSX.Element {
     createText(newText);
   };
 
+  const cloneText = (e: React.MouseEvent<HTMLButtonElement>) => {
+    if (text.trim() === "") return;
+
+    if (prevTextRef.current) {
+      createText(newText);
+      return;
+    }
+
+    return
+
+    
+  }; 
+
   /**
    * Agrega un texto al canvas al hacer clic en el botón.
    * @param {React.MouseEvent<HTMLButtonElement>} e - Evento del clic.
@@ -154,6 +167,7 @@ export default function Editor(): JSX.Element {
           addText={addText}
           addTextButton={addTextButton}
           deleteTextButton={deleteText}
+          cloneText={cloneText}
         />
       )}
       <div className="flex gap-x-6">

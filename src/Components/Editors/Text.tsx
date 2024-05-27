@@ -14,6 +14,7 @@ type Props = {
   addText: (e: React.KeyboardEvent<HTMLInputElement>) => void; // Función para añadir texto al presionar Enter
   addTextButton: (e: React.MouseEvent<HTMLButtonElement>) => void; // Función para añadir texto mediante botón
   deleteTextButton: () => void; // Función para eliminar texto
+  cloneText: (e: React.MouseEvent<HTMLButtonElement>) => void;
 };
 
 /**
@@ -25,6 +26,7 @@ export default function EditText({
   addText,
   addTextButton,
   deleteTextButton,
+  cloneText
 }: Props): JSX.Element {
   const [editView, setEditView] = useState(false);
   const {
@@ -118,6 +120,12 @@ export default function EditText({
           >
             Desleccionar texto
           </button>
+          <button
+            onClick={cloneText}
+            className="rounded-md border border-transparent bg-black px-3 py-3 text-white duration-150 ease-in-out hover:border-black hover:bg-white hover:text-black"
+          >
+              Clonar   
+       </button>
         </div>
       )}
 
