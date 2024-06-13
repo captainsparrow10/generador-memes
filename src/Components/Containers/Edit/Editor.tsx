@@ -10,6 +10,7 @@ import useText from "@Hooks/useText";
 import useSticker from "@Hooks/useSticker";
 import { toPng } from "html-to-image";
 import download from "downloadjs";
+import { Rnd } from "react-rnd";
 
 /**
  * Componente principal del editor de imágenes.
@@ -37,16 +38,18 @@ export default function Editor(): JSX.Element {
     resetSticker,
   } = useTextContext();
 
+  
+
   /**
    * Crea un nuevo elemento de texto para ser agregado al lienzo de edición.
    * @returns {JSX.Element} El elemento de texto creado.
    */
   const newText = (
-    <div
+
+      <Rnd
+      onMouseDown={handleOnMouseDown}
       key={boxes.length}
       className="absolute z-50 h-fit cursor-move text-black"
-      onMouseDown={handleOnMouseDown}
-      onTouchStart={handleOnTouchStart}
       style={{
         textTransform: transform === "normal-case" ? "none" : "uppercase",
         fontWeight: weight === "normal" ? "400" : "700",
@@ -54,11 +57,19 @@ export default function Editor(): JSX.Element {
         fontStyle: style === "not-italic" ? "normal" : "italic",
         fontFamily: fontFamily,
         color: color,
+        display: "flex",
+        alignItems: "center",
+        textAlign: "justify"
       }}
       data-tag="text"
-    >
-      {text}
-    </div>
+      bounds={canvasRef.current}
+      default={{
+        x:0,
+        y:0,
+      }}
+      >
+        <p>{text}</p>
+      </Rnd>
   );
 
   /**

@@ -28,7 +28,7 @@ export default function Header({ id, memes }: Props): JSX.Element {
     setImageSelected,
     boxes,
     setBoxes,
-    handleOnMouseDown,
+    handleStickerOnMouseDown,
     handleOnTouchStart,
     opacity,
     setOpacity,
@@ -77,7 +77,7 @@ export default function Header({ id, memes }: Props): JSX.Element {
         src={sticker.image.src}
         width={sticker.size}
         height={sticker.size}
-        onMouseDown={handleOnMouseDown}
+        onMouseDown={handleStickerOnMouseDown}
         onTouchStart={handleOnTouchStart}
         data-tag="sticker"
       />

@@ -11,6 +11,7 @@ interface ICanvaContext {
   setImageSelected: React.Dispatch<React.SetStateAction<MemeImageType>>;
   fileInputRef: React.RefObject<HTMLInputElement>;
   handleOnMouseDown: (event: React.MouseEvent<HTMLDivElement>) => void;
+  handleStickerOnMouseDown: (event: React.MouseEvent<HTMLDivElement>) => void;
   handleOnTouchStart: (event: React.TouchEvent<HTMLDivElement>) => void;
   canvasRef: React.RefObject<HTMLDivElement>;
   boxes: JSX.Element[];
@@ -66,7 +67,7 @@ export const CanvaProvider: React.FC<{ children: React.ReactNode }> = ({
    * Maneja el evento de clic del mouse en el canvas.
    * @param {React.MouseEvent<HTMLDivElement>} event - Evento del clic.
    */
-  const handleOnMouseDown = (event: React.MouseEvent<HTMLDivElement>) => {
+  const handleStickerOnMouseDown = (event: React.MouseEvent<HTMLDivElement>) => {
     event.preventDefault();
     const target = event.target as HTMLElement;
     const tag = target.getAttribute("data-tag");
@@ -121,6 +122,44 @@ export const CanvaProvider: React.FC<{ children: React.ReactNode }> = ({
       document.addEventListener("mouseup", onMouseUp);
       return;
     }
+  };
+
+  const handleOnMouseDown = (event: React.MouseEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    let target = event.target as HTMLElement;
+    const tag = target.getAttribute("data-tag");
+    const mode = tag === "sticker" ? "sticker" : "text";
+    setModeEdit(mode);
+    if (target && target.tagName === "IMG") {
+      const imgElement = target as HTMLImageElement;
+      setStickerSelected({
+        url: imgElement.src,
+        size: imgElement.width,
+      });
+    }
+
+    if(target.tagName === "P" && target.parentElement) {
+      target = target.parentElement
+    }
+      if (prevTextRef.current === null) {
+        prevTextRef.current = target;
+      }
+
+      if (prevTextRef.current && prevTextRef.current !== target) {
+        prevTextRef.current.style.backgroundColor = "transparent";
+        prevTextRef.current = target;
+      }
+
+      
+      selectedStylesTextRef(target, target.tagName);
+
+      const onMouseUp = () => {
+        document.removeEventListener("mouseup", onMouseUp);
+      };
+
+      document.addEventListener("mouseup", onMouseUp);
+      return;
+
   };
 
   /**
@@ -223,6 +262,7 @@ export const CanvaProvider: React.FC<{ children: React.ReactNode }> = ({
     <CanvaContext.Provider
       value={{
         updateFilterImage,
+        handleStickerOnMouseDown,
         showModal,
         setShowModal,
         imageSelected,

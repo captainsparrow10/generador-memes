@@ -25,6 +25,7 @@ const useText = () => {
    * Edita el texto existente en el canvas con los estilos actuales.
    */
   const editText = () => {
+    console.log(prevTextRef.current)
     if (prevTextRef.current) {
       setStyleText({
         text: prevTextRef.current.textContent!,
@@ -43,7 +44,10 @@ const useText = () => {
         fontSize: parseInt(prevTextRef.current.style.fontSize.split("px")[0]),
         fontFamily: prevTextRef.current.style.fontFamily,
       });
-      prevTextRef.current.textContent = text;
+      if(prevTextRef.current.firstChild) {
+        prevTextRef.current.firstChild.textContent = text
+      }
+      // prevTextRef.current.textContent = text;
       prevTextRef.current.style.backgroundColor = "transparent";
       prevTextRef.current.style.textTransform =
         transform === "normal-case" ? "none" : "uppercase";
