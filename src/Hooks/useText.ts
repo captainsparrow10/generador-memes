@@ -46,7 +46,7 @@ const useText = () => {
         align: ["start", "justify", "end"].includes(
           prevTextRef.current.style.textAlign as string,
         )
-          ? (prevTextRef.current.style.textAlign as "start" | "justify" | "end")
+          ? (prevTextRef.current.style.textAlign as "start" | "justify" | "end" | "center")
           : "start",
       });
       if (prevTextRef.current.firstChild) {

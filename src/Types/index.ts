@@ -19,7 +19,7 @@ export type StylesType = {
 	transform: "normal-case" | "uppercase";
 	weight: "bold" | "normal";
 	style: "italic" | "not-italic";
-	align: "start" | "justify" | "end"
+	align: "start" | "justify" | "end" | "center"
 };
 
 

@@ -71,7 +71,7 @@ export default function Editor(): JSX.Element {
       data-tag="text"
       bounds={canvasRef.current!}
     >
-      <p>{text}</p>
+      <p className="w-full">{text}</p>
     </Rnd>
   );
 

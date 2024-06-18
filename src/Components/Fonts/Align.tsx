@@ -27,6 +27,7 @@ export default function FontAlign(): JSX.Element {
         >
           <option value="start">start</option>
           <option value="justify">Justify</option>
+          <option value="center">center</option>
           <option value="end">end</option>
         </select>
       </div>

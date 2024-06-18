@@ -94,7 +94,6 @@ export const TextProvider: React.FC<{ children: React.ReactNode }> = ({
     //     .toString(16)
     //     .slice(1, 7);
     // inputRefs.current.textColor.current.value = hexColor;
-    console.log(target.style.textAlign)
     setStyleText({
       text: target.textContent!,
       transform:
@@ -104,10 +103,10 @@ export const TextProvider: React.FC<{ children: React.ReactNode }> = ({
       color: target.style.color,
       fontSize: parseInt(target.style.fontSize.split("px")[0]),
       fontFamily: target.style.fontFamily,
-      align: ["start", "justify", "end"].includes(
+      align: ["start", "justify", "end", "center"].includes(
         target.style.textAlign as string,
       )
-        ? (target.style.textAlign as "start" | "justify" | "end")
+        ? (target.style.textAlign as "start" | "justify" | "end" | "center")
         : "start",
     });
   };
