@@ -12,7 +12,7 @@ const useText = () => {
       fontFamily,
       fontSize,
       color,
-      text
+      text, align
     },
     setStyleText,
     resetTextState,
@@ -43,8 +43,13 @@ const useText = () => {
         color: prevTextRef.current.style.color,
         fontSize: parseInt(prevTextRef.current.style.fontSize.split("px")[0]),
         fontFamily: prevTextRef.current.style.fontFamily,
+        align: ["start", "justify", "end"].includes(
+          prevTextRef.current.style.textAlign as string,
+        )
+          ? (prevTextRef.current.style.textAlign as "start" | "justify" | "end")
+          : "start",
       });
-      if(prevTextRef.current.firstChild) {
+      if (prevTextRef.current.firstChild) {
         prevTextRef.current.firstChild.textContent = text
       }
       // prevTextRef.current.textContent = text;
@@ -58,6 +63,7 @@ const useText = () => {
         style === "not-italic" ? "normal" : "italic";
       prevTextRef.current.style.fontFamily = fontFamily;
       prevTextRef.current.style.color = color;
+      prevTextRef.current.style.textAlign = align
       prevTextRef.current = null;
       resetTextState();
       return;

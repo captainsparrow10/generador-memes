@@ -35,7 +35,7 @@ export const initialTextState: StylesType = {
   color: "#000000",
   fontSize: 16,
   fontFamily: "roboto",
-  align: "left"
+  align: "start"
 };
 
 export const initialStickerState = {
