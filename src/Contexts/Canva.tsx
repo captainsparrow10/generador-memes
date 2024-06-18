@@ -10,7 +10,7 @@ interface ICanvaContext {
   imageSelected: MemeImageType;
   setImageSelected: React.Dispatch<React.SetStateAction<MemeImageType>>;
   fileInputRef: React.RefObject<HTMLInputElement>;
-  handleOnMouseDown: (event: React.MouseEvent<HTMLDivElement>) => void;
+  handleOnMouseDown: (event: MouseEvent) => void;
   handleStickerOnMouseDown: (event: React.MouseEvent<HTMLDivElement>) => void;
   handleOnTouchStart: (event: React.TouchEvent<HTMLDivElement>) => void;
   canvasRef: React.RefObject<HTMLDivElement>;
@@ -124,7 +124,7 @@ export const CanvaProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   };
 
-  const handleOnMouseDown = (event: React.MouseEvent<HTMLDivElement>) => {
+  const handleOnMouseDown = (event: MouseEvent) => {
     event.preventDefault();
     let target = event.target as HTMLElement;
     const tag = target.getAttribute("data-tag");

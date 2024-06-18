@@ -47,14 +47,13 @@ export default function Editor(): JSX.Element {
     resetSticker,
   } = useTextContext();
 
-  console.log(align);
   /**
    * Crea un nuevo elemento de texto para ser agregado al lienzo de edición.
    * @returns {JSX.Element} El elemento de texto creado.
    */
   const newText = (
     <Rnd
-      onMouseDown={handleOnMouseDown}
+      onMouseDown={(e) => handleOnMouseDown(e)}
       key={boxes.length}
       className="absolute z-50 h-fit w-full cursor-move text-black"
       style={{
