@@ -6,6 +6,7 @@ import FontStyle from "../Fonts/Style";
 import clsx from "clsx";
 import { useTextContext } from "@Contexts/Text";
 import { initialStickerState } from "@Utils/Const";
+import FontAlign from "@Components/Fonts/Align";
 
 /**
  * Propiedades del componente EditText.
@@ -26,7 +27,7 @@ export default function EditText({
   addText,
   addTextButton,
   deleteTextButton,
-  cloneText
+  cloneText,
 }: Props): JSX.Element {
   const [editView, setEditView] = useState(false);
   const {
@@ -37,7 +38,7 @@ export default function EditText({
     },
     prevTextRef,
     resetTextState,
-    setStickerSelected
+    setStickerSelected,
   } = useTextContext();
 
   /**
@@ -63,7 +64,7 @@ export default function EditText({
     prevTextRef.current = null;
     resetTextState();
     setStickerSelected(initialStickerState);
-  }
+  };
 
   /**
    * Verifica si hay texto editado previamente.
@@ -124,8 +125,8 @@ export default function EditText({
             onClick={cloneText}
             className="rounded-md border border-transparent bg-black px-3 py-3 text-white duration-150 ease-in-out hover:border-black hover:bg-white hover:text-black"
           >
-              Clonar   
-       </button>
+            Clonar
+          </button>
         </div>
       )}
 
@@ -147,6 +148,7 @@ export default function EditText({
       >
         <FontFamilySize />
         <FontStyle />
+        <FontAlign />
       </div>
     </div>
   );

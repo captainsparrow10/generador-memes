@@ -146,7 +146,7 @@ export const CanvaProvider: React.FC<{ children: React.ReactNode }> = ({
       }
 
       if (prevTextRef.current && prevTextRef.current !== target) {
-        prevTextRef.current.style.backgroundColor = "transparent";
+        prevTextRef.current.style.backgroundColor = "green";
         prevTextRef.current = target;
       }
 

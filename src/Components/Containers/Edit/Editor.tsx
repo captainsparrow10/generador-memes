@@ -30,7 +30,16 @@ export default function Editor(): JSX.Element {
   } = useCanvaContext();
 
   const {
-    styleText: { transform, style, weight, fontFamily, fontSize, color, text },
+    styleText: {
+      transform,
+      style,
+      weight,
+      fontFamily,
+      fontSize,
+      color,
+      text,
+      align,
+    },
     resetTextState,
     prevTextRef,
     modeEdit,
@@ -38,18 +47,15 @@ export default function Editor(): JSX.Element {
     resetSticker,
   } = useTextContext();
 
-  
-
   /**
    * Crea un nuevo elemento de texto para ser agregado al lienzo de edición.
    * @returns {JSX.Element} El elemento de texto creado.
    */
   const newText = (
-
-      <Rnd
-      onMouseDown={handleOnMouseDown}
+    <Rnd
+      onMouseDown={ handleOnMouseDown}
       key={boxes.length}
-      className="absolute z-50 h-fit cursor-move text-black"
+      className="absolute z-50 h-fit w-full cursor-move text-black"
       style={{
         textTransform: transform === "normal-case" ? "none" : "uppercase",
         fontWeight: weight === "normal" ? "400" : "700",
@@ -58,18 +64,14 @@ export default function Editor(): JSX.Element {
         fontFamily: fontFamily,
         color: color,
         display: "flex",
-        alignItems: "center",
-        textAlign: "justify"
+        alignItems: align,
+        textAlign: "justify",
       }}
       data-tag="text"
-      bounds={canvasRef.current}
-      default={{
-        x:0,
-        y:0,
-      }}
-      >
-        <p>{text}</p>
-      </Rnd>
+      bounds={canvasRef.current!}
+    >
+      <p className="flex-1">{text}</p>
+    </Rnd>
   );
 
   /**
@@ -95,10 +97,8 @@ export default function Editor(): JSX.Element {
       return;
     }
 
-    return
-
-    
-  }; 
+    return;
+  };
 
   /**
    * Agrega un texto al canvas al hacer clic en el botón.

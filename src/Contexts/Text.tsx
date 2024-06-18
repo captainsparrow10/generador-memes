@@ -35,7 +35,6 @@ interface ITextContext {
   prevTextRef: MutableRefObject<HTMLElement | null>;
   resetSticker: () => void;
   resetTextInput: () => void;
-
 }
 
 interface OptionTextRefs {
@@ -44,7 +43,6 @@ interface OptionTextRefs {
 
 // Crear el contexto de Texto
 export const TextContext = createContext<ITextContext | undefined>(undefined);
-
 
 // Proveedor del contexto de Texto
 export const TextProvider: React.FC<{ children: React.ReactNode }> = ({
@@ -55,14 +53,14 @@ export const TextProvider: React.FC<{ children: React.ReactNode }> = ({
   const [modeEdit, setModeEdit] = useState<"text" | "sticker">("text"); // Modo de edición actual
   const [stickerSelected, setStickerSelected] = useState(initialStickerState);
   const inputRefs = useRef<OptionTextRefs>({
-    textColor: useRef<HTMLInputElement | null>(null), 
-  });  // Referencia al input de color de texto
+    textColor: useRef<HTMLInputElement | null>(null),
+  }); // Referencia al input de color de texto
 
   /**
-  *  Función para actualizar un estilo específico del texto
-  * @param {property} keyof StylesType - nombre de la propiedad a cambiar
-  * @param {value} StylesType - valor que vas a cambiar
- */
+   *  Función para actualizar un estilo específico del texto
+   * @param {property} keyof StylesType - nombre de la propiedad a cambiar
+   * @param {value} StylesType - valor que vas a cambiar
+   */
   const updateStyleText = (
     property: keyof StylesType,
     value: StylesType[typeof property],
@@ -73,16 +71,14 @@ export const TextProvider: React.FC<{ children: React.ReactNode }> = ({
     }));
   };
 
- /**
-  * Función para establecer los estilos del texto seleccionado.
-  * @param {HTMLElement} target - El elemento HTML cuyos estilos se establecerán.
- */
+  /**
+   * Función para establecer los estilos del texto seleccionado.
+   * @param {HTMLElement} target - El elemento HTML cuyos estilos se establecerán.
+   */
   const selectedStylesTextRef = (target: HTMLElement, name: string) => {
-
-
     target.style.backgroundColor = "white";
 
-    if(name === 'IMG') return
+    if (name === "IMG") return;
     // if(!inputRefs.current.textColor.current) return
     // const rgbaColor = target.style.color;
     // const rgbaArray = rgbaColor.match(/\d+/g);
@@ -108,12 +104,17 @@ export const TextProvider: React.FC<{ children: React.ReactNode }> = ({
       color: target.style.color,
       fontSize: parseInt(target.style.fontSize.split("px")[0]),
       fontFamily: target.style.fontFamily,
+      align: ["left", "center", "right"].includes(
+        target.style.textAlign as string,
+      )
+        ? (target.style.textAlign as "left" | "center" | "right")
+        : "left",
     });
   };
 
   /**
-  * Resetea el estilo del texto al inicial
- */
+   * Resetea el estilo del texto al inicial
+   */
   const resetTextState = () => {
     setStyleText(initialTextState);
   };
@@ -127,12 +128,13 @@ export const TextProvider: React.FC<{ children: React.ReactNode }> = ({
       color: styleText.color,
       fontSize: styleText.fontSize,
       fontFamily: styleText.fontFamily,
+      align: styleText.align
     });
   };
 
   /**
-  * Resetea el estilo del sticker al inicial
- */
+   * Resetea el estilo del sticker al inicial
+   */
   const resetSticker = () => {
     setStickerSelected(initialStickerState);
   };
@@ -152,7 +154,7 @@ export const TextProvider: React.FC<{ children: React.ReactNode }> = ({
         prevTextRef,
         resetTextState,
         resetSticker,
-        resetTextInput
+        resetTextInput,
       }}
     >
       {children}
@@ -161,7 +163,7 @@ export const TextProvider: React.FC<{ children: React.ReactNode }> = ({
 };
 
 /**
-  * Hook del contexto para usar
+ * Hook del contexto para usar
  */
 export const useTextContext = (): ITextContext => {
   const context = useContext(TextContext);
